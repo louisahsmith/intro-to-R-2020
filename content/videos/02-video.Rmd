@@ -1,0 +1,118 @@
+---
+title: "The basics2"
+linktitle: "2: The basics2"
+date: "2020-07-13"
+menu:
+  video:
+    parent: Course content
+    weight: 5
+type: docs
+slides: "02-slides"
+output:
+  blogdown::html_page:
+    toc: false
+---
+
+The slides shown in the videos are prepared as an HTML file. You can flip through the slides here, open them all in a new window/tab, or download them as a PDF if you want to save them for later. To navigate through the HTML slides, use the left and right arrow keys. You can also type `?` while viewing the slides to see a list of other commands you can use.
+
+`r blogdown::shortcode("slide-buttons")`
+
+<ul class="nav nav-tabs" id="slide-tabs" role="tablist">
+<li class="nav-item">
+<a class="nav-link active" id="introduction-tab" href="#introduction" role="tab" aria-controls="introduction" aria-selected="true">Introduction</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="agenda-tab" href="#agenda" role="tab" aria-controls="agenda" aria-selected="false">Agenda</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="organization-tab" href="#organization" role="tab" aria-controls="organization" aria-selected="false">Organization</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="look-at-results-tab" href="#look-at-results" role="tab" aria-controls="look-at-results" aria-selected="false">Look at results</a>
+</li>
+</ul>
+<div class="tab-content" id="slide-tabs">
+
+
+<div class="tab-pane fade show active" id="introduction" role="tabpanel" aria-labelledby="introduction-tab">
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="/slides/02-slides.html#2"></iframe>
+</div>
+</div>
+<div class="tab-pane fade" id="agenda" role="tabpanel" aria-labelledby="agenda-tab">
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="/slides/02-slides.html#agenda"></iframe>
+</div>
+</div>
+<div class="tab-pane fade" id="organization" role="tabpanel" aria-labelledby="organization-tab">
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="/slides/02-slides.html#organization"></iframe>
+</div>
+</div>
+<div class="tab-pane fade" id="look-at-results" role="tabpanel" aria-labelledby="look-at-results-tab">
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="/slides/02-slides.html#look-at-results"></iframe>
+</div>
+</div>
+
+
+</div>
+
+
+<div class="embed-responsive embed-responsive-16by9">
+
+<iframe class="embed-responsive-item" id = "test-vid" src="https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=46"frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"allowfullscreen>
+</iframe>
+
+
+<script type="text/javascript">
+  var tag = document.createElement('script');
+  tag.id = 'iframe-demo';
+  tag.src = 'https://www.youtube.com/iframe_api';
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('test-vid', {
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+    });
+  }
+  function onPlayerReady(event) {
+    document.getElementById('test-vid').style.borderColor = '#FF6D00';
+  }
+  function changeBorderColor(playerStatus) {
+    var color;
+    if (playerStatus == -1) {
+      color = "#37474F"; // unstarted = gray
+    } else if (playerStatus == 0) {
+      color = "#FFFF00"; // ended = yellow
+    } else if (playerStatus == 1) {
+      color = "#33691E"; // playing = green
+    } else if (playerStatus == 2) {
+      color = "#DD2C00"; // paused = red
+    } else if (playerStatus == 3) {
+      color = "#AA00FF"; // buffering = purple
+    } else if (playerStatus == 5) {
+      color = "#FF6DOO"; // video cued = orange
+    }
+    if (color) {
+      document.getElementById('test-vid').style.borderColor = color;
+    }
+  }
+  function onPlayerStateChange(event) {
+    changeBorderColor(event.data);
+  }
+</script>
+
+
+
+</div>
+
