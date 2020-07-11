@@ -11,7 +11,7 @@ slide_tabs <- function(slide_df, slide_url) {
     active_flag <- ifelse(selected, " active", "")
     out <- glue::glue('<li class="nav-item">\n',
                       '<a class="nav-link{active_flag}" id="{slugify(name)}-tab" href="#{slugify(name)}" role="tab" ', 
-                      'aria-controls="{slugify(name)}" aria-selected="{select_flag}">',
+                      'data-toggle="tab" aria-controls="{slugify(name)}" aria-selected="{select_flag}">',
                       '{name}</a>\n',
                       '</li>')
     return(out)
@@ -21,10 +21,10 @@ slide_tabs <- function(slide_df, slide_url) {
     select_flag <- ifelse(active, " show active", "")
     out <- glue::glue('<div class="tab-pane fade{select_flag}" id="{slugify(name)}" ',
                       'role="tabpanel" aria-labelledby="{slugify(name)}-tab">\n',
-                      # '<div class="embed-responsive embed-responsive-16by9">\n',
-                      # '<iframe class="embed-responsive-item" src="{youtube}"',
-                      # 'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"',
-                      # 'allowfullscreen></iframe>\n</div>\n',
+                      '<div class="embed-responsive embed-responsive-16by9">\n',
+                      '<iframe class="embed-responsive-item" src="{youtube}"',
+                      'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"',
+                      'allowfullscreen></iframe>\n</div>\n',
                       '<div class="embed-responsive embed-responsive-16by9">\n',
                       '<iframe class="embed-responsive-item" src="{url}#{slide}"></iframe>\n',
                       '</div>\n</div>')

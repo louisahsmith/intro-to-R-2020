@@ -1,4 +1,33 @@
 
+.header--fixed {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.header--fixed.top {
+  transition: none;
+  transform: translateY(0);
+}
+.header--fixed.not-top {
+  position: fixed;
+  transform: translateY(-100%);
+}
+.header--fixed.slideDown.not-top {
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(0);
+}
+.header--fixed.slideDown.top {
+  transition: transform 0.3s ease-in-out;
+  position: fixed;
+}
+.header--fixed.slideUp.not-top {
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(-100%);
+}
+.header--fixed.slideUp.top {
+  transform: translateY(-100%);
+  position: absolute;
+}
 
 body {
   color: #1F4257;

@@ -7,7 +7,7 @@
 {{ if $has_logo }}
   {{ $logo = (partial "functions/get_logo" (dict "constraint" "max_height" "size" 70)) }}
 {{ end }}
-
+<header class="headroom headroom--pinned headroom--unpinned" id="test-head">
 <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
   <div class="container">
 {{if ne .Kind "home"}}
@@ -173,3 +173,4 @@
 
   </div><!-- /.container -->
 </nav>
+</header>
