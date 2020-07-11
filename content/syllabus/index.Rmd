@@ -1,0 +1,118 @@
+---
+title: Syllabus
+slug: syllabus
+output:
+  blogdown::html_page:
+    toc: FALSE
+    fig_caption: TRUE
+---
+
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
+library(dplyr)
+library(tibble)
+library(pander)
+```
+
+`r blogdown::shortcode("courseinfo")`
+
+## Course Description
+
+This 6-week, non-credit course will provide an introduction to R to get you up and running with data management and analysis. The lectures, exercises, and programming challenges will provide you with skills, tips, and tricks to make your data tasks easier. The goal is to gain comfort with R, learn some best practices, and take home code you can modify and re-use. We'll be covering some of the skills considered the most important by Harvard Chan students in a recent survey (see [Figure](#fig1)).
+
+You'll be expected to watch a video lecture every week and complete some exercises on your own. Weekly lab/office hours sessions will be scheduled based on student availability to go over the exercises, work in small groups, and ask and answer questions.
+
+### Pre-requisites
+
+No experience with R is expected. This course will be appropriate for new users as well as those who have basic familiarity with R but aren't comfortable conducting their day-to-day data tasks in R. For newcomers, the first lecture will get you up and running. Those who have used R before can skip that lecture and join us the second week.
+
+## Course Objectives
+
+In this course you will learn to:
+
+- Create publishable figures
+- Manage datasets
+- Make a table of descriptive characteristics or results
+- Write functions to help you analyze data
+- Use techniques to speed up common data tasks and minimize data errors
+
+
+\clearpage
+
+## Schedule
+
+### Week 1: The basics
+
+- Install R and RStudio
+- Install and load packages
+- Create and knit an RMarkdown document
+- If you have R installed and have used RMarkdown before, you can skip this week, or watch the video on 2x speed -- but you might learn some tricks you didn't know!
+
+### Week 2: Figures
+
+- Introduce the terminology and structure of the `ggplot2` package
+- Create scatterplots, histograms, and bar plots
+- Use colors and facets to make easy-to-read figures
+- Learn about resources for further exploration in `ggplot2` and alternative packages for making figures
+
+### Week 3: Selecting, filtering, and mutating
+
+- Create a dataset with only the variables and observations you need
+- Create new variables based on the values of other variables
+- Learn about applying these concepts to multiple variables at once
+
+### Week 4: Grouping and tables
+
+- Calculate summary statistics for a whole or stratified dataset
+- Output a "Table 1" of descriptive characteristics
+- Recreate a table when your dataset changes -- without any retyping!
+
+### Week 5: Functions
+
+- Review the structure of a function
+- Write simple functions
+
+### Week 6: Analyze your data
+
+We'll go through a common workflow for analyzing data, putting together all we've learned:
+
+- Import and clean data
+- Fit regressions for multiple exposures/outcomes
+- Create tables and figures to summarize the data and analysis
+
+## Course readings, exercises, and expectations
+
+There are no required readings for the course. The book *R for Data Science* by Hadley Wickham and Garrett Grolemund, (freely available online at https://r4ds.had.co.nz) is recommended if you'd like more guidance and practice exercises.
+
+There will be ungraded exercises every week. Lab/office hours will be used to go over the exercises in small groups and as a class, as well as get questions answered.
+
+## Harvard Chan Policies and Expectations
+### Inclusivity Statement
+
+Diversity and inclusiveness are fundamental to public health education and practice. Students are encouraged to have an open mind and respect differences of all kinds. I share responsibility with you for creating a learning climate that is hospitable to all perspectives and cultures; please contact me if you have any concerns or suggestions. 
+
+### Bias Related Incident Reporting
+
+The Harvard Chan School believes all members of our community should be able to study and work in an environment where they feel safe and respected. As a mechanism to promote an inclusive community, we have created an anonymous bias-related incident reporting system. If you have experienced bias, please submit a report [here](https://reportinghotline.harvard.edu/) so that the administration can track and address concerns as they arise and to better support members of the Harvard Chan community. 
+
+### Title IX
+
+The following policy applies to all Harvard University students, faculty, staff, appointees, or third parties: [Harvard University Sexual and Gender-Based Harassment Policy](http://hwpi.harvard.edu/files/title-ix/files/harvard_sexual_harassment_policy.pdf). ([Procedures For Complaints Against a Faculty Member](http://hwpi.harvard.edu/title-ix/complaints-against-faculty-member-hsph); [Procedures For Complaints Against Non-Faculty Academic Appointees](http://hwpi.harvard.edu/title-ix/complaints-against-non-faculty-academic-appointees-hsph)).
+
+### Academic Integrity
+
+Each student in this course is expected to abide by the Harvard University and the Harvard T.H. Chan School of Public Health School’s standards of Academic Integrity.  All work submitted to meet course requirements is expected to be a student’s own work.  In the preparation of work submitted to meet course requirements, students should always take great care to distinguish their own ideas and knowledge from information derived from sources.  
+
+Students must assume that collaboration in the completion of assignments is prohibited unless explicitly specified.  Students must acknowledge any collaboration and its extent in all submitted work. This requirement applies to collaboration on editing as well as collaboration on substance. 
+
+Should academic misconduct occur, the student(s) may be subject to disciplinary action as outlined in the [Student Handbook](https://www.hsph.harvard.edu/student-handbook/academic-support/academic-integrity/).  See the [Student Handbook](https://www.hsph.harvard.edu/student-handbook/academic-support/academic-integrity/) for additional policies related to academic integrity and disciplinary actions.
+
+### Accommodations for Students with Disabilities
+
+Harvard University provides academic accommodations to students with disabilities. Any requests for academic accommodations should ideally be made before the first week of the semester, except for unusual circumstances, so arrangements can be made. Students must register with the Local Disability Coordinator in the Office for Student Affairs to verify their eligibility for appropriate accommodations. Contact Colleen Cronin ccronin@hsph.harvard.edu in all cases, including temporary disabilities. 
+
+Religious Holidays, Absence Due to
+According to Chapter 151c, Section 2B, of the General Laws of Massachusetts, any student in an educational or vocational training institution, other than a religious or denominational training institution, who is unable, because of his or her religious beliefs, to attend classes or to participate in any examination, study, or work requirement on a particular day shall be excused from any such examination or requirement which he or she may have missed because of such absence on any particular day, provided that such makeup examination or work shall not create an unreasonable burden upon the School. See the [Student Handbook](https://www.hsph.harvard.edu/student-handbook/academic-support/academic-integrity/) for more information. 
+
+### Figure {#fig1}
+
+`r blogdown::shortcode("figure", src = "/img/importance.png", alt = "Figure", lightbox = "false", caption = "Making figures was rated the most important skill to learn in a recent student survey (figure made with ggplot2 package).")`

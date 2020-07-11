@@ -1,0 +1,610 @@
+
+/* Custom fonts */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
+@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap);
+
+/* colors */
+/* From: https://www.pantone.com/color-intelligence/color-of-the-year/color-of-the-year-2020-palette-exploration */
+
+:root {
+  /*From xaringam_themer style_duo_accent()*/
+  /* Fonts */
+  --text-font-family: 'Noto Sans';
+  --text-font-is-google: 1;
+  --text-font-family-fallback: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial;
+  --text-font-base: sans-serif;
+  --header-font-family: 'Montserrat';
+  --header-font-is-google: 1;
+  --code-font-family: 'Source Code Pro';
+  --code-font-is-google: 1;
+  --hand-font: 'Permanent Marker';
+  --base-font-size: 26px;
+  --text-font-size: 1rem;
+  --code-font-size: 1.1rem;
+  --code-inline-font-size: .9em;
+  --header-h1-font-size: 1.75rem;
+  --header-h2-font-size: 1.25rem;
+  --header-h3-font-size: 1.15rem;
+
+  /* Colors */
+  --text-color: #1F4257;
+  --header-color: #83A5C0;
+  --header-color-lo: #83A5C0;
+  --background-color: #FFFFFF;
+  --link-color: #1F4257;
+  --text-bold-color: #1F4257;
+  
+  --code-color: #1F4257;
+  --code-output-color: #1F425799;
+  --code-highlight-color: #FF928B40;
+  /*E3A7E150*/
+  --code-background-color: #B6CADA30;
+  --inline-background-color: #B6CADA30;
+  
+  /*for reference; from colorbrewer*/
+  --code-number: #31a354;
+  --code-string: #756bb1;
+  --code-keyword: #3182bd;
+  
+  --inverse-text-color: #c88d90;
+  --inverse-background-color: #F2D7D8;
+  --inverse-header-color: #000000;
+  
+  --title-slide-background-color: #1F4257;
+  --title-slide-text-color: #FFFFFF;
+  
+  --header-background-color: #1F4257;
+  --header-background-text-color: #FFFFFF;
+  
+  --go-color: #c88d90;
+  --go-color-lo: #F2D7D890;
+  /*#F5B89530;*/
+  --go-text: #c88d90;
+  /*#FF928B; */
+  
+  --primary: #1F4257;
+  --secondary: #F97B64;
+  --white: #FFFFFF;
+  --black: #000000;
+  
+  /*From Mine*/
+  --classic-blue: #0F4C81;
+  --provence: #638CC7;
+  --baby-blue: #B6CADA;
+  --baby-blue-30: #B6CADA30;
+  --monument: #7A8387;
+  --stucco: #A58D7F;
+  --peach-quartz: #F5B895;
+  --peach-quartz-30: #F5B89530;
+  --cornhusk: #F4DBB3;
+  --cornhusk-30: #F4DBB330;
+  --opal-gray: #A49E9D;
+  --opal-gray-30: #A49E9D30;
+}
+
+html {
+  font-size: var(--base-font-size);
+}
+
+body {
+  font-family: var(--text-font-family), var(--text-font-family-fallback), var(--text-font-base);
+  font-weight: normal;
+  color: var(--text-color);
+}
+h1, h2, h3 {
+  font-family: var(--header-font-family);
+  font-weight: 300;
+  color: var(--header-color);
+  padding-bottom: .25em;
+}
+.remark-slide-content {
+  background-color: var(--background-color);
+  font-size: 1rem;
+  padding: 6px 40px 10px 40px;
+  width: 100%;
+  height: 100%;
+}
+
+
+.remark-slide-content h1 {
+  font-size: var(--header-h1-font-size);
+  color: var(--header-color-lo);
+}
+.remark-slide-content h2 {
+  font-size: var(--header-h2-font-size);
+}
+.remark-slide-content h3 {
+  font-size: var(--header-h3-font-size);
+}
+.remark-code, .remark-inline-code {
+  font-family: var(--code-font-family), Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+  font-weight:400;
+}
+.remark-code {
+  font-size: var(--code-font-size);
+}
+.remark-inline-code {
+  font-size: var(--code-inline-font-size);
+  background-color: var(--code-background-color);
+}
+.remark-slide-number {
+  color: var(--code-keyword);
+  opacity: .8;
+  font-size: 0.9em;
+}
+strong { color: var(--text-bold-color); }
+a, a > code {
+  color: var(--link-color);
+  text-decoration: none;
+}
+.footnote {
+  position: absolute;
+  bottom: 60px;
+  padding-right: 4em;
+  font-size: 0.9em;
+}
+.remark-code-line-highlighted {
+  background-color: var(--code-highlight-color);
+  display: table;
+}
+.remark-code-span-highlighted {
+  background-color: var(--code-highlight-color);
+}
+.inverse {
+  background-color: var(--inverse-background-color);
+  color: var(--inverse-text-color);
+  
+}
+.inverse h1, .inverse h2, .inverse h3 {
+  color: var(--inverse-header-color);
+}
+.title-slide, .title-slide h1, .title-slide h2, .title-slide h3 {
+  color: var(--title-slide-text-color);
+}
+.title-slide {
+  background-color: var(--title-slide-background-color);
+}
+.title-slide .remark-slide-number {
+  display: none;
+}
+/* Two-column layout */
+.left-column {
+  width: 20%;
+  height: 92%;
+  float: left;
+}
+.left-column h2, .left-column h3 {
+  color: #1F425799;
+}
+.left-column h2:last-of-type, .left-column h3:last-child {
+  color: #1F4257;
+}
+.right-column {
+  width: 75%;
+  float: right;
+  padding-top: 1em;
+}
+.pull-left {
+  float: left;
+  width: 49%;
+}
+.pull-right {
+  float: right;
+  width: 48%;
+}
+.pull-right ~ * {
+  clear: both;
+}
+img, video, iframe {
+  max-width: 100%;
+}
+blockquote {
+  border-left: solid 5px #F97B6480;
+  padding-left: 1em;
+}
+.remark-slide table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+.remark-slide table thead th {
+  border-bottom: 1px solid #ddd;
+}
+th, td {
+  padding: 5px;
+}
+.remark-slide thead, .remark-slide tfoot, .remark-slide tr:nth-child(even) {
+  background: #FDE4E0;
+}
+table.dataTable tbody {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+table.dataTable.display tbody tr.odd {
+  background-color: var(--background-color);
+}
+table.dataTable.display tbody tr.even {
+  background-color: #FDE4E0;
+}
+table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+  color: var(--text-color);
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: var(--text-color) !important;
+}
+
+/* Slide Header Background for h1 elements */
+.remark-slide-content.header_background > h1 {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--header-background-color);
+  color: var(--header-background-text-color);
+  padding: 2rem 64px 1.5rem 64px;
+  margin-top: 0;
+  box-sizing: border-box;
+}
+.remark-slide-content.header_background {
+  padding-top: 7rem;
+}
+
+@page { margin: 0; }
+@media print {
+  .remark-slide-scaler {
+    width: 100% !important;
+    height: 100% !important;
+    transform: scale(1) !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+}
+
+.primary {
+  color: var(--primary);
+}
+.bg-primary {
+  background-color: var(--primary);
+}
+.secondary {
+  color: var(--secondary);
+}
+.bg-secondary {
+  background-color: var(--secondary);
+}
+.white {
+  color: var(--white);
+}
+.bg-white {
+  background-color: var(--white);
+}
+.black {
+  color: var(--black);
+}
+.bg-black {
+  background-color: var(--black);
+}
+
+
+/* Margins around headers */
+h1, h2, h3 {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+h1 {
+  margin-top: 15px;
+}
+
+h4 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+/*make code output a bit smaller*/
+.remark-code{
+	font-size: 90%;
+	color: var(--code-output-color);
+}
+
+code.r.hljs.remark-code {
+	font-size: 90%;
+	color: var(--code-color);
+	background-color: var(--code-background-color);
+	border-left: solid 10px var(--code-color);
+}
+.remark-slide thead, .remark-slide tr:nth-child(2n) {
+  background-color: var(--background-color);
+}
+
+
+.title-slide {
+  background-size: cover;
+}
+
+th, td {
+ padding: 0;
+}
+
+pre, ol, p {
+  margin-bottom: .5rem;
+  margin-top: 0.5rem;
+}
+
+ul {
+  margin-bottom: .5rem;
+  margin-top: 0;
+}
+
+.inverse .remark-slide-number {
+	color: var(--go-color);
+}
+
+
+/* Font sizes */
+.larger { font-size: 400% }
+.bitlarger { font-size: 200% }
+.large { font-size: 130% }
+.midi { font-size: 85% }
+.small { font-size: 70% }
+.xsmall { font-size: 60% }
+.tiny { font-size: 50% }
+
+/* Custom fonts */
+
+.huge-text {
+ font-family: 'Montserrat', sans-serif;
+ font-size: 600%;
+ font-weight: bold;
+ color: var(--classic-blue);
+}
+.huge-number {
+ font-family: 'Montserrat', sans-serif;
+ font-size: 1700%;
+ font-weight: bold;
+ color: var(--go-color);
+}
+
+/* Handwriting */
+.hand{
+  font-family: var(--hand-font), cursive;
+  font-size: 125%;
+}
+.hand-large{
+  font-family: var(--hand-font), cursive;
+  font-size: 300%;
+}
+
+/*Alternative two-column layouts*/
+
+/*Left 70% - Right 30% */
+.pull-left-wide {
+  width: 70%;
+  float: left;
+}
+.pull-right-narrow {
+  width: 27%;
+  float: right;
+}
+.pull-right-narrow ~ * {
+  clear: both;
+}
+
+  /*Left 30% - Right 70% */
+.pull-left-narrow {
+  width: 30%;
+  float: left;
+}
+.pull-right-wide {
+  width: 67%;
+  float: right;
+}
+.pull-right-wide ~ * {
+  clear: both;
+}
+
+
+/* Four column layout */
+.four-column {
+  float: left;
+  width: 25%;
+  text-align: center;
+}
+
+/* Three column layout */
+.three-column {
+  float: left;
+  width: 33%;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/* Custom boxes */
+.discussion, .your-turn, .take-home {
+  padding: 5px 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.discussion{
+  border-left: solid 5px var(--opal-gray);
+  background-color: var(--opal-gray-30);
+}
+.discussion:before{
+  content: "Discussion";
+  font-size: 150%;
+  font-weight: bold;
+  color: var(--monument);
+  margin-bottom: 10px;
+}
+.your-turn {
+  border-left: solid 5px var(--cornhusk);
+  background-color: var(--cornhusk-30);
+  font-size: 25px;
+}
+.your-turn:before{
+  content: "Your turn!";
+  font-size: 150%;
+  font-weight: bold;
+  color: var(--stucco);
+  margin-bottom: 10px;
+}
+.take-home {
+  border-left: solid 5px var(--opal-gray);
+  background-color: var(--opal-gray-30);
+}
+.take-home:before{
+  content: "Take home";
+  font-size: 150%;
+  font-weight: bold;
+  color: var(--monument);
+  margin-bottom: 10px;
+}
+.go, .go-side{
+  padding: 10px;
+  border-left: solid 10px var(--go-color);
+  background-color: var(--go-color-lo);
+  color: var(--go-text);
+  margin-top: 25px;
+}
+.go {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.exercise {
+  margin-top: 75px;
+  margin-bottom: 75px;
+  margin-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: table;
+  border-left: solid 20px var(--go-text);
+  background-color: var(--background-color);
+  font-size: 150%;
+  font-family: Montserrat;
+}
+
+.alert {
+  border-right: solid 10px var(--go-color);
+  background-color: var(--go-color-lo);
+}
+
+/* Footer */
+div.my-footer {
+    border-top: 1px solid var(--opal-gray);
+    position: absolute;
+    bottom: 0px;
+    height: 35px;
+    width: 90%;
+}
+div.my-footer span {
+    font-size: 12pt;
+    position: absolute;
+    color: #333333;
+    bottom: 10px;
+}
+div.my-footer a {
+    font-size: 12pt;
+    color: #333333;
+}
+
+/* Footnote */
+.footnote {
+  position: absolute;
+  bottom: 1em;
+  padding-right: 4em;
+  font-size: 70%;
+}
+
+.left-code {
+  color: #777;
+  width: 43%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 55%;
+  float: right;
+  padding-left: 1%;
+}
+
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+
+.footnote {
+  bottom: 5%;
+  left: 5%;
+  position: absolute;
+  color: #777; 
+}
+
+.left-code {
+  width: 43%;
+  height: 92%;
+  float: left;
+  font-size: 0.75em;
+  position: absolute;
+}
+.right-plot {
+  width: 50%;
+  float: right;
+  padding-left: 5%;
+}
+.left-col {
+  width: 60%;
+  float: left;
+  position: absolute;
+}
+.right-col {
+  width: 30%;
+  float: right;
+  padding-left: 5%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+
+
+img {
+  width: 100%;
+}
+

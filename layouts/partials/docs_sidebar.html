@@ -1,0 +1,43 @@
+{{ $current_page := . }}
+
+{{/* Dynamically load menu for this docs page. */}}
+{{/* Attempt to get menu name from `menu_name` param, Hugo's front matter menu config, or the last dir of filepath. */}}
+{{ $menu_name := "" }}
+{{ if .Params.menu | and (not (reflect.IsMap .Params.menu)) | and (not (reflect.IsSlice .Params.menu)) }}
+  {{ $menu_name = .Params.menu }}
+{{ else if .Params.menu | and (or (reflect.IsMap .Params.menu) (reflect.IsSlice .Params.menu)) }}
+  {{ range $k, $v := .Params.menu }}
+    {{ $menu_name = $k }}
+  {{ end }}
+{{ end }}
+{{ $menu_name = .Params.menu_name | default $menu_name | default (path.Base (path.Split .File).Dir) }}
+{{ if not (index site.Menus $menu_name) }}
+  {{ errorf "Please define menu items named `menu: %s:` in your %s front matter or define `[[menu.%s]]` in `config/default/menus.toml`. See https://sourcethemes.com/academic/docs/managing-content/#menus" $menu_name .Path $menu_name }}
+{{ end }}
+
+<nav class="collapse docs-links" id="docs-nav" style="padding-top: 40px;">
+  {{ with (index site.Menus $menu_name) }}
+
+  {{/* Enable Updates layout to order by descending version name. */}}
+  {{ $menu := (index site.Menus $menu_name).ByWeight }}
+  {{ if eq ($.Scratch.Get "docs_menu_sort" | default "weight") "name_reverse" }}
+    {{ $menu = (index site.Menus $menu_name).ByName.Reverse }}
+  {{end}}
+  {{ range $menu }}
+  <div class="docs-toc-item{{ if $current_page.IsMenuCurrent $menu_name . }} active{{ end }}">
+    <a class="docs-toc-link" {{ if .URL }}href="{{ .URL }}"{{else if .HasChildren }}href="{{ (index .Children 0).URL }}"{{end}}>{{ .Name }}</a>
+
+    {{- if .HasChildren }}
+    <ul class="nav docs-sidenav">
+      {{ range .Children }}
+      <li {{ if $current_page.IsMenuCurrent $menu_name . }}class="active"{{ end }}>
+        <a href="{{ .URL }}">{{ .Name }}</a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+
+  </div>
+  {{ end }}
+  {{ end }}
+</nav>

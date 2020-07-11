@@ -1,0 +1,41 @@
+main:
+  - name: Syllabus
+    url: /syllabus/
+    weight: 1
+  - name: Schedule
+    url: /schedule/
+    weight: 2
+  - name: Videos
+    url: /videos/
+    weight: 3
+  - name: Exercises
+    url: /exercises/
+    weight: 4
+  - name: Labs
+    url: /labs/
+    weight: 5
+  - name: Resources
+    url: /resources/
+    weight: 6
+
+# this is for the sidebar on each page
+video:
+  - name: Overview
+    weight: 1
+  - name: Course content
+    weight: 2
+exercise:
+  - name: Overview
+    weight: 1
+  - name: Course content
+    weight: 2
+lab:
+  - name: Overview
+    weight: 1
+  - name: Course content
+    weight: 2
+resource:
+  - name: Resources
+    weight: 1
+  - name: Guides
+    weight: 2

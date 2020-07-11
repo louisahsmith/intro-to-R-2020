@@ -1,0 +1,12 @@
+---
+title: Live labs
+menu:
+  lab:
+    parent: Overview
+    weight: 1
+type: docs
+weight: 1
+shiny: true
+---
+
+Labs will go here

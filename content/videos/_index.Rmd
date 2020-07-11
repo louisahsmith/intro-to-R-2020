@@ -1,0 +1,12 @@
+---
+title: Weekly videos
+menu:
+  video:
+    parent: Overview
+    weight: 2
+type: docs
+weight: 1
+shiny: true
+---
+
+Videos will go here

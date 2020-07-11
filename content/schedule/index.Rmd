@@ -1,0 +1,12 @@
+---
+title: "Schedule"
+slug: schedule
+---
+
+- [**Videos**](/videos/) (<i class="fas fa-video"></i>): This page contains the link to the weekly video(s), as well as the slides that go along with them.
+- [**Exercises**](/exercises/) (<i class="fas fa-laptop-code"></i>): This page contains the exercises that go along with the videos for the week. You should do these on your own, before lab.
+- [**Labs**](/labs/) (<i class="fas fa-chalkboard-teacher"></i>): This page contains the lab documents. You'll work on these during the weekly lab session. If you can't make lab, do them on your own.
+
+---
+
+`r blogdown::shortcode("schedule")`

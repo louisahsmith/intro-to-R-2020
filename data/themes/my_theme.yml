@@ -1,0 +1,22 @@
+# Theme metadata
+name: "Slides"
+
+# Is theme light or dark?
+light: true
+
+# Primary
+primary: "#1F4257"
+
+# Links
+link: "#c88d90"
+link_hover: "#F2D7D8"
+
+# Menu
+menu_primary: "#B6CADA" # background
+menu_text: "#1F4257"
+menu_text_active: "#c88d90"
+menu_title: "#1F4257" # left word
+
+# Home sections
+home_section_odd: "rgb(255, 255, 255)"
+home_section_even: "rgb(247, 247, 247)"

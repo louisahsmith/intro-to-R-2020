@@ -1,0 +1,43 @@
+lessons:
+
+  - title: 'The basics'
+    session: 1
+    date: "July 13 - July 17"
+    video: "01-video"
+    # exercise: "01-exercise"
+    # lab: "01-lab"
+
+  - title: 'Figures'
+    session: 2
+    date: "July 20 - July 24"
+    # video: "02-video"
+    # exercise: "02-exercise"
+    # lab: "02-lab"
+ 
+  - title: 'Selecting, filtering, and mutating'
+    session: 3
+    date: "July 27 - July 31"
+    # video: "03-video"
+    # exercise: "03-exercise"
+    # lab: "03-lab"
+
+  - title: 'Grouping and tables'
+    session: 4
+    date: "August 3 - August 7"
+    # video: "04-video"
+    # exercise: "04-exercise"
+    # lab: "04-lab"
+
+  - title: 'Functions'
+    session: 5
+    date: "July 13 - July 17"
+    # video: "05-video"
+    # exercise: "05-exercise"
+    # lab: "05-lab"
+    
+  - title: 'Analyze your data'
+    session: 6
+    date: "August 10 - August 14"
+    # video: "06-video"
+    # exercise: "06-exercise"
+    # lab: "06-lab"

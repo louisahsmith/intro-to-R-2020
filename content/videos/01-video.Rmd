@@ -1,0 +1,42 @@
+---
+title: "The basics"
+linktitle: "1: The basics"
+date: "2020-07-13"
+read_date: "2020-07-13"
+menu:
+  video:
+    parent: Course content
+    weight: 5
+type: docs
+slides: "01-slides"
+output:
+  blogdown::html_page:
+    toc: false
+---
+
+## Videos
+
+<div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+## Slides
+
+The slides shown in the videos are prepared as an HTML file. You can flip through the slides here, open them all in a new window/tab, or download them as a PDF if you want to save them for later. To navigate through the HTML slides, use the left and right arrow keys. You can also type `?` while viewing the slides to see a list of other commands you can use.
+
+`r blogdown::shortcode("slide-buttons")`
+
+```{r show-slide-tabs, echo=FALSE, results="asis"}
+source(here::here("R", "slide_tabs.R"))
+
+sections <- tibble::tribble(
+  ~name, ~slide, ~active,
+  "Truth, beauty, and data", "1", TRUE,
+  "Agenda", "agenda", FALSE,
+  "Organization", "organization", FALSE,
+  "Look at results", "look-at-results", FALSE
+)
+
+slide_tabs(sections, "/slides/01-slides.html")
+```
+
