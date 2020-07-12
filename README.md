@@ -1,6 +1,4 @@
-# Data Visualization with R (PMAP May 2020)
-
-![Data visualization image](static/img/social-image.png)
+# Intro to R 2020
 
 ## Theme
 
