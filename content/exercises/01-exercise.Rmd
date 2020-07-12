@@ -1,0 +1,73 @@
+---
+title: "The basics"
+linktitle: "1: The basics"
+date: "2020-07-13"
+menu:
+  exercise:
+    parent: Course content
+    weight: 1
+type: docs
+output:
+  blogdown::html_page:
+    toc: false
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  class.output = "output",
+  class.message = "message"
+)
+```
+
+## Install R and RStudio
+
+First, install R at this link: [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html). Choose a mirror approximately close to you geographically, and then choose the option correspoding to your operating system:
+
+![](img/download-R.png)
+
+Follow all the operating system-specific instructions.
+
+Congratulations! 🥳 You have R installed! That means you could write an R script and run it. But let's make things a lot easier by downloading RStudio, which will keep us organized and supply us with lots of shortcuts.
+
+You can download RStudio at this link: [https://rstudio.com/products/rstudio/download/](https://rstudio.com/products/rstudio/download/). Choose the RStudio Desktop free version on the left:
+
+![](img/rstudio-download.png)
+
+And then the blue download button at the top should match your operating system. If not, you can choose from the list below.
+
+![](img/rstudio-2.png)
+
+Again follow the instructions for download. Now open up RStudio. It should automatically be connected with R!
+
+## Install the tidyverse package
+
+Open up RStudio. In the **console**, type in `install.packages("tidyverse")` and press enter. Then wait a while. Voilà! You have just installed a lot of super useful packages.
+
+You ran that code in the **console** because it's not something you'll need to run again or look back at. When you are *loading* a package, you'll want to do that from a **script**. You'll want a record of the fact that you loaded the package so that if you or someone else wants to rerun the code, they'll have the appropriate packages.
+
+If you're trying to run code that requires a package you haven't installed, either RStudio will suggest they do so (because RStudio is magical 🧙), or you'll get an error when you run `library(package_name)`. In fact, here's what happens when you try to load that package (which I haven't installed because it doesn't exist!)
+
+```{r}
+library(package_name)
+```
+
+To open a new R **script**, choose "File" -> "New File" -> "R Script", or simply click on the button with a green plus sign at the upper-left corner of the window. This is a blank document that you can write code in and save to come back to.
+
+In that document, write:
+```{r, eval = FALSE}
+# load packages
+library(tidyverse)
+```
+
+The first line is a comment, which won't run when you run the script. Comments in R start with `#` and can include whatever they want after that. To comment out multiple lines, simply preface each one with `#`. (Highlighting them all and using `Cmd`/`Ctrl` + `Shift` + `c` is faster!)
+
+If you highlight both lines, or just put your cursor on the end of the second, and then press `Cmd`/`Ctrl` + `Enter`, the code will run. You should see some text show up in the **console**.
+
+```{r}
+# load packages
+library(tidyverse)
+```
+
+This is 

@@ -13,8 +13,6 @@ output:
     toc: false
 ---
 
-The slides shown in the videos are prepared as an HTML file. You can flip through the slides here, open them all in a new window/tab, or download them as a PDF if you want to save them for later. To navigate through the HTML slides, use the left and right arrow keys. You can also type `?` while viewing the slides to see a list of other commands you can use.
-
 `r blogdown::shortcode("slide-buttons")`
 
 ```{r show-slide-tabs, echo=FALSE, results="asis"}
@@ -22,12 +20,11 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "Introduction", "2", TRUE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=46",
-  "Agenda", "agenda", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=22",
-  "Organization", "organization", FALSE, "https://www.youtube.com/embed/wbooMiXADX8??autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=91",
-  "Look at results", "look-at-results", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=75"
+  "Introduction", "1", TRUE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=46",
+  "RStudio and Packages", "rstudio-intro", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=22",
+  "R Projects", "r-projects", FALSE, "https://www.youtube.com/embed/wbooMiXADX8??autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=91",
+  "Using R", "using-R", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=75"
 )
-
 
 slide_tabs(sections, "/slides/01-slides.html")
 ```

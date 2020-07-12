@@ -47,6 +47,7 @@
   /*for reference; from colorbrewer*/
   --code-number: #31a354;
   --code-string: #756bb1;
+  --code-string-lo: #756bb130;
   --code-keyword: #3182bd;
   
   --inverse-text-color: #c88d90;
@@ -140,12 +141,7 @@ a, a > code {
   color: var(--link-color);
   text-decoration: none;
 }
-.footnote {
-  position: absolute;
-  bottom: 60px;
-  padding-right: 4em;
-  font-size: 0.9em;
-}
+
 .remark-code-line-highlighted {
   background-color: var(--code-highlight-color);
   display: table;
@@ -530,9 +526,11 @@ div.my-footer a {
 /* Footnote */
 .footnote {
   position: absolute;
-  bottom: 1em;
+  bottom: .05em;
   padding-right: 4em;
   font-size: 70%;
+  color: #777;
+  left:5%;
 }
 
 .left-code {
@@ -607,4 +605,28 @@ div.my-footer a {
 img {
   width: 100%;
 }
+
+.take-home {
+  border-left: solid 5px var(--opal-gray);
+  background-color: var(--opal-gray-30);
+}
+.take-home:before{
+  content: "Take home";
+  font-size: 150%;
+  font-weight: bold;
+  color: var(--monument);
+  margin-bottom: 10px;
+}
+
+.demo{
+  font-family: var(--hand-font);
+  border-left: solid 10px var(--code-string);
+  background-color: var(--code-string-lo);
+  opacity:30%;
+  font-size:130%;
+  padding: 10px;
+  color: var(--code-string);
+  margin-top: 25px;
+}
+
 

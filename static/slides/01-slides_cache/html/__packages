@@ -10,3 +10,5 @@ stringr
 forcats
 tableone
 broom
+usethis
+devtools

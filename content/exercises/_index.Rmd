@@ -9,4 +9,4 @@ weight: 1
 shiny: true
 ---
 
-Exercises will go here
+You can find the weekly exercises here. 
