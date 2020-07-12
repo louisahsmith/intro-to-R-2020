@@ -1,12 +1,10 @@
 ---
-title: "Exercises"
-linktitle: "1. The basics"
+title: "Week 1 Exercises"
 date: "2020-07-13"
-menu:
-  exercise:
-type: docs
 output:
-  blogdown::html_page:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: vignette
     toc: true
     toc_depth: 2
     number_sections: true
@@ -143,7 +141,7 @@ You can quit RStudio and you don't have to save this file. We'll be back to figu
 
 ## Organize your files
 
-Click [here](/exercises/01-week.zip) to download this week's files. You'll have to unzip it to access the files inside. This is a little annoying if you are on Windows, but you can follow these instructions:
+Click [here](http://intro-to-r-2020.louisahsmith.com/exercises/01-week.zip) to download this week's files. You'll have to unzip it to access the files inside. This is a little annoying if you are on Windows, but you can follow these instructions:
 
 ### Unzip a folder in Windows {-}
 

@@ -1,4 +1,8 @@
 <footer>
+    {{if eq .Kind "home"}}
+     <div class = "footer-blank"></div>
+     {{ end }}
+     
     {{if ne .Kind "home"}}
     <hr>
 

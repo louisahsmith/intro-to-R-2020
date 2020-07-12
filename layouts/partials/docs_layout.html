@@ -23,7 +23,9 @@
       <article class="article">
 
         <div class="docs-article-container">
+          {{ if .Params.title}}
           <h1>{{ .Title }}</h1>
+          {{ end }}
 
           <div class="article-style">
             {{ .Content }}

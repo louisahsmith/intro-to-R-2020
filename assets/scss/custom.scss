@@ -2,6 +2,28 @@
   opacity: 75%;
 }
 
+
+.dropdown-menu {
+  min-width:0;
+  opacity: 100%;
+  padding: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.dropdown-item{
+  padding:.25rem;
+}
+
+.nav-link:hover, .nav-link:focus {
+  color: #c88d90!important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  color: #c88d90!important;
+}
+
+
 body {
   color: #1F4257;
 }
@@ -89,6 +111,11 @@ footer p {
     font-size: 100%;
 }
 
+footer {
+margin-top: 0;
+padding: 0;
+}
+
 .course-info {
     font-size: 0.9rem;
 }
@@ -167,7 +194,7 @@ a.sourceLine:hover {
 .co      {color: #888888;} /* comment */
 
 .message {
-color: #6a3d9a!important;
+color: #756bb1!important;
 font-weight: normal!important;
 font-style: italic!important;
 }
@@ -181,18 +208,18 @@ color: #696969!important;
 font-style: normal;
 }
 .hljs-selector-class{
-  color: #6a3d9a!important;
+  color: #756bb1!important;
 }
 .hljs-selector-tag{
-  color: #6a3d9a!important;
+  color: #756bb1!important;
 }
 .hljs-selector-psuedo{
-  color: #6a3d9a!important;
+  color: #756bb1!important;
 }
 .docs-article-container {
 max-width: 1100px;
 }
 
 .bash {
-  color: #6a3d9a;
+  color: #756bb1;
 }

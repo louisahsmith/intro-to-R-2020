@@ -1,8 +1,7 @@
 ---
-title: Exercises on your own
+title: Overview
 menu:
   exercise:
-    parent: Overview
     weight: 1
 type: docs
 weight: 1

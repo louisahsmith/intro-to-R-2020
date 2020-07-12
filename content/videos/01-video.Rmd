@@ -4,8 +4,7 @@ linktitle: "1: The basics"
 date: "2020-07-13"
 menu:
   video:
-    parent: Course content
-    weight: 5
+    weight: 2
 type: docs
 slides: "01-slides"
 output:
@@ -20,10 +19,10 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "Introduction", "1", TRUE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=46",
-  "RStudio and Packages", "rstudio-intro", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=22",
-  "R Projects", "r-projects", FALSE, "https://www.youtube.com/embed/wbooMiXADX8??autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=91",
-  "Using R", "using-R", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?autoplay=1&enablejsapi=1&modestbranding=1&rel=0&start=75"
+  "Introduction", "1", TRUE, "https://www.youtube.com/embed/wbooMiXADX8?enablejsapi=1&modestbranding=1&rel=0&start=46",
+  "RStudio and Packages", "rstudio-intro", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?enablejsapi=1&modestbranding=1&rel=0&start=22",
+  "R Projects", "r-projects", FALSE, "https://www.youtube.com/embed/wbooMiXADX8??enablejsapi=1&modestbranding=1&rel=0&start=91",
+  "Using R", "using-R", FALSE, "https://www.youtube.com/embed/wbooMiXADX8?enablejsapi=1&modestbranding=1&rel=0&start=75"
 )
 
 slide_tabs(sections, "/slides/01-slides.html")

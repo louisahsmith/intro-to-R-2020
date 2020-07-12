@@ -153,7 +153,13 @@ An *integrated development environment* is software that makes coding easier
 
 ]
 
+<br>
+<br>
+<br>
+<br>
+.right[
 .demo[Demonstration...]]
+]
 
 
 
@@ -422,7 +428,7 @@ chars <- c("dog", "cat", "rhino")
 chars
 ```
 
-Or a *logical* vetor:
+Or a *logical* vector:
 
 ```{r}
 logs <- c(TRUE, FALSE, FALSE)

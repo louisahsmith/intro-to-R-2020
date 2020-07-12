@@ -50,25 +50,8 @@
             
 
         {{ range site.Menus.main }}
-
-        {{ if .HasChildren }}
-        <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
-            {{- .Pre -}}<span>{{ .Name | safeHTML }}</span>{{- .Post -}}
-            <span class="caret"></span>
-          </a>
-          <div class="dropdown-menu">
-            {{ range .Children }}
-              <a class="dropdown-item" href="{{ .URL | relLangURL }}"{{ if $.IsHome }} data-target="{{ .URL }}"{{ end }}>
-                {{- .Pre -}}<span>{{ .Name | safeHTML }}</span>{{- .Post -}}
-              </a>
-            {{ end }}
-          </div>
-        </li>
-
-        {{ else }}
-
-        {{/* Set target for link. */}}
+        
+                {{/* Set target for link. */}}
         {{ $.Scratch.Set "target" "" }}
         {{ if gt (len .URL) 4 }}
           {{ if eq "http" (slicestr .URL 0 4) }}
@@ -89,6 +72,22 @@
           {{ end }}
           {{ $is_same_page = eq (path.Dir $current_page.RelPermalink) (path.Dir ($hash_removed|relLangURL)) }}
         {{ end }}
+
+        {{ if .HasChildren }}
+        <li class="nav-item dropdown">
+          <a class="nav-link {{if $is_link_in_current_path }} active{{end}}" href="{{.URL | relLangURL}}"{{ if and $is_widget_page $is_same_page }} data-target="{{$hash}}"{{ end }}{{ ($.Scratch.Get "target") | safeHTMLAttr }}>
+            {{- .Pre -}}<span>{{ .Name | safeHTML }}</span>{{- .Post -}}
+          </a>
+          <div class="dropdown-menu">
+            {{ range .Children }}
+              <a class="dropdown-item" href="{{ .URL | relLangURL }}"{{ if $.IsHome }} data-target="{{ .URL }}"{{ end }}>
+                {{- .Pre -}}<span>{{ .Name | safeHTML }}</span>{{- .Post -}}
+              </a>
+            {{ end }}
+          </div>
+        </li>
+
+        {{ else }}
 
         <li class="nav-item">
           <a class="nav-link {{if $is_link_in_current_path }} active{{end}}" href="{{.URL | relLangURL}}"{{ if and $is_widget_page $is_same_page }} data-target="{{$hash}}"{{ end }}{{ ($.Scratch.Get "target") | safeHTMLAttr }}>

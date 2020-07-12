@@ -6,36 +6,114 @@ main:
     url: /schedule/
     weight: 2
   - name: Videos
+    identifier: video-top
     url: /videos/
     weight: 3
+  - name: Week 1
+    identifier: video1
+    parent: video-top
+    url: /videos/01-video/
+  # - name: Week 2
+  #   identifier: video2
+  #   parent: video-top
+  #   url: /videos/02-video/
+  # - name: Week 3
+  #   identifier: video3
+  #   parent: video-top
+  #   url: /videos/03-video/
+  # - name: Week 4
+  #   identifier: video4
+  #   parent: video-top
+  #   url: /videos/04-video/
+  # - name: Week 5
+  #   identifier: video5
+  #   parent: video-top
+  #   url: /videos/05-video/
+  # - name: Week 6
+  #   identifier: video6
+  #   parent: video-top
+  #   url: /videos/06-video/
   - name: Exercises
+    identifier: exercise-top
     url: /exercises/
     weight: 4
+  - name: Week 1
+    identifier: exercise1
+    parent: exercise-top
+    url: /exercises/01-exercise/
+  # - name: Week 2
+  #   identifier: exercise2
+  #   parent: exercise-top
+  #   url: /exercises/02-exercise/
+  # - name: Week 3
+  #   identifier: exercise3
+  #   parent: exercise-top
+  #   url: /exercises/03-exercise/
+  # - name: Week 4
+  #   identifier: exercise4
+  #   parent: exercise-top
+  #   url: /exercises/04-exercise/
+  # - name: Week 5
+  #   identifier: exercise5
+  #   parent: exercise-top
+  #   url: /exercises/05-exercise/
+  # - name: Week 6
+  #   identifier: exercise6
+  #   parent: exercise-top
+  #   url: /exercises/06-exercise/
   - name: Labs
+    identifier: lab-top
     url: /labs/
     weight: 5
+  # - name: Week 1
+  #   identifier: lab1
+  #   parent: lab-top
+  #   url: /labs/01-lab/
+  # - name: Week 2
+  #   identifier: lab2
+  #   parent: lab-top
+  #   url: /labs/02-lab/
+  # - name: Week 3
+  #   identifier: lab3
+  #   parent: lab-top
+  #   url: /labs/03-lab/
+  # - name: Week 4
+  #   identifier: lab4
+  #   parent: lab-top
+  #   url: /labs/04-lab/
+  # - name: Week 5
+  #   identifier: lab5
+  #   parent: lab-top
+  #   url: /labs/05-lab/
+  # - name: Week 6
+  #   identifier: lab6
+  #   parent: lab-top
+  #   url: /labs/06-lab/
   - name: Resources
     url: /resources/
     weight: 6
+    
+
+
 
 # this is for the sidebar on each page
-video:
-  - name: Overview
-    weight: 1
-  - name: Course content
-    weight: 2
-exercise:
-  - name: Overview
-    weight: 1
-  - name: Course content
-    weight: 2
-lab:
-  - name: Overview
-    weight: 1
-  - name: Course content
-    weight: 2
-resource:
-  - name: Resources
-    weight: 1
-  - name: Guides
-    weight: 2
+# video:
+#   - name: Overview
+#     weight: 1
+#   - name: Course content
+#     weight: 2
+# exercise:
+#   - name: Overview
+#     weight: 1
+#   - name: Course content
+#     weight: 2
+# lab:
+#   - name: Overview
+#     weight: 1
+#   - name: Course content
+#     weight: 2
+# resource:
+#   - name: Resources
+#     weight: 1
+#   - name: Guides
+#     weight: 2
