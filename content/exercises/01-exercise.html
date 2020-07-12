@@ -62,7 +62,7 @@ output:
 <p>You ran that code in the <strong>console</strong> because it’s not something you’ll need to run again or look back at. When you are <em>loading</em> a package, you’ll want to do that from a <strong>script</strong>. You’ll want a record of the fact that you loaded the package so that if you or someone else wants to rerun the code, they’ll have the appropriate packages.</p>
 <p>If you’re trying to run code that requires a package you haven’t installed, either RStudio will suggest they do so (because RStudio is magical 🧙), or you’ll get an error when you run <code>library(package_name)</code>. In fact, here’s what happens when you try to load that package (which I haven’t installed because it doesn’t exist!)</p>
 <pre class="r"><code>library(package_name)
-#&gt; Error in library(package_name): there is no package called &#39;package_name&#39;</code></pre>
+Error in library(package_name): there is no package called &#39;package_name&#39;</code></pre>
 </div>
 <div id="load-the-tidyverse-package" class="section level3 unnumbered">
 <h3>Load the <code>tidyverse</code> package</h3>
@@ -74,17 +74,17 @@ library(tidyverse)</code></pre>
 <p>If you highlight both lines, or just put your cursor on the end of the second, and then press <code>Cmd</code>/<code>Ctrl</code> + <code>Enter</code>, the code will run. You should see some text show up in the <strong>console</strong>.</p>
 <pre class="r"><code># load packages
 library(tidyverse)</code></pre>
-<pre class="message"><code>#&gt; ── Attaching packages ─────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre class="message"><code>#&gt; ✓ ggplot2 3.3.1     ✓ purrr   0.3.4
-#&gt; ✓ tibble  3.0.1     ✓ dplyr   0.8.5
-#&gt; ✓ tidyr   1.0.2     ✓ stringr 1.4.0
-#&gt; ✓ readr   1.3.1     ✓ forcats 0.5.0
-#&gt; Warning: package &#39;ggplot2&#39; was built under R version 3.6.2
-#&gt; Warning: package &#39;tibble&#39; was built under R version 3.6.2
-#&gt; Warning: package &#39;purrr&#39; was built under R version 3.6.2</code></pre>
-<pre class="message"><code>#&gt; ── Conflicts ────────────────────────────── tidyverse_conflicts() ──
-#&gt; x dplyr::filter() masks stats::filter()
-#&gt; x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="message"><code>── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre class="message"><code>✓ ggplot2 3.3.1     ✓ purrr   0.3.4
+✓ tibble  3.0.1     ✓ dplyr   0.8.5
+✓ tidyr   1.0.2     ✓ stringr 1.4.0
+✓ readr   1.3.1     ✓ forcats 0.5.0
+Warning: package &#39;ggplot2&#39; was built under R version 3.6.2
+Warning: package &#39;tibble&#39; was built under R version 3.6.2
+Warning: package &#39;purrr&#39; was built under R version 3.6.2</code></pre>
+<pre class="message"><code>── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
 <p>The first section is telling you which packages are actually being loaded with the “mega-package” <code>tidyverse</code>, and the second section is telling you that there are some functions loaded, specifically from the <code>dplyr</code> package, that have the same names as those in the <code>stats</code> package. The <code>stats</code> package is on that automatically is loaded with R, so you’ll always have these conflicts.</p>
 <p>In this class, we’ll be using the <code>dplyr</code> versions of those functions, so this isn’t a problem. In general, if you want to be specific about which package a function comes from, you can write, e.g., <code>stats::filter(x)</code>, so that R knows to use the version of the <code>filter()</code> function from the <code>stats</code> package.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 </div>
@@ -96,17 +96,15 @@ library(tidyverse)</code></pre>
 <li>Go to <code>Session -&gt; Restart R</code> in the menu bar. There’s also a keyboard shortcut you can memorize.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></li>
 </ol>
 <p>Now, open a new file, and type in and run this code:</p>
-<pre><code>#&gt; Warning: &#39;ggplot2&#39; namespace cannot be unloaded:
-#&gt;   namespace &#39;ggplot2&#39; is imported by &#39;tidyverse&#39; so cannot be unloaded</code></pre>
 <pre class="r"><code>ggplot(mpg, aes(displ, hwy, colour = class)) +
   geom_point() +
   geom_smooth(se = FALSE, method = lm)</code></pre>
 <p>You should get this error:</p>
-<pre><code>#&gt; Error in ggplot(mpg, aes(displ, hwy, colour = class)): could not find function &quot;ggplot&quot;</code></pre>
+<pre><code>Error in ggplot(mpg, aes(displ, hwy, colour = class)): could not find function &quot;ggplot&quot;</code></pre>
 <p>If you didn’t, you didn’t correctly restart R! 🤦 Try again.</p>
 <p>Now add the necessary <code>library()</code> call and run the whole thing again:</p>
 <pre class="r"><code>library(ggplot2)
-#&gt; Warning: package &#39;ggplot2&#39; was built under R version 3.6.2
+Warning: package &#39;ggplot2&#39; was built under R version 3.6.2
 ggplot(mpg, aes(displ, hwy, colour = class)) +
   geom_point() +
   geom_smooth(se = FALSE, method = lm, formula = &quot;y ~ x&quot;)</code></pre>
@@ -117,57 +115,73 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 </div>
 <div id="organize-your-files" class="section level2">
 <h2><span class="header-section-number">1.3</span> Organize your files</h2>
-<p>Click <a href="url.com">here</a> to download this week’s files. You’ll have to unzip it to access the files inside. This is a little annoying if you are on Windows, but you can follow these instructions:</p>
+<p>Click <a href="/exercises/01-week.zip">here</a> to download this week’s files. You’ll have to unzip it to access the files inside. This is a little annoying if you are on Windows, but you can follow these instructions:</p>
 <div id="unzip-a-folder-in-windows" class="section level3 unnumbered">
 <h3>Unzip a folder in Windows</h3>
 <ol style="list-style-type: decimal">
-<li>Save the zip file to Downloads. You should see something like this:
-<img src="../../img/save-download.png" /></li>
-<li>Go up to <code>Extract -&gt; Compressed Folder Tools -&gt; Extract All</code>, like this:
-<img src="../../img/extract.png" /></li>
-<li>Just leave the default folder for extraction. We’ll move it later.
-<img src="../../img/unzip.png" /></li>
-<li>Now you’ll see that you’re in the <code>Downloads/01-week/</code> folder, in which there’s <em>another</em> folder called <code>01-week</code>. We want this one. You can ignore the <code>_MACOSX</code> one (that’s just there because I made it on a Mac). Move this <code>01-week</code> folder to wherever you’re keeping files for this class, e.g., in a folder called <code>R-course</code> as in the slides. (Here I’m moving it to a folder called <code>R</code> – don’t do this, name it something better!)
-<img src="../../img/move-unzipped.png" /></li>
+<li>Save the zip file to Downloads. You should see something like this:</li>
+</ol>
+<p><img src="../../img/save-download.png" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Go up to <code>Extract -&gt; Compressed Folder Tools -&gt; Extract All</code>, like this:</li>
+</ol>
+<p><img src="../../img/extract.png" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Just leave the default folder for extraction. We’ll move it later.</li>
+</ol>
+<p><img src="../../img/unzip.png" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Now you’ll see that you’re in the <code>Downloads/01-week/</code> folder, in which there’s <em>another</em> folder called <code>01-week</code>. We want this one. You can ignore the <code>_MACOSX</code> one (that’s just there because I made it on a Mac). Move this <code>01-week</code> folder to wherever you’re keeping files for this class, e.g., in a folder called <code>R-course</code> as in the slides. (Here I’m moving it to a folder called <code>R</code> – don’t do this, name it something better!)</li>
+</ol>
+<p><img src="../../img/move-unzipped.png" /></p>
+<ol start="5" style="list-style-type: decimal">
 <li>Then, back in your downloads folder, you can delete both folders called <code>01-week</code>, because you’ve moved out the stuff you need.</li>
 </ol>
 </div>
 <div id="unzip-a-folder-on-a-mac" class="section level3 unnumbered">
 <h3>Unzip a folder on a Mac</h3>
 <ol style="list-style-type: decimal">
-<li>Go to <code>Downloads</code>, or wherever you have files set to download. You’ll see something like this:
-<img src="../../img/zipped-mac.png" /></li>
-<li>Double click to unzip. You’ll now have the unzipped folder as well. Move that one to wherever you’re keeping files for this class, e.g., in a folder called <code>R-course</code> as in the slides. You can delete <code>01-week.zip</code>!
-<img src="../../img/zipped-mac.png" /></li>
+<li>Go to <code>Downloads</code>, or wherever you have files set to download. You’ll see something like this:</li>
 </ol>
+<p><img src="../../img/zipped-mac.png" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Double click to unzip. You’ll now have the unzipped folder as well. Move that one to wherever you’re keeping files for this class, e.g., in a folder called <code>R-course</code> as in the slides. You can delete <code>01-week.zip</code>!</li>
+</ol>
+<p><img src="../../img/zipped-mac.png" /></p>
 </div>
 <div id="open-up-an-r-project" class="section level3 unnumbered">
 <h3>Open up an R project</h3>
-<p>Inside the <code>01-week</code> folder, you’ll see a file called <code>01-week.Rproj</code>. If you’re on Windows, it should look like this:
-<img src="../../img/rproj-file.png" /></p>
+<p>Inside the <code>01-week</code> folder, you’ll see a file called <code>01-week.Rproj</code>. If you’re on Windows, it should look like this:</p>
+<p><img src="../../img/rproj-file.png" /></p>
 <p>Double-clicking on it <em>should</em> open up RStudio. If not, follow these instructions:</p>
 <div id="open-up-an-r-project-in-windows" class="section level4 unnumbered">
 <h4>Open up an R project in Windows</h4>
-<p>Right-click on the file, then choose <code>Open with -&gt; Choose another app</code>. Make sure to <code>Choose another app</code> even if RStudio shows up in the <code>Open with</code> menu, because you want to change the settings for all <code>.Rproj</code> files. Find RStudio and change the settings like this:
-<img src="../../img/Rproj-open-windows.png" /></p>
+<p>Right-click on the file, then choose <code>Open with -&gt; Choose another app</code>. Make sure to <code>Choose another app</code> even if RStudio shows up in the <code>Open with</code> menu, because you want to change the settings for all <code>.Rproj</code> files. Find RStudio and change the settings like this:</p>
+<p><img src="../../img/Rproj-open-windows.png" /></p>
 </div>
 <div id="open-up-an-r-project-on-a-mac" class="section level4 unnumbered">
 <h4>Open up an R project on a Mac</h4>
-<p><em>Don’t</em> do right-click -&gt; <code>Open with</code> because you want to change the settings for all files. Instead, right-click -&gt; <code>Get info</code> (right-click for you may be a two-fingered click on a trackpad, or <code>cmd</code>/<code>ctrl +</code> click). Go down to <code>Open with</code>, find RStudio, and then make sure to check <code>Change all</code> so you don’t have to do this again:
-<img src="../../img/Rproj-open-mac.png" /></p>
+<p><em>Don’t</em> do right-click -&gt; <code>Open with</code> because you want to change the settings for all files. Instead, right-click -&gt; <code>Get info</code> (right-click for you may be a two-fingered click on a trackpad, or <code>cmd</code>/<code>ctrl +</code> click). Go down to <code>Open with</code>, find RStudio, and then make sure to check <code>Change all</code> so you don’t have to do this again:</p>
+<p><img src="../../img/Rproj-open-mac.png" /></p>
 </div>
 </div>
 <div id="folder-structure" class="section level3 unnumbered">
 <h3>Folder structure</h3>
-<p>Check out your files in the <code>Files</code> viewpane (one of the tabs by <code>Plots</code>). You should see all the materials for this week!</p>
-<p>Also check to make sure that you’re in the correct working directory. You can find that at the top of your console pane. It should look something like this:<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>
-<img src="../../img/working-directory.png" /></p>
-<p>If not, you didn’t open RStudio via the <code>01-week.Rproj</code> file. Close RStudio and try again!</p>
+<p>Check out your files in the <code>Files</code> viewpane (one of the tabs by <code>Plots</code>). You should see all the materials for this week! They include:</p>
+<ul>
+<li><code>01-week.Rproj</code>: We’ve covered what this does</li>
+<li><code>01-exercise.html</code>: This is essentially what you see on this webpage, but you can open it up in your browser if you don’t have an internet connection</li>
+<li><code>01-exercise.Rmd</code>: This is the R Markdown file I wrote to generate the webpage, if you want to see the code behind it. You can open it up and click <code>Knit</code> at the top of the RStudio window if you want to generate it yourself (you might need to install some packages). Learn more about R Markdown <a href="https://rmarkdown.rstudio.com">here</a>.</li>
+<li><code>01-todo.R</code>: This is the R script you’ll be working with in the next session!</li>
+</ul>
+<p>Also check to make sure that you’re in the correct working directory. You can find that at the top of your console pane. It should look something like this:<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p><img src="../../img/working-directory.png" /></p>
+<p>If not, you didn’t open RStudio via the <code>01-week.Rproj</code> file. 🤦 Close RStudio and try again!</p>
 </div>
 </div>
 <div id="run-some-r-code" class="section level2">
 <h2><span class="header-section-number">1.4</span> Run some R code!</h2>
-<p>Work through the code in <code>01-exercises.R</code>. You should run the code line-by-line, from a fresh R session (restart if you need to), paying attention to what happens in each of your RStudio windows as you do.</p>
+<p>Work through the code in <code>01-todo.R</code>. You should run the code line-by-line, from a fresh R session (restart if you need to), paying attention to what happens in each of your RStudio windows as you do.</p>
 <p>Then answer these questions (also included at the end of the script):</p>
 <ol style="list-style-type: decimal">
 <li>Extract <code>645</code> from <code>vals</code> using square brackets.</li>
@@ -178,7 +192,7 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 <code>incorrect number of dimensions</code>
 <code>subscript out of bounds</code></li>
 </ol>
-<p>Save your <code>01-exercises.R</code> script so you can come back to it later! We’ll go over any questions you have during lab. See you then! 👋</p>
+<p>Save your <code>01-todo.R</code> script so you can come back to it later! We’ll go over any questions you have during lab. See you then! 👋</p>
 </div>
 </div>
 <div class="footnotes">
