@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Exercises
 menu:
   exercise:
     weight: 1
@@ -8,4 +8,6 @@ weight: 1
 shiny: true
 ---
 
-You can find the weekly exercises here. 
+Look for weekly exercises here. You should complete these -- as much as you can! -- before lab. Bring your questions there!
+
+Check out the resources tab if you find you need extra help on the exercises.

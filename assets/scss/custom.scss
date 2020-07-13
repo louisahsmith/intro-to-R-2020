@@ -23,9 +23,14 @@
   color: #c88d90!important;
 }
 
+.embed-responsive{
+  display: inline-block;
+  width: 50%;
+}
 
 body {
   color: #1F4257;
+  font-size:80%;
 }
 
 .docs-toc-link {
@@ -46,6 +51,46 @@ color: #F2D7D8;
 
 h1, h2, h3, h4 {
   color: #1F4257;
+}
+h1 {
+  
+}
+h2 {
+  
+}
+
+#slide-tabs{
+  width: 155%;
+}
+.tab-content>.active {
+display: block;
+margin-left: -300px;
+}
+
+
+@media screen and (max-width: 1875px) {
+    .embed-responsive {
+        width: 50%;
+    }
+    #slide-tabs{
+  width: 125%;
+  }
+  .tab-content>.active {
+display: block;
+margin-left: -250px;
+}
+}
+
+@media screen and (max-width: 1400px) {
+    .embed-responsive {
+        width: 100%;
+    }
+    #slide-tabs{
+  width: 100%;
+  }
+  .tab-content>.active {
+margin-left: -120px;
+}
 }
 
 #footer-text{
@@ -217,7 +262,7 @@ font-style: normal;
   color: #756bb1!important;
 }
 .docs-article-container {
-max-width: 1100px;
+overflow: visible;
 }
 
 .bash {

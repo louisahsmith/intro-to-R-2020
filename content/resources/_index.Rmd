@@ -1,11 +1,35 @@
 ---
 title: Helpful resources
-menu:
+menu: 
   resources:
-    parent: Resources
 type: docs
 weight: -1
 ---
 
 Here's where I'll put links to helpful resources or things I mention in lab or in the videos.
 
+### To start off:
+
+- [Here's](https://www.rstudio.com/online-learning/) RStudio's great list of online resources. In particular, there are some more online tutorials [here](https://rstudio.cloud/learn/primers).
+
+- [Hadley Wickham](http://hadley.nz) is probably the #1 R guru and has written several books about R, which you can read on his website, where you can also learn more about the packages he's written, including `ggplot2`.
+
+- [Here's](http://www.moderndive.com) another book with a good introduction to data science R, including data visualization.
+
+- Used to SAS or STATA? These guides ( [SAS](https://github.com/asnr/sas-to-r/blob/master/README.md) and Stata ( [1](https://github.com/EconometricsBySimulation/RStata/wiki/Dictionary:-Stata-to-R) &  [2](http://dss.princeton.edu/training/RStata.pdf))) can help you translate from those languages to R.
+
+- Some people love learning R with [Swirl](https://swirlstats.com), which teaches you to code interactively.
+
+- The `fivethirtyeight` package has a ton of cool [datasets](https://cloud.r-project.org/web/packages/fivethirtyeight/vignettes/fivethirtyeight.html) that you can play around with.
+
+- If you're not understanding an error message, clear your workspace and/or restart RStudio and try again. Does the error still show up? Then try writing a [minimal working example](https://en.wikipedia.org/wiki/Minimal_Working_Example). What does it take to reproduce the error? Is the problem with your data, your code, or both?
+
+- Watch [this video](https://www.rstudio.com/resources/videos/debugging-techniques-in-rstudio/) of an expert walk through her process of debugging code (even experts get error messages all the time!).
+
+- It may sound silly, but copying and pasting error messages into Google is usually the fastest way to solve a tricky problem. You will almost certainly end up on the relevant [stack overflow](https://stackoverflow.com/) question page, because someone somewhere has experienced the error you've encountered.
+
+- Struggling with ggplot? Take a look at this [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) or this [gallery](http://www.r-graph-gallery.com/all-graphs/). [This website](http://www.cookbook-r.com/Graphs/) is another great resource.
+
+- Ready to make your plots beautiful? Choose your color scheme with the RColorBrewer package. Explore ColorBrewer palettes [here](http://colorbrewer2.org). "Set1" and "Dark2" are favorites for qualitative data and "BuGn" is nice for sequential gradients.
+
+- This [Rmarkdown cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) is helpful for getting started.

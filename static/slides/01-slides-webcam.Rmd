@@ -9,15 +9,15 @@ output:
     css: "extra.css"
     nature:
       beforeInit: "macros.js"
-      # ratio: 16:10
-      ratio: 16:9
+      ratio: 16:10
+      # ratio: 16:9
       countIncrementalSlides: false
       highlightStyle: color-brewer
       highlightLines: true
       highlightSpans: true
 ---
 class: inverse, center, middle
-```{css webcam-spot, echo = FALSE, eval = FALSE}
+```{css webcam-spot, echo = FALSE, eval = TRUE}
 .webcam-wrapper{
   width: 175px;
   height: 90px;

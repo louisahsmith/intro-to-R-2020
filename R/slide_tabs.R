@@ -25,7 +25,7 @@ slide_tabs <- function(slide_df, slide_url) {
                       '<iframe class="embed-responsive-item" src="{youtube}"',
                       'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"',
                       'allowfullscreen></iframe>\n</div>\n',
-                      '<div class="embed-responsive embed-responsive-16by9">\n',
+                      '<div class="embed-responsive embed-responsive-16by9" style="float: right;">\n',
                       '<iframe class="embed-responsive-item" src="{url}#{slide}"></iframe>\n',
                       '</div>\n</div>')
     return(out)

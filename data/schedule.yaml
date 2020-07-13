@@ -4,7 +4,7 @@ lessons:
     session: 1
     date: "July 13 - July 17"
     video: "01-video"
-    # exercise: "01-exercise"
+    exercise: "01-exercise"
     # lab: "01-lab"
 
   - title: 'Figures'
