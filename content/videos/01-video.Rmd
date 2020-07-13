@@ -5,7 +5,7 @@ date: "2020-07-13"
 menu:
   video:
     weight: 2
-type: docs
+type: video-docs
 slides: "01-slides"
 output:
   blogdown::html_page:
@@ -28,6 +28,7 @@ sections <- tibble::tribble(
   "R Projects", "r-projects", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435",
   "Using R", "using-R", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3085"
 ) 
+
 
 slide_tabs(sections, "/slides/01-slides.html")
 ```

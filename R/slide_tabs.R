@@ -36,12 +36,15 @@ slide_tabs <- function(slide_df, slide_url) {
     pane = purrr::pmap_chr(list(name, slide, active, slide_url, youtube), tab_pane)
   )
   
-  tabset <- paste('<ul class="nav nav-tabs" id="slide-tabs" role="tablist">',
+  tabset <- paste(paste(c("</div>", "</div>", "</div>", "</article>", "</main>",
+                          "</div>"), collapse = "\n"),
+                  '<ul class="nav nav-tabs" id="slide-tabs" role="tablist">',
                   paste(sections$li, collapse = "\n"),
                   '</ul>',
                   '<div class="tab-content" id="slide-tabs">',
                   paste(sections$pane, collapse = "\n"),
-                  '</div>', sep = "\n")
+                  '</div>',
+                  sep = "\n")
   
   cat(tabset)
 }

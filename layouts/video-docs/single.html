@@ -1,0 +1,36 @@
+{{- define "main" -}}
+{{ $current_page := . }}
+
+<div class="container-fluid docs" style = "height: 400px;">
+    <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 docs-sidebar" style = "border:white; height:fit-content;">
+            {{ partial "docs_sidebar" . }}
+        </div>
+
+        {{ if .Params.toc }}
+        <div class="d-none d-xl-block col-xl-2 docs-toc">
+            <ul class="nav toc-top">
+                <li><a href="#" id="back_to_top" class="docs-toc-title">{{ i18n "on_this_page" }}</a></li>
+            </ul>
+
+            {{ .TableOfContents }}
+
+            {{ partial "docs_toc_foot" . }}
+        </div>
+        {{ end }}
+
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" style="height:fit-content;" role="main">
+
+            <article class="article">
+
+                <div class="docs-article-container">
+                    <h1>{{ .Title }}</h1>
+                    <div class="article-style">
+                        {{ .Content }}
+                    
+
+
+</div>
+
+
+{{- end -}}

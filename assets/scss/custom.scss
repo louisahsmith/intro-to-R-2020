@@ -59,44 +59,21 @@ h2 {
   
 }
 
-#slide-tabs{
-  width: 155%;
-}
-.tab-content>.active {
-display: block;
-margin-left: -300px;
-}
-
-
-@media screen and (max-width: 1875px) {
-    .embed-responsive {
-        width: 50%;
-    }
-    #slide-tabs{
-  width: 125%;
-  }
-  .tab-content>.active {
-display: block;
-margin-left: -250px;
+@media screen and (min-width: 1401px) {
+#footer-text{
+  font-size:75%;
+  margin-right: 112.5px;
+  margin-left: 112.5px;
 }
 }
 
 @media screen and (max-width: 1400px) {
     .embed-responsive {
         width: 100%;
-    }
-    #slide-tabs{
-  width: 100%;
-  }
-  .tab-content>.active {
-margin-left: -120px;
-}
-}
-
-#footer-text{
-  font-size:75%;
-  margin-right: 112.5px;
-  margin-left: 112.5px;
+        }
+    #footer-text{
+      font-size:75%;
+      }
 }
 
 .hero-title{
