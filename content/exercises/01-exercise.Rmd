@@ -16,9 +16,10 @@ output:
 knitr::opts_chunk$set(
   error = TRUE,
   collapse = TRUE,
-  comment = "",
+  comment = "#> ",
   class.output = "output",
-  class.message = "message"
+  class.message = "message",
+  class.error = "message"
 )
 ```
 # The basics
@@ -130,7 +131,7 @@ If you didn't, you didn't correctly restart R! 🤦 Try again.
 
 Now add the necessary `library()` call and run the whole thing again:
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 library(ggplot2)
 ggplot(mpg, aes(displ, hwy, colour = class)) +
   geom_point() +

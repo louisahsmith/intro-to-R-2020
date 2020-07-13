@@ -14,7 +14,7 @@ output:
 knitr::opts_chunk$set(
   error = TRUE,
   collapse = TRUE,
-  comment = "",
+  comment = "#> ",
   class.output = "output",
   class.message = "message"
 )
