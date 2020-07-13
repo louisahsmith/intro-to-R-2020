@@ -23,10 +23,10 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "Introduction", "1", TRUE, "https://www.youtube.com/embed/vPhpJuraz14?enablejsapi=1&modestbranding=1&rel=0&start=1",
-  "RStudio and Packages", "rstudio-intro", FALSE, "https://www.youtube.com/embed/f2BZNowCXws?enablejsapi=1&modestbranding=1&rel=0&start=1",
-  "R Projects", "r-projects", FALSE, "https://www.youtube.com/embed/26FIEX6muAo??enablejsapi=1&modestbranding=1&rel=0&start=1",
-  "Using R", "using-R", FALSE, "https://www.youtube.com/embed/nFVHaus_pjI?enablejsapi=1&modestbranding=1&rel=0&start=1"
+  "Introduction", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3",
+  "RStudio and Packages", "rstudio-intro", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1183",
+  "R Projects", "r-projects", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435",
+  "Using R", "using-R", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3085"
 )
 
 slide_tabs(sections, "/slides/01-slides.html")
