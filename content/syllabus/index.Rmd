@@ -35,6 +35,9 @@ In this course you will learn to:
 - Write functions to help you analyze data
 - Use techniques to speed up common data tasks and minimize data errors
 
+## Contact
+
+The best way to contact me with questions about the course is via our course [Slack](https://intro-to-r-2020.slack.com). If you post questions about R, your classmates might be able to answer you as well!
 
 \clearpage
 

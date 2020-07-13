@@ -92,6 +92,9 @@ main:
   - name: Resources
     url: /resources/
     weight: 6
+  - name: '<i class="fab fa-slack"></i>'
+    url: "https://intro-to-r-2020.slack.com"
+    weight: 8
     
 
 
