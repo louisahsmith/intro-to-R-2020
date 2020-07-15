@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Louisa Smith" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R
+## Week 2: Making figures
+### Louisa Smith
+### July 20 - July 24
+
+---
+
+class: inverse, center, middle
+
+
+
+
+
+
+.hand-large[
+Let's make our data...
+]
+.larger[
+beautiful
+]
+
+---
+# #goals
+.pull-left[
+&lt;img src="02-slides_files/figure-html/goals-plot-1-1.png" width="500px" height="500px" style="display: block; margin: auto;" /&gt;
+]
+.pull-right[
+
+&lt;img src="02-slides_files/figure-html/goals-plot-2-1.png" width="500px" height="500px" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Basic structure of a ggplot
+
+```
+ggplot(data = {data}) +
+      &lt;geom&gt;(aes(x = {xvar}, y = {yvar}, &lt;characteristic&gt; = {othvar}, ...),
+             &lt;characteristic&gt; = "value", ...) + ...
+```
+.midi[
+- `{data}`: must be a dataframe (or tibble!)
+- `{xvar}` and `{yvar}` are the names (unquoted) of the variables on the x- and y-axes
+- `{othvar}` is some other unquoted variable name that defines a grouping or other characteristic you want to map to an aesthetic
+- `&lt;geom&gt;`: the geometric feature you want to use; e.g., point (scatterplot), line, histogram, bar, etc.
+- `&lt;characteristic&gt;`: you can map `{othvar}` or a fixed `"value"` to any of a number of aesthetic features of the figure; e.g., color, shape, size, linetype, etc.
+- `"value"`: a fixed value that defines some characteristic of the figure; e.g., "red", 10, "dashed"
+- ... : there are numerous other options to discover!
+]
+---
+class:middle, center
+# ggplot builds figures by adding on pieces via a particular "*g*rammar of *g*raphics"
+![](img/grammar.png)
+
+---
+count: false
+.left-code[
+
+```r
+*ggplot(data = nlsy)
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1a-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+* geom_bar(aes(x = eyesight,
+*         fill = factor(eyesight)))
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1b-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+* facet_grid(
+*   cols = vars(glasses),
+*   labeller = labeller(glasses = c(
+*     "0" = "Doesn't wear glasses",
+*     "1" = "Wears glasses/contacts")))
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1c-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+  facet_grid(
+    cols = vars(glasses),
+    labeller = labeller(glasses = c(
+      "0" = "Doesn't wear glasses",
+      "1" = "Wears glasses/contacts"))) +
+* scale_fill_brewer(palette = "Spectral",
+*                   direction = -1)
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1d-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+  facet_grid(
+    cols = vars(glasses),
+    labeller = labeller(glasses = c(
+      "0" = "Doesn't wear glasses",
+      "1" = "Wears glasses/contacts"))) +
+  scale_fill_brewer(palette = "Spectral",
+                    direction = -1) +
+* scale_x_continuous(
+*   labels = c("Excellent", "Very Good",
+*              "Good", "Fair", "Poor"),
+*   breaks = c(1, 2, 3, 4, 5))
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1e-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+  facet_grid(
+    cols = vars(glasses),
+    labeller = labeller(glasses = c(
+      "0" = "Doesn't wear glasses",
+      "1" = "Wears glasses/contacts"))) +
+  scale_fill_brewer(palette = "Spectral",
+                    direction = -1) +
+  scale_x_continuous(
+    labels = c("Excellent", "Very Good",
+               "Good", "Fair", "Poor"),
+    breaks = c(1, 2, 3, 4, 5)) +
+* theme_minimal()
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1f-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+  facet_grid(
+    cols = vars(glasses),
+    labeller = labeller(glasses = c(
+      "0" = "Doesn't wear glasses",
+      "1" = "Wears glasses/contacts"))) +
+  scale_fill_brewer(palette = "Spectral",
+                    direction = -1) +
+  scale_x_continuous(
+    labels = c("Excellent", "Very Good",
+               "Good", "Fair", "Poor"),
+    breaks = c(1, 2, 3, 4, 5)) +
+  theme_minimal() +
+* theme(legend.position = "none",
+*       axis.text.x = element_text(
+*     angle = 45, vjust = 1, hjust = 1)
+*   )
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1g-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+  facet_grid(
+    cols = vars(glasses),
+    labeller = labeller(glasses = c(
+      "0" = "Doesn't wear glasses",
+      "1" = "Wears glasses/contacts"))) +
+  scale_fill_brewer(palette = "Spectral",
+                    direction = -1) +
+  scale_x_continuous(
+    labels = c("Excellent", "Very Good",
+               "Good", "Fair", "Poor"),
+    breaks = c(1, 2, 3, 4, 5)) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(
+      angle = 45, vjust = 1, hjust = 1)
+    ) +
+* labs(title = "Eyesight in NLSY",
+*      x = "Eyesight quality",
+*      y = NULL)
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1h-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = eyesight, 
+          fill = factor(eyesight))) +
+  facet_grid(
+    cols = vars(glasses),
+    labeller = labeller(glasses = c(
+      "0" = "Doesn't wear glasses",
+      "1" = "Wears glasses/contacts"))) +
+  scale_fill_brewer(palette = "Spectral",
+                    direction = -1) +
+  scale_x_continuous(
+    labels = c("Excellent", "Very Good",
+               "Good", "Fair", "Poor"),
+    breaks = c(1, 2, 3, 4, 5)) +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(
+      angle = 45, vjust = 1, hjust = 1)
+    ) +
+  labs(title = "Eyesight in NLSY",
+       x = "Eyesight quality",
+       y = NULL) +
+* coord_cartesian(expand = FALSE)
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-1i-1.png)
+]
+
+---
+count: false
+.left-code[
+
+```r
+*ggplot(data = nlsy, aes(x = income,
+*   y = age_bir, col = factor(sex))
+*) 
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2a-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+* geom_point(alpha = 0.1)
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2b-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+* scale_color_brewer(palette = "Set1",
+*   name = "Sex",
+*   labels = c("Male", "Female"))
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2c-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+  scale_color_brewer(palette = "Set1",
+    name = "Sex",
+    labels = c("Male", "Female")) +
+* scale_x_log10(labels =
+*                 scales::dollar)
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2d-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+  scale_color_brewer(palette = "Set1",
+    name = "Sex",
+    labels = c("Male", "Female")) +
+  scale_x_log10(labels = 
+                  scales::dollar) +
+* geom_smooth(aes(
+*   group = factor(sex)),
+*   method = "lm")
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2e-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+  scale_color_brewer(palette = "Set1",
+    name = "Sex",
+    labels = c("Male", "Female")) +
+  scale_x_log10(labels = 
+                  scales::dollar) +
+  geom_smooth(aes(
+    group = factor(sex)), 
+    method = "lm") +
+* facet_grid(rows = vars(race_eth),
+*   labeller = labeller(race_eth = c(
+*   "1" = "Hispanic",
+*   "2" = "Black",
+*   "3" = "Non-Black, Non-Hispanic")))
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2f-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+  scale_color_brewer(palette = "Set1",
+    name = "Sex",
+    labels = c("Male", "Female")) +
+  scale_x_log10(labels = 
+                  scales::dollar) +
+  geom_smooth(aes(
+    group = factor(sex)), 
+    method = "lm") +
+  facet_grid(rows = vars(race_eth),
+    labeller = labeller(race_eth = c(
+    "1" = "Hispanic",
+    "2" = "Black",
+    "3" = "Non-Black, Non-Hispanic"))) +
+* theme_minimal()
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2g-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+  scale_color_brewer(palette = "Set1",
+    name = "Sex",
+    labels = c("Male", "Female")) +
+  scale_x_log10(labels = 
+                  scales::dollar) +
+  geom_smooth(aes(
+    group = factor(sex)), 
+    method = "lm") +
+  facet_grid(rows = vars(race_eth),
+    labeller = labeller(race_eth = c(
+    "1" = "Hispanic",
+    "2" = "Black",
+    "3" = "Non-Black, Non-Hispanic"))) +
+  theme_minimal() +
+* theme(legend.position = "top")
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2h-1.png)
+]
+
+---
+count: false
+
+.left-code[
+
+```r
+ggplot(data = nlsy, aes(x = income, 
+    y = age_bir, col = factor(sex))
+) +
+  geom_point(alpha = 0.1) +
+  scale_color_brewer(palette = "Set1",
+    name = "Sex",
+    labels = c("Male", "Female")) +
+  scale_x_log10(labels = 
+                  scales::dollar) +
+  geom_smooth(aes(
+    group = factor(sex)), 
+    method = "lm") +
+  facet_grid(rows = vars(race_eth),
+    labeller = labeller(race_eth = c(
+    "1" = "Hispanic",
+    "2" = "Black",
+    "3" = "Non-Black, Non-Hispanic"))) +
+  theme_minimal() +
+  theme(legend.position = "top") +
+* labs(title = "Relationship between income and age at first birth",
+*   subtitle = "by sex and race",
+*   x = "Income",
+*   y = "Age at first birth")
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/goals-plot-2j-1.png)
+]
+
+---
+
+# Basic example
+
+```
+ggplot(data = {data}) +
+      &lt;geom&gt;(aes(x = {xvar}, y = {yvar}, &lt;characteristic&gt; = {othvar}, ...),
+             &lt;characteristic&gt; = "value", ...) +
+      ...
+```
+
+---
+count:true
+# Basic example
+
+```
+ggplot(data = `nlsy`) +
+      &lt;geom&gt;(aes(x = {xvar}, y = {yvar}, &lt;characteristic&gt; = {othvar}, ...),
+             &lt;characteristic&gt; = "value", ...) +
+      ...
+```
+.large[The `data = ` argument must be a dataframe (or tibble)]
+
+---
+count:true
+# Basic example
+
+```
+ggplot(data = nlsy) +
+      `geom_point`(aes(x = {xvar}, y = {yvar}, &lt;characteristic&gt; = {othvar}, ...),
+             &lt;characteristic&gt; = "value", ...) +
+      ...
+```
+.large[
+`geom_point()` gives us a scatterplot
+]
+
+.center[
+.go[Other helpful "geoms" include `geom_line()`, `geom_bar()`, `geom_histogram()`, `geom_boxplot()`]]
+
+---
+&lt;img src="img/geoms.png" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;!-- - A helpful reference can also be found here: http://sape.inf.usi.ch/quick-reference/ggplot2/geom --&gt;
+
+.footnote[Image via https://nbisweden.github.io/RaukR-2019/ggplot/presentation/ggplot_presentation.html]
+
+---
+count:true
+
+# Basic example
+
+```
+ggplot(data = nlsy) +
+      geom_point(aes(x = `income`, y = `age_bir`, &lt;characteristic&gt; = {othvar}, ...),
+             &lt;characteristic&gt; = "value", ...) +
+      ...
+```
+
+`geom_point()` requires an `x = ` and a `y = ` variable
+
+Other geoms require other arguments
+- For example, `geom_histogram()` only requires an `x = ` variable
+
+.center[.go[Notice that the variable names are not in quotation marks]]
+
+---
+count:true
+
+# Basic example
+
+```
+ggplot(data = nlsy, `aes(x = income, y = age_bir, &lt;characteristic&gt; = {othvar}, ...)`) +
+      geom_point(&lt;characteristic&gt; = "value", ...) +
+      ...
+```
+
+We could also put the aesthetics (the variables that are being mapped to the plot) in the initial `ggplot()` function
+
+- This will be helpful when we want multiple geoms (say, points and a line)
+
+---
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir))
+```
+.large[
+What if we want to change the color of the points?
+]]
+.right-plot[
+![](02-slides_files/figure-html/point-ex1-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir),
+*            color = "blue")
+```
+.large[When we put `color = ` *outside* the `aes()`, it means we're giving it a specific color value that applies to all the points.]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex2-1.png)
+]
+
+---
+
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir),
+*            color = "#3d93c8")
+```
+.center[.go[One of my favorite color resources: https://www.color-hex.com
+]]]
+.right-plot[
+![](02-slides_files/figure-html/point-ex3-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+*                color = eyesight))
+```
+.large[
+
+When we put `color = ` *inside* the `aes()` -- with no quotation marks -- it means we're telling it how it should assign colors.
+
+Here we're plotting the values according to eyesight, where 1 is excellent and 5 is poor.
+
+- But they're kind of hard to distinguish!
+]
+]
+
+.right-plot[
+![](02-slides_files/figure-html/point-ex6-1.png)
+]
+
+---
+
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+               color = eyesight)) +
+*scale_color_gradient(low = "green",
+*                   high = "purple")
+```
+.large[We can map the values of `eyesight` to a different continuous scale using `scale_color_gradient()`
+
+You can read lots more about this function [here](https://ggplot2.tidyverse.org/reference/scale_gradient.html), so you don't have to have such ugly color scales! 
+]
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex7-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+            color = eyesight))
+```
+.large[Returning to the nice blues, we think: But wait! The variable `eyesight` isn't really continuous: it has 5 discrete values.
+]
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex8-1.png)
+]
+
+---
+count:true
+.left-code[
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+            color = `factor(eyesight)`))
+```
+
+.large[Returning to the nice blues, we think: But wait! The variable `eyesight` isn't really continuous: it has 5 discrete values.
+
+We can make R treat it as a "factor", or categorical variable, with the `factor()` function
+]
+.center[.go[We'll see lots more on factors later!]]
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex9-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+            color = factor(eyesight))) +
+*scale_color_manual(
+*   values = c("blue", "purple", "red",
+*              "green", "yellow"))
+```
+.large[Now if we want to change the color scheme, we have to use a different function.
+
+Before we used `scale_color_gradient`, now `scale_color_manual`.
+
+- There are a lot of options that follow the same naming scheme.]
+
+
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex10-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+            color = factor(eyesight))) +
+*scale_color_brewer(palette = "Set1")
+```
+.large[There are tons of different options in R for color palettes.
+
+You can play around with those in the `RColorBrewer` package here: http://colorbrewer2.org]
+
+- You can access the scales in that package with `scale_color_brewer()`, or see them all after installing the package with `RColorBrewer::display.brewer.all()`
+
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex11-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+geom_point(aes(x = income, y = age_bir,
+            color = factor(eyesight))) +
+scale_color_brewer(palette = "Set1", 
+*           name = "Eyesight",
+*           labels = c("Excellent",
+*                      "Very Good",
+*                      "Good",
+*                      "Fair",
+*                      "Poor"))
+```
+.large[Each of the `scale_color_x()` functions has a lot of the same arguments.]
+
+.center[.go[Make sure if you are labelling a factor variable in a plot like this that you get the names right!]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/point-ex12-1.png)
+]
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+1
+]
+]
+
+.hand-large[
+Your turn...
+]
+.exercise[
+Exercises 2.1: Make a fancy scatterplot showing the relationship between sleep on weekdays and on weekends.
+]
+
+&lt;!-- 1. Using the NLSY data, make a scatter plot of the relationship between hours of sleep on weekends and weekdays. Color it according to region (where 1 = northeast, 2 = north central, 3 = south, and 4 = west). --&gt;
+&lt;!-- 2. Replace `geom_point()` with `geom_jitter()`. What does this do? Why might this be a good choice for this graph? Play with the `width = ` and `height = ` options. This site may help: https://ggplot2.tidyverse.org/reference/geom_jitter.html --&gt;
+&lt;!-- 3. Use the `shape = ` argument to map the sex variable to different shapes. Change the shapes to squares and diamonds. (Hint: how did we manually change colors to certain values? This might help: https://ggplot2.tidyverse.org/articles/ggplot2-specs.html) --&gt;
+---
+# Facets
+
+One of the most useful features of `ggplot2` is the ability to "facet" a graph by splitting it up according to the values of some variable.
+
+You might use this to show results for a lot of outcomes or exposures at once, for example, or see how some relationship differs by something like age or geographic region
+
+.center[
+![:scale 80%](img/facets.png)
+]
+
+---
+.left-code[
+
+
+
+```r
+ggplot(data = nlsy) +
+  `geom_bar(aes`(x = nsibs)) +
+  labs(x = "Number of siblings")
+```
+.large[We'll introduce bar graphs at the same time!
+
+Notice how we only need an `x = ` argument - the y-axis is automatically the count with this geom.
+]
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = "Number of siblings") +
+* facet_grid(cols = vars(region))
+```
+.large[The `facet_grid()` function splits up the data according to a variable(s).
+
+Here we've split it by region into columns.
+]
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex1-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = "Number of siblings") +
+  facet_grid(`rows` = vars(region))
+```
+.large[Since this is hard to read, we'll probably want to split by rows instead.
+]
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex2-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = "Number of siblings") +
+  facet_grid(rows = vars(region),
+             `margins = TRUE`)
+```
+.large[We can also add a row for all of the data together.]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex3-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = "Number of siblings") +
+  facet_grid(rows = vars(region),
+             margins = TRUE,
+             `scales = "free_y"`)
+```
+.large[This squishes the other rows though! We can allow them all to have their own axis limits with the `scales = ` argument.
+
+Other options are "free_x" if we want to allow the x-axis scale to vary, or just "free" to combine both.
+]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex4-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = "Number of siblings") +
+* facet_wrap(vars(region))
+```
+
+.large[We can use `facet_wrap()` instead, if we want to use both multiple rows and columns for all the values of a variable.
+]
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex5-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = "Number of siblings") +
+  facet_wrap(vars(region),
+*            ncol = 3)
+```
+
+.center[.go[It tries to make a good decision, but you can override how many columns you want!]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-ex6-1.png)
+]
+
+---
+# Wait, these look like histograms!
+
+When we have a variable with a lot of possible values, we may want to bin them with a histogram
+
+```r
+ggplot(nlsy) +
+  geom_histogram(aes(x = income))
+```
+
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-7-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+We used discrete values with `geom_bar()`, but with `geom_histogram()` we're combining values: the default is into 30 bins.
+
+This is one of the most common warning messages I get in R!
+&lt;br&gt;
+&lt;img src="https://www.washingtonpost.com/pbox.php?url=http://www.washingtonpost.com/news/volokh-conspiracy/wp-content/uploads/sites/14/2015/08/Warning-2.gif&amp;w=1484&amp;op=resize&amp;opt=1&amp;filter=antialias&amp;t=20170517" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), 
+*                bins = 10)
+```
+
+.center[.go[We can use `bins = ` instead, if we want!]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-hist-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), 
+*                bins = 100)
+```
+
+.center[.go[Be aware that you may interpret your data differently depending on how you bin it!]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-hist2-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), 
+*                binwidth = 1000)
+```
+
+.center[.go[Sometimes the bin width actually has some meaning]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-hist3-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+ggplot(data = nlsy) +
+  geom_histogram(aes(x = income),
+                 bins = 100) +
+* scale_x_log10()
+```
+
+There are a lot of `scale_x_()` and `scale_y_()` functions for you to explore!
+
+.center[.go[The naming schemes work similarly to the `scale_color` ones, just with different options!]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/bar-hist4-1.png)
+]
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+2
+]
+]
+
+.hand-large[
+Your turn...
+]
+.exercise[
+Exercises 2.2: Make a fancy histogram showing the distribution of income in this data.
+]
+
+
+&lt;!-- 1. When we're comparing distributions with very different numbers of observations, instead of scaling the y-axis like we did with the `facet_grid()` function, we might want to make density histograms. Use google to figure out how to make a density histogram of income. Facet it by region. --&gt;
+&lt;!-- 2. Make each of the regions in your histogram from part 1 a different color. (Hint: compare what `col = ` and `fill = ` do to histograms). --&gt;
+&lt;!-- 3. Instead of a log-transformed x-axis, make a square-root transformed x-axis. --&gt;
+&lt;!-- 4. Doing part 3 squishes the labels on the x-axis. Using the `breaks = ` argument that all the `scale_x_()` functions have, make labels at 1000, 10000, 25000, and 50000. --&gt;
+
+---
+# Finally, themes to make our plots prettier
+
+You probably recognize the ggplot theme. But did you know you can trick people into thinking you made your figures in Stata?
+
+.pull-left[
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-9-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-10-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+.left-code[
+
+
+```r
+*p &lt;- ggplot(data = nlsy) +
+  geom_boxplot(aes(
+    x = factor(sleep_wknd), 
+    y = sleep_wkdy,
+    fill = factor(sleep_wknd))) +
+  scale_fill_discrete(guide = FALSE) +
+  labs(x = "hours slept on weekends",
+       y = "hours slept on weekends",
+       title = "The more people sleep on weekends, the more they\n sleep on weekdays",
+       subtitle = "According to NLSY data")
+
+p
+```
+Let's store our plot first.
+
+Plots work just like other R objects, meaning we can use the assignment arrow.
+
+.center[.go[Can you figure out what each chunk of this code is doing to the figure?]]
+]
+.right-plot[
+![](02-slides_files/figure-html/theme-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* theme_minimal()
+```
+.large[We can change the overall theme
+
+.center[.go[Since we stored the plot as `p`, it's easy to add on / try different things]]
+]]
+.right-plot[
+![](02-slides_files/figure-html/theme2-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* theme_dark()
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/theme3-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* theme_classic()
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/theme4-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* theme_void()
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/theme5-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* ggthemes::theme_fivethirtyeight()
+```
+
+.large[Other packages may contain themes.]
+]
+.right-plot[
+![](02-slides_files/figure-html/themegga-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* ggthemes::theme_excel_new()
+```
+
+.large[In case you miss Excel....]
+]
+.right-plot[
+![](02-slides_files/figure-html/themeggb-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* ggthemes::theme_gdocs()
+```
+]
+.right-plot[
+![](02-slides_files/figure-html/themegga-1.png)
+]
+
+---
+count:true
+.left-code[
+
+
+```r
+p +
+* louisahstuff::my_theme()
+```
+.center[.go[You can even make your own!]]
+
+]
+.right-plot[
+![](02-slides_files/figure-html/theme6-1.png)
+]
+
+---
+class:big-code
+# Finally, save it!
+
+If your data changes, you can easily run the whole script again:
+
+
+```r
+library(tidyverse)
+dataset &lt;- read_csv("dataset.csv")
+ggplot(dataset) + 
+  geom_point(aes(x = xvar, y = yvar))
+`ggsave`(filename = "scatterplot.pdf")
+```
+
+The `ggsave()` function will automatically save the most recent plot in your output.
+
+To be safe, you can store your plot, e.g., `p &lt;- ggplot(...) + ...` and then 
+
+
+```r
+ggsave(filename = "scatterplot.pdf", plot = p)
+```
+
+---
+# More resources
+
+.left-col[
+- Cheat sheet: https://www.rstudio.com/resources/cheatsheets/#ggplot2
+- Catalog: http://shiny.stat.ubc.ca/r-graph-catalog/
+- Cookbook: http://www.cookbook-r.com/Graphs/
+- Official package reference: https://ggplot2.tidyverse.org/index.html
+- List of themes and instructions to make your own: https://www.datanovia.com/en/blog/ggplot-themes-gallery/
+]
+
+.right-col[
+![](img/ggplot2.jpg)
+]
+
+---
+
+class: inverse
+
+.pull-left[
+.huge-number[
+3
+]
+]
+
+.hand-large[
+Your turn...
+]
+.exercise[
+Exercises 2.3: Recreate this plot!
+
+&lt;!-- Work through gradually filling in things to build up --&gt;
+&lt;img src="02-slides_files/figure-html/unnamed-chunk-13-1.png" width="55%" style="display: block; margin: auto auto auto 0;" /&gt;
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"countIncrementalSlides": false,
+"highlightStyle": "color-brewer",
+"highlightLines": true,
+"highlightSpans": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

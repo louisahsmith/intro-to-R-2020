@@ -1,0 +1,162 @@
+---
+class: middle center
+![](https://www.nlsinfo.org/sites/nlsinfo.org/files/images/NLSY79_0.png)
+
+We're using some data from the [National Longitudinal Survey of Youth 1979](https://www.nlsinfo.org/content/cohorts/nlsy79), a cohort of American young adults aged 14-22 at enrollment in 1979. They continue to be followed to this day, and there is a wealth of publicly available data [online](https://www.nlsinfo.org/investigator/pages/login.jsp). I've downloaded the answers to a survey question about whether respondents wear glasses, a scale about their eyesight with glasses, their (NLSY-assigned 😒) race/ethnicity, their sex, their family's income in 1979, and their age at the birth of their first child.
+---
+# Read in data
+```{r}
+nlsy <- read_rds("data/nlsy_cc.rds")
+glimpse(nlsy) # handy function for skimming your data!
+```
+
+
+
+---
+#### 1. Using the NLSY data and `mutate()`, make a standardized (centered at the mean, and divided by the standard deviation) version of income.
+
+```{r}
+nlsy <- mutate(nlsy,
+               income_stand = (income - mean(income) ) / sd(income)
+)
+summary(nlsy$income_stand)
+sd(nlsy$income_stand)
+```
+
+---
+#### 2. Do the same thing, but using income on the log scale. Look at this variable using `summary()`. Can you figure out what happened? (Hint: look at your log(income) variable.)
+
+```{r}
+nlsy <- mutate(nlsy,
+               log_income = log(income),
+               log_income_stand = (log_income - mean(log_income) ) /
+                 sd(log_income)
+               )
+summary(nlsy$log_income_stand)
+summary(nlsy$log_income)
+```
+
+---
+#### 3. Redo question 2, but if you are not able to calculate log(income) for an observation, replace it with a missing value (using `case_when()`). This time, when you standardize log(income), you'll have to use `na.rm = TRUE` to remove missing values both when you take the mean and the standard deviation.
+
+```{r}
+nlsy <- mutate(nlsy,
+               income_stand = (income - mean(income) ) / sd(income),
+               log_income = case_when(
+                 income == 0 ~ NA_real_,
+                 TRUE ~ log(income)
+               ),
+               log_income_stand = (log_income - mean(log_income, na.rm = TRUE) ) / 
+                 sd(log_income, na.rm = TRUE)
+               )
+summary(nlsy$log_income_stand)
+```
+
+
+<!-- Exercises 2 -->
+
+---
+#### 1. Turn the eyesight variable into a factor variable. The numbers 1-5 correspond to excellent, very good, good, fair, and poor. Make sure that categories are in an appropriate order.
+
+```{r}
+nlsy <- mutate(nlsy,
+  eyesight_fact = factor(eyesight),
+  eyesight_fact = fct_recode(eyesight_fact,
+    "Excellent" = "1",
+    "Very Good" = "2",
+    "Good" = "3",
+    "Fair" = "4",
+    "Poor" = "5"
+  )
+)
+summary(nlsy$eyesight_fact)
+```
+
+---
+#### 2. Use two different methods to combine the worst two categories of eyesight into one category.
+```{r}
+nlsy <- mutate(nlsy,
+  eyesight_worst = fct_collapse(eyesight_fact,
+    "Worst" = c("Fair", "Poor")
+  )
+)
+summary(nlsy$eyesight_worst)
+# can also use fct_lump since I know the two worst are the 
+# two smallest categories
+nlsy <- mutate(nlsy,
+  eyesight_worst2 = fct_lump(eyesight_fact,
+    n = 3,
+    other_level = "Worst"
+  )
+)
+```
+
+---
+#### 3. Make a new categorical income variable with at least 3 levels (you can choose the cutoffs). Make a bar graph with this new variable where the bars are in the correct order from low to high.
+```{r, out.width= "50%", fig.asp = .45}
+nlsy <- mutate(nlsy,
+               income_cat = case_when(
+                 income < 15000 ~ "low",
+                 income < 50000 ~ "mid",
+                 TRUE ~ "high"), 
+               income_cat = fct_relevel(income_cat, "low", "mid", "high"))
+ggplot(nlsy) +
+  geom_bar(aes(income_cat))
+```
+
+---
+#### 1. Create mean-centered versions of "age_bir", "nsibs", "income", and the two sleep variables. Use the same ending (e.g., "_cent") for all of them. Then make a new dataset of just the centered variables using `select()` and a helper.
+```{r}
+nlsy <- mutate(nlsy,
+               age_bir_cent = age_bir - mean(age_bir),
+               nsibs_cent = nsibs - mean(nsibs),
+               income_cent = income - mean(income),
+               sleep_wkdy_cent = sleep_wkdy - mean(sleep_wkdy),
+               sleep_wknd_cent = sleep_wknd - mean(sleep_wknd))
+
+cent_vars <- select(nlsy, ends_with("cent"))
+cent_vars
+```
+
+---
+#### 2. You may have added a lot of variables to the original dataset by now. Create a dataset called `nlsy_orig` that contains only the variables we started off with, using the vector of names we originally used to name the columns and the `all_of()` helper.
+```{r}
+colnames_orig <- c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
+                   "id", "nsibs", "samp", "race_eth", "sex", "region", 
+                   "income", "res_1980", "res_2002", "age_bir")
+nlsy_orig <- select(nlsy, all_of(colnames_orig))
+nlsy_orig
+```
+
+---
+#### 3. Look at `help(select)`. You'll notice that `rename()` is a related function. Looking at the examples to help, rename "age_bir" to "age_1st_birth" without making a new column.
+```{r}
+nlsy <- rename(nlsy, age_1st_birth = age_bir)
+nlsy
+```
+
+
+---
+#### 1. Create a dataset with all the observations that get over 7 hours of sleep on both weekends and weekdays *or* who have an income greater than/equal to 20,000 and less than/equal to 50,000.
+```{r}
+newdat <- filter(nlsy,
+                 (sleep_wkdy > 7 & sleep_wknd > 7) |
+                   (income >= 20000 & income <= 50000))
+```
+
+---
+#### 2. Create a dataset that consists *only* of the missing values in `slp_cat_wkdy`. Check how many rows it has (there should be 3!).
+```{r}
+newdat2 <- filter(nlsy, is.na(slp_cat_wkdy))
+nrow(newdat2)
+```
+
+---
+#### 3. Look up the `between()` function in help. Figure out how to use this to answer question 1, when choosing people whose income is between 20,000 and 50,000. Check to make sure you get the same number of rows.
+```{r}
+newdat3 <- filter(nlsy,
+                 (sleep_wkdy > 7 & sleep_wknd > 7) |
+                   between(income, 20000, 50000))
+nrow(newdat)
+nrow(newdat3)
+```

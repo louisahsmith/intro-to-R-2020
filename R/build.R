@@ -3,7 +3,7 @@ blogdown::build_dir("static/slides")
 
 
 # Convert all slide HTML files to PDF
-slide_names_with_ext <- list.files(here::here("static/slides/"), pattern = "*.html")
+slide_names_with_ext <- list.files(here::here("static/slides/"), pattern = "*s.html")
 
 slide_names_sans_ext <- tools::file_path_sans_ext(slide_names_with_ext)
 

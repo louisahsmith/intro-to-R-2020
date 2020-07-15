@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Louisa Smith" />
+    <link rel="stylesheet" href="extra.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R
+## Week 5: Functions
+### Louisa Smith
+### August 10 - August 14
+
+---
+
+class: inverse, center, middle
+&lt;style type="text/css"&gt;
+.webcam-wrapper{
+  height:0;
+  //width: 175px;
+  //height: 90px;
+  //float: right;
+}
+&lt;/style&gt;
+
+
+
+
+.hand-large[
+Let's
+]
+.larger[
+summarize
+]
+.hand-large[
+our data
+]
+
+---
+# Previously...
+
+.left-code[
+
+```r
+analysis_dat &lt;- nlsy %&gt;%
+  mutate(ineligible = case_when(
+    income &gt; 50000 ~ 1,
+    age_bir &gt; 35 ~ 1,
+    TRUE ~ 0
+  )) %&gt;%
+  filter(ineligible == 0) %&gt;%
+  select(id, sex, race_eth, 
+         glasses, eyesight)
+analysis_dat
+```
+]
+.right-plot[
+
+```
+## # A tibble: 1,128 x 5
+##      id   sex race_eth glasses eyesight
+##   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+## 1     3     2        3       0        1
+## 2     6     1        3       1        2
+## 3     8     2        3       0        2
+## 4    16     2        3       1        3
+## 5    18     1        3       0        3
+## 6    20     2        3       1        2
+## 7    27     2        3       0        1
+## # … with 1,121 more rows
+```
+]
+
+---
+# Previously...
+
+.left-code[
+
+```r
+stats &lt;- analysis_dat %&gt;%
+  mutate(sex = factor(sex, labels = 
+              c("male", "female")),
+         race_eth = factor(race_eth, 
+              labels = c("Hispanic", 
+               "Black", "Other"))) %&gt;%
+  group_by(race_eth, sex) %&gt;%
+  summarize(prop_glass = mean(glasses),
+            sd_eyesight = sd(eyesight))
+stats
+```
+]
+.right-plot[
+
+```
+## # A tibble: 6 x 4
+## # Groups:   race_eth [3]
+##   race_eth sex    prop_glass sd_eyesight
+##   &lt;fct&gt;    &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Hispanic male        0.403       0.894
+## 2 Hispanic female      0.566       1.10 
+## 3 Black    male        0.318       0.971
+## 4 Black    female      0.488       1.11 
+## 5 Other    male        0.490       0.941
+## 6 Other    female      0.602       0.972
+```
+]
+
+---
+# Previously...
+
+.left-code[
+
+```r
+ggplot(stats) +
+  geom_col(aes(x = sex, y = prop_glass,
+               fill = sex)) +
+  facet_grid(cols = vars(race_eth)) +
+  scale_fill_brewer(palette = "Set1",
+                    guide = "none") +
+  theme_minimal() +
+  labs(x = NULL, 
+    y = "proportion wearing glasses")
+```
+]
+.right-plot[
+![](05-slides_files/figure-html/agenda-plot-1.png)
+]
+
+---
+# Previously...
+
+.left-code[
+
+```r
+tab1 &lt;- CreateTableOne(
+  data = analysis_dat, strata = "sex",
+  vars = c("race_eth", "glasses", 
+           "eyesight"),
+  factorVars = c("race_eth", "glasses")
+)
+print(tab1, test = FALSE, 
+      catDigits = 0, contDigits = 0)
+```
+]
+.right-plot[
+
+```
+##                       Stratified by sex
+##                        1         2        
+##   n                    453       675      
+##   race_eth (%)                            
+##      1                  77 (17)  129 (19) 
+##      2                 129 (28)  164 (24) 
+##      3                 247 (55)  382 (57) 
+##   glasses = 1 (%)      193 (43)  383 (57) 
+##   eyesight (mean (SD))   2 (1)     2 (1)
+```
+]
+
+---
+# Functions in R
+
+I've been denoting functions with parentheses: `func()`
+
+We've seen functions such as:
+- `mean()`
+- `theme_minimal()`
+- `mutate()`
+- `case_when()`
+- `group_by()`
+- `CreateTableOne()`
+
+Functions take **arguments** and return **values**
+
+---
+# Looking inside a function
+
+If you want to see the code within a function, you can just type its name without the parentheses:
+
+```r
+CreateTableOne
+```
+
+```
+## function (vars, strata, data, factorVars, includeNA = FALSE, 
+##     test = TRUE, testApprox = chisq.test, argsApprox = list(correct = TRUE), 
+##     testExact = fisher.test, argsExact = list(workspace = 2 * 
+##         10^5), testNormal = oneway.test, argsNormal = list(var.equal = TRUE), 
+##     testNonNormal = kruskal.test, argsNonNormal = list(NULL), 
+##     smd = TRUE, addOverall = FALSE) 
+## {
+##     ModuleStopIfNotDataFrame(data)
+##     if (missing(vars)) {
+##         vars &lt;- names(data)
+##     }
+##     vars &lt;- ModuleReturnVarsExist(vars, data)
+##     ModuleStopIfNoVarsLeft(vars)
+##     varLabels &lt;- labelled::var_label(data[vars])
+##     if (!missing(factorVars)) {
+##         factorVars &lt;- ModuleReturnVarsExist(factorVars, data)
+##         data[factorVars] &lt;- lapply(data[factorVars], factor)
+##     }
+##     test &lt;- ModuleReturnFalseIfNoStrata(strata, test)
+##     smd &lt;- ModuleReturnFalseIfNoStrata(strata, smd)
+##     percentMissing &lt;- ModulePercentMissing(data[vars])
+##     varClasses &lt;- lapply(data[vars], class)
+##     varFactors &lt;- sapply(varClasses, function(VEC) {
+##         any(VEC %in% c("factor", "ordered", "logical", "character"))
+##     })
+##     varFactors &lt;- names(varFactors)[varFactors]
+##     varNumerics &lt;- sapply(varClasses, function(VEC) {
+##         any(VEC %in% c("numeric", "integer", "double"))
+##     })
+##     varNumerics &lt;- names(varNumerics)[varNumerics]
+##     varDrop &lt;- setdiff(vars, c(varFactors, varNumerics))
+##     if (length(varDrop) &gt; 0) {
+##         warning("Dropping variable(s) ", paste0(varDrop, sep = " "), 
+##             " due to unsupported class.\n")
+##         vars &lt;- setdiff(vars, varDrop)
+##     }
+##     logiFactors &lt;- vars %in% varFactors
+##     argsCreateContTable &lt;- list(data = data, test = test, testNormal = testNormal, 
+##         argsNormal = argsNormal, testNonNormal = testNonNormal, 
+##         argsNonNormal = argsNonNormal, smd = smd, addOverall = addOverall)
+##     argsCreateCatTable &lt;- list(data = data, includeNA = includeNA, 
+##         test = test, testApprox = testApprox, argsApprox = argsApprox, 
+##         testExact = testExact, argsExact = argsExact, smd = smd, 
+##         addOverall = addOverall)
+##     if (!missing(strata)) {
+##         dfStrata &lt;- ModuleReturnStrata(strata, data)
+##         strata &lt;- names(dfStrata)
+##         argsCreateContTable &lt;- c(list(strata = strata), argsCreateContTable)
+##         argsCreateCatTable &lt;- c(list(strata = strata), argsCreateCatTable)
+##     }
+##     if (length(varNumerics) == 0) {
+##         ContTable &lt;- NULL
+##         CatTable &lt;- do.call(CreateCatTable, args = c(list(vars = varFactors), 
+##             argsCreateCatTable))
+##     }
+##     else if (length(varFactors) == 0) {
+##         ContTable &lt;- do.call(CreateContTable, args = c(list(vars = varNumerics), 
+##             argsCreateContTable))
+##         CatTable &lt;- NULL
+##     }
+##     else if ((length(varFactors) &gt; 0) &amp; (length(varNumerics) &gt; 
+##         0)) {
+##         ContTable &lt;- do.call(CreateContTable, args = c(list(vars = varNumerics), 
+##             argsCreateContTable))
+##         CatTable &lt;- do.call(CreateCatTable, args = c(list(vars = varFactors), 
+##             argsCreateCatTable))
+##     }
+##     else {
+##         warning("No variables left to analyzed in vars.")
+##     }
+##     TableOneObject &lt;- list(ContTable = ContTable, CatTable = CatTable, 
+##         MetaData = list(vars = vars, logiFactors = logiFactors, 
+##             varFactors = varFactors, varNumerics = varNumerics, 
+##             percentMissing = percentMissing, varLabels = varLabels))
+##     class(TableOneObject) &lt;- "TableOne"
+##     return(TableOneObject)
+## }
+## &lt;bytecode: 0x7f94dae88138&gt;
+## &lt;environment: namespace:tableone&gt;
+```
+
+---
+# Structure of a function
+
+.pull-left[
+
+```r
+*func &lt;- function()
+```
+]
+.pull-right[
+You can name your function like you do any other object
+
+- Just avoid names of existing functions
+]
+
+---
+# Structure of a function
+
+.pull-left[
+
+```r
+func &lt;- function(`arg1`, 
+                 `arg2` = default_val)
+}
+```
+]
+.pull-right[
+What objects/values do you need to make your function work?
+
+- You can give them default values to use if the user doesn't specify others
+]
+
+---
+count:true
+# Structure of a function
+.pull-left[
+
+```r
+func &lt;- function(arg1, 
+                 arg2 = default_val) `{`
+
+*} 
+```
+]
+.pull-right[
+Everything else goes within curly braces
+
+- Code in here will essentially look like any other R code, using any inputs to your functions
+]
+
+---
+# Structure of a function
+.pull-left[
+
+```r
+func &lt;- function(arg1, 
+                 arg2 = default_val) {
+* new_val &lt;- # do something with args
+} 
+```
+]
+.pull-right[
+Make new objects
+
+- One thing you'll likely want to do is make new objects along the way
+
+- These aren't saved to your environment (i.e., you won't see them in the upper-right window) when you run the function
+
+- You can think of them as being stored in a temporary environment within the function
+]
+
+---
+# Structure of a function
+.pull-left[
+
+```r
+func &lt;- function(arg1, 
+                 arg2 = default_val) {
+  new_val &lt;- # do something with args
+  `return`(new_val)
+} 
+```
+]
+.pull-right[
+
+Return something new that the code has produced
+
+- The `return()` statement is actually optional. If you don't put it, it will return the last object in the code. When you're starting out, it's safer to always explicitly write out what you want to return.
+]
+
+---
+# Example: a new function for the mean
+
+Let's say we are not satisfied with the `mean()` function and want to write our own.
+
+
+Here's the general structure we'll start with.
+.large[
+
+```r
+new_mean &lt;- function() {
+
+}
+```
+]
+
+---
+# New mean: arguments
+
+We'll want to take the mean of a vector of numbers.
+
+It will help to make an example of such a vector to think about what the input might look like, and to test the function. We'll call it `x`:
+.large[
+
+```r
+x &lt;- c(1, 3, 5, 7, 9)
+```
+]
+
+We can add `x` as an argument to our function:
+
+.large[
+
+```r
+new_mean &lt;- function(`x`) {
+
+}
+```
+]
+
+---
+# New mean: function body
+
+Let's think about how we calculate a mean in math, and then translate it into code:
+
+`$$\bar{x} = \frac{1}{n}\sum_{i = 1}^n x_i$$`
+
+So we need to sum the elements of `x` together, and then divide by the number of elements.
+
+--
+
+We can use the functions `sum()` and `length()` to help us.
+
+We'll write the code with our test vector first, before inserting it into the function:
+.large[
+
+```r
+n &lt;- length(`x`)
+sum(`x`) / n
+```
+
+```
+## [1] 5
+```
+]
+
+---
+# New mean: function body
+
+Our code seems to be doing what we want, so let's insert it. To be explicit, I've stored the answer (within the function) as `mean_val`, then returned that value.
+.large[
+
+```r
+new_mean &lt;- function(x) {
+  n &lt;- length(x)
+  mean_val &lt;- sum(x) / n
+  return(mean_val)
+}
+```
+]
+
+---
+# Testing a function
+
+Let's plug in the vector that we created to test it:
+
+
+```r
+new_mean(x = `x`)
+```
+
+```
+## [1] 5
+```
+
+And then try another one we create on the spot:
+
+
+```r
+new_mean(x = `c(100, 200, 300)`)
+```
+
+```
+## [1] 200
+```
+
+.go[Great!]
+
+---
+# Adding another argument
+
+Let's say we plan to be using our `new_mean()` function to calculate proportions (i.e., the mean of a binary variable). Sometimes we'll want to report them as multiplier by multiplying the proportion by 100.
+
+Let's name our new function `prop()`. We'll use the same structure as we did with `new_mean()`.
+
+.large[
+
+```r
+prop &lt;- function(x) {
+  n &lt;- length(x)
+  mean_val &lt;- sum(x) / n
+  return(mean_val)
+}
+```
+]
+
+---
+# Testing the code
+
+Now we'll want to test on a vector of 1's and 0's.
+.large[
+
+```r
+x &lt;- c(0, 1, 1)
+```
+]
+To calculate the proportion and turn it into a percentage, we'll just multiply the mean by 100.
+.large[
+
+```r
+multiplier &lt;- 100
+multiplier * sum(x) / length(x)
+```
+
+```
+## [1] 66.66667
+```
+]
+
+---
+# Testing the code
+We want to give users the option to choose between a proportion and a percentage. So we'll add an argument `multiplier`. When we want to just return the proportion, we can just set `multiplier` to be 1.
+.large[
+
+```r
+multiplier &lt;- 1
+multiplier * sum(x) / length(x)
+```
+
+```
+## [1] 0.6666667
+```
+
+```r
+multiplier &lt;- 100
+multiplier * sum(x) / length(x)
+```
+
+```
+## [1] 66.66667
+```
+]
+
+
+---
+# Adding another argument
+
+If we add `multiplier` as an argument, we can refer to it in the function body.
+.large[
+
+```r
+prop &lt;- function(x, `multiplier`) {
+  n &lt;- length(x)
+  mean_val &lt;- `multiplier` * sum(x) / n
+  return(mean_val)
+}
+```
+]
+
+---
+# Adding another argument
+
+Now we can test:
+
+.large[
+
+```r
+prop(x = c(1, 0, 1, 0), multiplier = 1)
+```
+
+```
+## [1] 0.5
+```
+
+
+```r
+prop(x = c(1, 0, 1, 0), multiplier = 100)
+```
+
+```
+## [1] 50
+```
+]
+
+---
+# Making a default argument
+.midi[
+Since we don't want users to have to specify `multiplier = 1` every time they just want a proportion, we can set it as a **default**.
+
+
+```r
+prop &lt;- function(x, `multiplier = 1`) {
+  n &lt;- length(x)
+  mean_val &lt;- `multiplier` * sum(x) / n
+  return(mean_val)
+}
+```
+
+
+Now we only need to specify that argument if we want a percentage.
+
+```r
+prop(x = c(0, 1, 1, 1))
+```
+
+```
+## [1] 0.75
+```
+
+```r
+prop(x = c(0, 1, 1, 1), multiplier = 100)
+```
+
+```
+## [1] 75
+```
+]
+
+---
+# Caveats
+
+- This is obviously not the best way to write this function!
+
+- For example, it will still work if `x = c(123, 593, -192)`.... but it certainly won't give you a proportion or a percentage!
+
+- We could also put `multiplier = ` *any number*, and we'll just be multiplying the answer by that number -- this is essentially meaningless.
+
+- We also haven't done any checking to see whether the user is even entering numbers! We could put in better error messages so users don't just get an R default error message if they do something wrong.
+
+
+```r
+prop(x = c("blah", "blah", "blah"))
+```
+
+```
+## Error in sum(x): invalid 'type' (character) of argument
+```
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+1
+]
+]
+.hand-large[
+&lt;br&gt;
+Your turn...
+]
+.exercise[
+Exercises 5.1: Write a function to calculate exponents.
+]
+
+---
+
+# When to make a function
+
+There's a rule somewhere that says that if you are copying and pasting something 3 times in your code, you should just make a function to do it instead. 
+
+For example, when we were calculating quantiles:
+
+```r
+nlsy %&gt;% summarize(q.1 = quantile(age_bir, probs = 0.1),
+                   q.2 = quantile(age_bir, probs = 0.2),
+                   q.3 = quantile(age_bir, probs = 0.3),
+                   q.4 = quantile(age_bir, probs = 0.4),
+                   q.5 = quantile(age_bir, probs = 0.5))
+```
+
+```
+## # A tibble: 1 x 5
+##     q.1   q.2   q.3   q.4   q.5
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1    17    18    20    21    22
+```
+
+.go[We could make a function to do this instead!]
+
+---
+# Age at first birth quantile function
+
+What will our argument(s) be? How about just the quantile of interest, to start out, which we can refer to as `q`.
+
+What will the name of our function be? Since we're looking at quantiles of age at first birth, let's call it `age_bir_q()`:
+
+.large[
+
+```r
+age_bir_q &lt;- function(q) {
+  
+}
+```
+]
+
+---
+# Prepare the code
+
+First let's choose a value to help us write the code for the body of our function:
+.large[
+
+```r
+q &lt;- .5
+```
+]
+Then we can write the code with reference to the variable `q`.
+.large[
+
+```r
+nlsy %&gt;% summarize(
+  q_var = quantile(age_bir, probs = `q`)
+  )
+```
+
+```
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1    22
+```
+]
+
+---
+# Copy and paste just once
+.midi[
+
+```r
+age_bir_q &lt;- function(q) {
+  quant &lt;- nlsy %&gt;% 
+    summarize(q_var = quantile(age_bir, probs = q))
+  return(quant)
+}
+```
+
+It's always good to check your function, if possible, with some other way to get the same result. Here we can double check using the median:
+
+
+```r
+age_bir_q(q = 0.5)
+```
+
+```
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1    22
+```
+
+```r
+median(nlsy$age_bir)
+```
+
+```
+## [1] 22
+```
+]
+
+---
+# What if we want to change the variable
+.midi[
+This is where things get a little tricky. It's hard to use an unquoted variable name as an argument to a function. Since it's not an object in the environment, R will complain if we try to do something like this:
+
+```r
+var_q &lt;- function(q, `var`) {
+  quant &lt;- nlsy %&gt;%
+    summarize(q_var = quantile(`var`, probs = q))
+  return(quant)
+}
+var_q(q = 0.5, `var = income`)
+```
+
+
+```
+## Error: Problem with `summarise()` input `q_var`.
+## x object 'income' not found
+## ℹ Input `q_var` is `quantile(var, probs = q)`.
+```
+We might think it would help if we put `income` in quotes, but alas!
+
+```r
+var_q(q = 0.5, `var = "income"`)
+```
+
+```
+## Error: Problem with `summarise()` input `q_var`.
+## x non-numeric argument to binary operator
+## ℹ Input `q_var` is `quantile(var, probs = q)`.
+```
+]
+
+---
+# What if we want to change the variable
+
+There are more "official" ways to deal with this that are beyond the scope of this class, but there's usually a workaround to be able to write your variable name as a character string instead.
+
+Consider that we can rename a variable using the `rename()` function, which **is** a function that can take variable names in quotes:
+
+```r
+nlsy %&gt;%
+  rename(eyeglasses = "glasses")
+```
+
+```
+## # A tibble: 1,205 x 10
+##   eyeglasses eyesight sleep_wkdy sleep_wknd    id nsibs  samp race_eth   sex region
+##        &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1          0        1          5          7     3     3     5        3     2      1
+## 2          1        2          6          7     6     1     1        3     1      1
+## 3          0        2          7          9     8     7     6        3     2      1
+## 4          1        3          6          7    16     3     5        3     2      1
+## 5          0        3         10         10    18     2     1        3     1      3
+## 6          1        2          7          8    20     2     5        3     2      1
+## 7          0        1          8          8    27     1     5        3     2      1
+## # … with 1,198 more rows
+```
+
+---
+# What if we want to change the variable
+Let's just rename the variable we want to `new_var`, then we can pass the variable `new_var` to any function we want:
+
+```r
+var_q &lt;- function(q, `var`) {
+  quant &lt;- nlsy %&gt;%
+*   rename(new_var = var) %&gt;%
+    summarize(q_var = quantile(`new_var`, probs = q))
+  return(quant)
+}
+var_q(q = 0.5, var = "income")
+```
+
+```
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1 11155
+```
+
+---
+# Use our function on any combination of `var` and `q`
+.large[
+
+```r
+var_q(q = 0.25, var = "sleep_wkdy")
+```
+
+```
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1     6
+```
+]
+
+---
+count:true
+# Use our function on any combination of `var` and `q`
+.large[
+
+```r
+var_q(q = 0.95, var = "nsibs")
+```
+
+```
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1     9
+```
+]
+
+---
+# Changing a grouping variable
+.midi[
+We might run into the same problem with wanting to change a variable, if, say, we want to calculate the mean for a number of different variables:
+
+```r
+nlsy %&gt;% group_by(sex) %&gt;% summarize(mean_inc = mean(income))
+```
+
+```
+## # A tibble: 2 x 2
+##     sex mean_inc
+##   &lt;dbl&gt;    &lt;dbl&gt;
+## 1     1   16690.
+## 2     2   14292.
+```
+
+```r
+nlsy %&gt;% group_by(glasses) %&gt;% summarize(mean_inc = mean(income))
+```
+
+```
+## # A tibble: 2 x 2
+##   glasses mean_inc
+##     &lt;dbl&gt;    &lt;dbl&gt;
+## 1       0   13853.
+## 2       1   16626.
+```
+It will be your job in the exercises to write a function to do this!
+]
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+2
+]
+]
+.hand-large[
+&lt;br&gt;
+Your turn...
+]
+.exercise[
+Exercises 5.2: Write a function to calculate grouped means.
+]
+
+
+---
+# Repeating functions
+
+Often we want to repeat functions, or some procedure, over and over again.
+
+One option which you may be familiar with from other programming languages is a **for loop**:
+
+.large[
+
+```r
+for (i in 1:3) {
+  print(i)
+}
+```
+
+```
+## [1] 1
+## [1] 2
+## [1] 3
+```
+]
+
+---
+# Structure of a for loop
+.large[
+
+```r
+for (i in vals) {
+  something(i) # do things here!
+}
+```
+]
+
+---
+# If we want to print our results to the console, we have to use the `print()` function
+
+```r
+qs &lt;- c(0.1, 0.5, 0.9)
+for (i in qs) {
+  `print`(var_q(q = i, var = "income"))
+}
+```
+
+```
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1 3177.
+## # A tibble: 1 x 1
+##   q_var
+##   &lt;dbl&gt;
+## 1 11155
+## # A tibble: 1 x 1
+##    q_var
+##    &lt;dbl&gt;
+## 1 33024.
+```
+
+---
+# If we want to save our results, we should set up an empty object to do so
+.large[
+
+```r
+results &lt;- rep(NA, 3)
+
+for (i in 1:3) {
+  results[[i]] &lt;- i * 1.5
+}
+results
+```
+
+```
+## [1] 1.5 3.0 4.5
+```
+]
+
+---
+# What just happened?
+.large[
+
+```r
+results &lt;- rep(NA, 3)
+results # empty vector of NAs
+```
+
+```
+## [1] NA NA NA
+```
+
+```r
+for (i in 1:3) {
+  # fill the i'th entry with 
+  # the value i times 1.5
+  results[[i]] &lt;- i * 1.5 
+}
+results
+```
+
+```
+## [1] 1.5 3.0 4.5
+```
+]
+
+---
+# Quick detour back to our function
+
+Let's return just the `q_var` column, not the whole tibble that was created (since this function is really just calculating one number)
+- The `pull()` function pulls off a vector; in this case, one number
+
+
+```r
+var_q_new &lt;- function(q, var) {
+  quant &lt;- nlsy %&gt;%
+    rename(new_var = var) %&gt;%
+    summarize(q_var = quantile(new_var, probs = q)) %&gt;%
+    `pull`(q_var)
+  return(quant)
+}
+var_q_new(q = 0.5, var = "income")
+```
+
+```
+##   50% 
+## 11155
+```
+
+---
+# If we want to calculate all the deciles of income
+
+We're going to want to calculate 10 values for 10 different arguments to quantile.
+
+- Here are the arguments we're going to cycle through:
+
+.large[
+
+```r
+# use seq to generate values from
+# 0.1 to 0.9, skipping along by 0.1
+qs &lt;- `seq`(0.1, 0.9, by = 0.1)
+qs
+```
+
+```
+## [1] 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+```
+]
+
+---
+# How are we going to cycle through `qs`?
+The `seq_along` function is the best way to go from 1 to the length of your vector:
+.large[
+
+```r
+seq_along(qs)
+```
+
+```
+## [1] 1 2 3 4 5 6 7 8 9
+```
+]
+We can extract the value from `qs` that we want with whatever value `i` is at:
+.large[
+
+```r
+i &lt;- 4 # (for example)
+qs[[i]]
+```
+
+```
+## [1] 0.4
+```
+]
+
+---
+# Where are we going to store these 10 numbers?
+.large[
+
+```r
+# use length() to get the right number of
+# empty values without even thinking!
+deciles &lt;- rep(NA, `length`(qs))
+deciles
+```
+
+```
+## [1] NA NA NA NA NA NA NA NA NA
+```
+]
+We can access these with `i` as well:
+.large[
+
+```r
+deciles[[i]] # 4th NA, since i is currently 4
+```
+
+```
+## [1] NA
+```
+]
+
+---
+# Putting it all together
+.large[
+
+```r
+for (i in seq_along(qs)) {
+  deciles[[i]] &lt;- var_q_new(q = qs[[i]], 
+                        var = "income")
+}
+deciles
+```
+
+```
+## [1]  3177.2  5025.6  6907.2  9000.0 11155.0 14000.0 18053.6 23800.0 33024.0
+```
+]
+
+---
+# Notes on for loops
+
+- The `i` is arbitrary... you can cycle through whatever variable you want, you don't have to call it `i`!
+
+- People may try to tell you that for loops in R are slow. This is generally only true if you don't make an empty vector or matrix to hold your results ahead of time.
+
+- That said, there's often a more concise and readable equivalent to a for loop in R. The `apply()` family of functions is one option (brief guide [here](https://petewerner.blogspot.com/2012/12/using-apply-sapply-lapply-in-r.html)), but I have started exclusively using the `purrr` package and its `map()` family. The ["iteration" chapter](https://r4ds.had.co.nz/iteration.html) in the R for Data Science book is highly recommended.
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+3
+]
+]
+.hand-large[
+&lt;br&gt;
+Your turn...
+]
+.exercise[
+Exercises 5.3: Write a for loop.
+]
+
+---
+# Other options
+
+This class introduced you to the basics... but there are usually easier/more efficient ways to do everything. I'll show you some examples of some more advanced topics that you can look more into on your own.
+
+- You'll know they exist, so come back when you're ready for them!
+
+---
+# Summarize multiple variables with multiple functions
+.large[
+
+```r
+nlsy %&gt;%
+  summarize(across(contains("sleep"), 
+            list(med = median, sd = sd)))
+```
+
+```
+## # A tibble: 1 x 4
+##   sleep_wkdy_med sleep_wkdy_sd sleep_wknd_med sleep_wknd_sd
+##            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+## 1              7          1.34              7          1.50
+```
+]
+
+---
+# Summarize all numeric variables at once
+
+.large[
+
+```r
+nlsy %&gt;%
+  summarize(across(where(is.numeric), mean))
+```
+
+```
+## # A tibble: 1 x 14
+##   glasses eyesight sleep_wkdy sleep_wknd    id nsibs  samp race_eth   sex region income
+##     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1   0.518     1.99       6.64       7.27 5229.  3.94  7.00     2.40  1.58   2.59 15289.
+## # … with 3 more variables: res_1980 &lt;dbl&gt;, res_2002 &lt;dbl&gt;, age_bir &lt;dbl&gt;
+```
+]
+
+---
+# Make a series of consecutive variables factors
+.large[
+
+```r
+nlsy %&gt;%
+  mutate(across(c(race_eth:region), factor))
+```
+
+```
+## # A tibble: 1,205 x 14
+##    glasses eyesight sleep_wkdy sleep_wknd    id nsibs  samp race_eth sex   region income
+##      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt;
+##  1       0        1          5          7     3     3     5 3        2     1       22390
+##  2       1        2          6          7     6     1     1 3        1     1       35000
+##  3       0        2          7          9     8     7     6 3        2     1        7227
+##  4       1        3          6          7    16     3     5 3        2     1       48000
+##  5       0        3         10         10    18     2     1 3        1     3        4510
+##  6       1        2          7          8    20     2     5 3        2     1       50000
+##  7       0        1          8          8    27     1     5 3        2     1       20000
+##  8       1        1          8          8    49     6     5 3        2     1       23900
+##  9       1        2          7          8    57     1     5 3        2     1       23289
+## 10       0        1          8          8    67     1     1 3        1     1       35000
+## # … with 1,195 more rows, and 3 more variables: res_1980 &lt;dbl&gt;, res_2002 &lt;dbl&gt;,
+## #   age_bir &lt;dbl&gt;
+```
+]
+
+---
+# Rename all your variables
+.large[
+
+```r
+nlsy %&gt;%
+  rename_with(toupper)
+```
+
+```
+## # A tibble: 1,205 x 14
+##    GLASSES EYESIGHT SLEEP_WKDY SLEEP_WKND    ID NSIBS  SAMP RACE_ETH   SEX REGION INCOME
+##      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1       0        1          5          7     3     3     5        3     2      1  22390
+##  2       1        2          6          7     6     1     1        3     1      1  35000
+##  3       0        2          7          9     8     7     6        3     2      1   7227
+##  4       1        3          6          7    16     3     5        3     2      1  48000
+##  5       0        3         10         10    18     2     1        3     1      3   4510
+##  6       1        2          7          8    20     2     5        3     2      1  50000
+##  7       0        1          8          8    27     1     5        3     2      1  20000
+##  8       1        1          8          8    49     6     5        3     2      1  23900
+##  9       1        2          7          8    57     1     5        3     2      1  23289
+## 10       0        1          8          8    67     1     1        3     1      1  35000
+## # … with 1,195 more rows, and 3 more variables: RES_1980 &lt;dbl&gt;, RES_2002 &lt;dbl&gt;,
+## #   AGE_BIR &lt;dbl&gt;
+```
+]
+
+---
+# Resources
+
+- [Vignette](https://dplyr.tidyverse.org/articles/colwise.html) about applying function to multiple columns
+- [Vignette](https://dplyr.tidyverse.org/articles/rowwise.html) about summarizing across rows
+- Two videos about some more advanced topics that allow us to pass variable names to functions: https://www.youtube.com/watch?v=nERXS3ssntw and https://www.youtube.com/watch?v=2-gknoyjL3A
+- Blog post on the `apply()` family of functions: https://petewerner.blogspot.com/2012/12/using-apply-sapply-lapply-in-r.html
+- Video tutorial on the `map()` family of functions: https://resources.rstudio.com/wistia-rstudio-conf-2017/happy-r-users-purrr-tutorial-charlotte-wickham
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+4
+]
+]
+.hand-large[
+Your turn...
+]
+.exercise[
+Exercises 5.4: Choose one of the resources -- from any of the lectures -- that you haven't looked through yet and read through it.
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"countIncrementalSlides": false,
+"highlightStyle": "color-brewer",
+"highlightLines": true,
+"highlightSpans": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
