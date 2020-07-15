@@ -32,24 +32,24 @@ output:
 <div id="install-r" class="section level3 unnumbered">
 <h3>Install R</h3>
 <p>First, install R at this link: <a href="https://cran.r-project.org/mirrors.html">https://cran.r-project.org/mirrors.html</a>. Choose a mirror approximately close to you geographically, and then choose the option corresponding to your operating system:</p>
-<p><img src="../../slides/img/download-R.png" /></p>
+<p><img src="../../img/download-R.png" /></p>
 <p>Follow all the operating system-specific instructions.</p>
 <p>Congratulations! 🥳 You have R installed! That means you could write an R script and run it. But let’s make things a lot easier by downloading RStudio, which will keep us organized and supply us with lots of shortcuts.</p>
 </div>
 <div id="install-r-studio" class="section level3 unnumbered">
 <h3>Install R Studio</h3>
 <p>You can download RStudio at this link: <a href="https://rstudio.com/products/rstudio/download/">https://rstudio.com/products/rstudio/download/</a>. Choose the RStudio Desktop free version on the left:</p>
-<p><img src="../../slides/img/rstudio-download.png" /></p>
+<p><img src="../../img/rstudio-download.png" /></p>
 <p>And then the blue download button near the top should match your operating system. If not, you can choose from the list below it.</p>
-<p><img src="../../slides/img/rstudio-2.png" /></p>
+<p><img src="../../img/rstudio-2.png" /></p>
 <p>Again follow the instructions for download. Now open up RStudio. It should automatically be connected with R!</p>
 </div>
 <div id="personalize-r-studio" class="section level3 unnumbered">
 <h3>Personalize R Studio</h3>
 <p>There’s a lot you can do to personalize RStudio. Feel free to explore all the options and do what you want with it.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> You can do a lot of personalization through the “Global Options” menu under “Tools”. Here’s what it looks like on Windows:</p>
-<p><img src="../../slides/img/global-options.png" /></p>
+<p><img src="../../img/global-options.png" /></p>
 <p>🛑 One change that I will <strong>request</strong> that you make is to change what RStudio does when you restart R. You want your settings to look like this:</p>
-<p><img src="../../slides/img/workspace-option.png" /></p>
+<p><img src="../../img/workspace-option.png" /></p>
 <p>(You will have to restart RStudio.)</p>
 <p>The reason I want you to set things up this way is because it’s <em>really</em> easy to make mistakes if you let R remember the data and packages you had loaded the last time you used it.</p>
 </div>
@@ -74,12 +74,12 @@ library(tidyverse)</code></pre>
 <p>If you highlight both lines, or just put your cursor on the end of the second, and then press <code>Cmd</code>/<code>Ctrl</code> + <code>Enter</code>, the code will run. You should see some text show up in the <strong>console</strong>.</p>
 <pre class="r"><code># load packages
 library(tidyverse)</code></pre>
-<pre class="message"><code>#&gt;  ── Attaching packages ─────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre class="message"><code>#&gt;  ── Attaching packages ────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre class="message"><code>#&gt;  ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
 #&gt;  ✓ tibble  3.0.3     ✓ dplyr   1.0.0
 #&gt;  ✓ tidyr   1.1.0     ✓ stringr 1.4.0
 #&gt;  ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre class="message"><code>#&gt;  ── Conflicts ────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre class="message"><code>#&gt;  ── Conflicts ───────────────────────────────────────────────── tidyverse_conflicts() ──
 #&gt;  x dplyr::filter() masks stats::filter()
 #&gt;  x dplyr::lag()    masks stats::lag()</code></pre>
 <p>The first section is telling you which packages are actually being loaded with the “mega-package” <code>tidyverse</code>, and the second section is telling you that there are some functions loaded, specifically from the <code>dplyr</code> package, that have the same names as those in the <code>stats</code> package. The <code>stats</code> package is on that automatically is loaded with R, so you’ll always have these conflicts.</p>
@@ -117,19 +117,19 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 <ol style="list-style-type: decimal">
 <li>Save the zip file to Downloads. You should see something like this:</li>
 </ol>
-<p><img src="../../slides/img/save-download.png" /></p>
+<p><img src="../../img/save-download.png" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Go up to <code>Extract -&gt; Compressed Folder Tools -&gt; Extract All</code>, like this:</li>
 </ol>
-<p><img src="../../slides/img/extract.png" /></p>
+<p><img src="../../img/extract.png" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li>Just leave the default folder for extraction. We’ll move it later.</li>
 </ol>
-<p><img src="../../slides/img/unzip.png" /></p>
+<p><img src="../../img/unzip.png" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Now you’ll see that you’re in the <code>Downloads/01-week/</code> folder, in which there’s <em>another</em> folder called <code>01-week</code>. We want this one. You can ignore the <code>_MACOSX</code> one (that’s just there because I made it on a Mac). Move this <code>01-week</code> folder to wherever you’re keeping files for this class, e.g., in a folder called <code>R-course</code> as in the slides. (Here I’m moving it to a folder called <code>R</code> – don’t do this, name it something better!)</li>
 </ol>
-<p><img src="../../slides/img/move-unzipped.png" /></p>
+<p><img src="../../img/move-unzipped.png" /></p>
 <ol start="5" style="list-style-type: decimal">
 <li>Then, back in your downloads folder, you can delete both folders called <code>01-week</code>, because you’ve moved out the stuff you need.</li>
 </ol>
@@ -139,26 +139,26 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 <ol style="list-style-type: decimal">
 <li>Go to <code>Downloads</code>, or wherever you have files set to download. You’ll see something like this:</li>
 </ol>
-<p><img src="../../slides/img/zipped-mac.png" /></p>
+<p><img src="../../img/zipped-mac.png" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Double click to unzip. You’ll now have the unzipped folder as well. Move that one to wherever you’re keeping files for this class, e.g., in a folder called <code>R-course</code> as in the slides. You can delete <code>01-week.zip</code>!</li>
 </ol>
-<p><img src="../../slides/img/zipped-mac.png" /></p>
+<p><img src="../../img/zipped-mac.png" /></p>
 </div>
 <div id="open-up-an-r-project" class="section level3 unnumbered">
 <h3>Open up an R project</h3>
 <p>Inside the <code>01-week</code> folder, you’ll see a file called <code>01-week.Rproj</code>. If you’re on Windows, it should look like this:</p>
-<p><img src="../../slides/img/rproj-file.png" /></p>
+<p><img src="../../img/rproj-file.png" /></p>
 <p>Double-clicking on it <em>should</em> open up RStudio. If not, follow these instructions:</p>
 <div id="open-up-an-r-project-in-windows" class="section level4 unnumbered">
 <h4>Open up an R project in Windows</h4>
 <p>Right-click on the file, then choose <code>Open with -&gt; Choose another app</code>. Make sure to <code>Choose another app</code> even if RStudio shows up in the <code>Open with</code> menu, because you want to change the settings for all <code>.Rproj</code> files. Find RStudio and change the settings like this:</p>
-<p><img src="../../slides/img/Rproj-open-windows.png" /></p>
+<p><img src="../../img/Rproj-open-windows.png" /></p>
 </div>
 <div id="open-up-an-r-project-on-a-mac" class="section level4 unnumbered">
 <h4>Open up an R project on a Mac</h4>
 <p><em>Don’t</em> do right-click -&gt; <code>Open with</code> because you want to change the settings for all files. Instead, right-click -&gt; <code>Get info</code> (right-click for you may be a two-fingered click on a trackpad, or <code>cmd</code>/<code>ctrl +</code> click). Go down to <code>Open with</code>, find RStudio, and then make sure to check <code>Change all</code> so you don’t have to do this again:</p>
-<p><img src="../../slides/img/Rproj-open-mac.png" /></p>
+<p><img src="../../img/Rproj-open-mac.png" /></p>
 </div>
 </div>
 <div id="folder-structure" class="section level3 unnumbered">
@@ -171,7 +171,7 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 <li><code>01-todo.R</code>: This is the R script you’ll be working with in the next session!</li>
 </ul>
 <p>Also check to make sure that you’re in the correct working directory. You can find that at the top of your console pane. It should look something like this:<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
-<p><img src="../../slides/img/working-directory.png" /></p>
+<p><img src="../../img/working-directory.png" /></p>
 <p>If not, you didn’t open RStudio via the <code>01-week.Rproj</code> file. 🤦 Close RStudio and try again!</p>
 </div>
 </div>

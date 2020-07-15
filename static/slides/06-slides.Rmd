@@ -1,6 +1,6 @@
 ---
 title: "Introduction to R"
-subtitle: "Week 6: Putting at all together"  
+subtitle: "Week 6: Analyze your data"  
 author: "Louisa Smith"
 date: "August 17 - August 21"
 output:
@@ -84,6 +84,15 @@ library(tableone)
 library(broom)
 library(splines)
 ```
+.hand-large[
+Let's put it
+]
+.larger[
+ALL
+]
+.hand-large[
+together
+]
 
 ---
 # Agenda
@@ -143,7 +152,7 @@ my-project/
 ---
 # Referring to files with the `here` package
 
-.pull-left[
+.pull-left[.midi[
 ```{r, eval = FALSE}
 source(here::here("code", "functions.R"))
 
@@ -156,7 +165,7 @@ ggsave(plot = p,
        filename = here::here(
        "results", "figures", "fig.pdf"))
 ```
-]
+]]
 .pull-right[
 - The `here` package lets you refer to files without worrying too much about relative paths.
 
@@ -168,9 +177,8 @@ ggsave(plot = p,
 ]
 
 ---
-class:big-code
 # Referring to the `here` package
-
+.midi[
 ```{r, eval = FALSE}
 here::here()
 ```
@@ -182,7 +190,16 @@ here()
 ```
 I just prefer to write out the package name whenever I need it, but you can load the package for your entire session if you want.
 
-#### Note that you can refer to any function without loading the whole package this way, e.g. `tableone::CreateTableOne()` instead of `library(tableone); CreateTableOne()`
+Note that you can refer to any function without loading the whole package this way:
+```{r, eval=FALSE}
+tableone::CreateTableOne()
+```
+is the same as
+```{r, eval=FALSE}
+library(tableone)
+CreateTableOne()
+```
+]
 
 ---
 class: big-code
@@ -190,24 +207,26 @@ class: big-code
 
 Will run code from another file.
 ```{r, eval = FALSE}
+# run the code in script.R, assuming it's in my current working directory
 source("script.R")
+
+# run the code in my-project/code/functions.R from wherever I am in my-project
 source(here::here("code", "functions.R"))
 ```
-All the objects will be created, packages loaded, etc. as if you had run the code directly.
+All the objects will be created, packages loaded, etc. as if you had run the code directly from the console.
 
 ---
-class: big-code
 # The `source()` function
 
 Can even run code directly from a URL.
-```
-source("https://raw.githubusercontent.com/
-       louisahsmith/intro-to-R/master/day1/
-       day1-script1.R")
+```{r, eval=FALSE}
+source("https://raw.githubusercontent.com/louisahsmith/intro-to-R-2020/master/static/exercises/01-week/01-todo.R")
 ```
 ```{r, error = TRUE, echo = FALSE}
 source("https://raw.githubusercontent.com/louisahsmith/intro-to-R/master/day1/day1-script1.R")
 ```
+
+Remember the first week when I had you generating errors on purpose?
 
 - Reading code from another file can make it a bit harder to debug.
 
@@ -220,19 +239,19 @@ You could also begin your scripts by reading in your data via a data-cleaning fi
 
 Each of these have different arguments that will allow you to read in specific columns only, skip rows, give the variables names, etc. There are also better options out there if your dataset is really big (look into the `data.table` or the `vroom` package), and if you have other types of data.
 ```{r, eval = FALSE}
-# the readr functions are loaded with library(tidyverse)
-dat <- readr::read_csv(`"data.csv"`)
-dat <- readr::read_table(`"data.dat"`)
-# saved as an R object with write_rds()
-dat <- readr::read_rds(`"data.rds"`)
+library(tidyverse)
+dat <- read_csv(`"data.csv"`)
+dat <- read_table(`"data.dat"`)
+dat <- read_rds(`"data.rds"`)
 dat <- readxl::read_excel(`"data.xlsx"`)
 dat <- haven::read_sas(`"data.sas7bdat"`)
 dat <- haven::read_stata(`"data.dta"`)
+dat <- googlesheets4::read_sheet(`"sheet-id"`)
 ```
 
 ---
 # Saving your data
-Once you've cleaned your data and created your dataset, you probably want to save another copy so you don't need to perform all your data cleaning functions every time you read it in.
+But once you've cleaned your data and created your dataset, you probably just want to save a copy so you don't need to perform all your data cleaning functions every time you want to use it.
 
 - You can basically do the opposite of most of the `read` functions: `write`.
 
@@ -240,15 +259,84 @@ Once you've cleaned your data and created your dataset, you probably want to sav
 
 - If I'm sharing data, I usually use `write_csv()`.
 
-Note: these are the tidyverse versions of the functions, which have better defaults, are more consistent, and are just more likely to do what you want. The "base R" versions are: `read.csv()`, `write.csv()`, `readRDS()` and `saveRDS()`.
----
-class:inverse middle center
-# Walk through the code so far and ask questions as needed
-
-Exercises saved for a final challenge!
+Note: these are the `tidyverse` versions of the functions, which have better defaults, are more consistent, and are just more likely to do what you want. The "base R" versions are: `read.csv()`, `write.csv()`, `readRDS()` and `saveRDS()`.
 
 ---
-class:big-code
+# Analysis plan
+
+So my process might look like this:
+
+#### 1. Clean the raw data in `code/clean_data.R`
+
+```{r, eval = FALSE}
+# read in the raw dataset my collaborators gave me
+dat <- read_csv(here::here("data", "raw", "dataset.csv"))
+
+# do whatever cleaning/subsetting I need to
+newdat <- dat %>%
+  mutate(new_var = var * 2) %>%
+  filter(age >= 40) %>%
+  select(age, new_var)
+
+# save as an r object for later analysis
+write_rds(newdat, here::here("data", "processed", "over_40.rds"))
+```
+
+---
+# Analysis plan
+<br>
+
+#### 2. In `code/main_analysis.R`, read in the clean data
+
+```{r, eval = FALSE}
+dat <- read_rds(here::here("data", "processed", "over_40.rds"))
+
+# run a linear regression model
+model <- lm(new_var ~ age, data = dat)
+
+# save the model for making tables and figures later
+write_rds(model, here::here("results", "output", "linear_mod.rds"))
+```
+
+---
+# Analysis plan
+<br>
+
+#### 3. In `code/make_tables.R`, make some tables
+
+```{r, eval = FALSE}
+dat <- read_rds(here::here("data", "processed", "over_40.rds"))
+mod <- read_rds(here::here("data", "output", "linear_mod.rds"))
+
+# make a table 1
+tab1 <- tableone::CreateTableOne(..., data = dat)
+
+# make a table of analysis results
+tab2 <- broom::tidy(model)
+```
+
+Depending on my needs, I might read these tables into an RMarkdown document, save them to a `.csv` file, etc.
+
+Now on to making figures, etc....
+
+---
+class: inverse
+
+.pull-left[
+.huge-number[
+1
+]
+]
+.hand-large[
+<br>
+Your turn...
+]
+.exercise[
+Exercises 6.1: Change the file paths so the document knits.
+]
+
+---
+
 # Missing values
 
 - R uses `NA` for missing values
@@ -256,13 +344,13 @@ class:big-code
   - This makes it somewhat harder to deal with but also harder to make mistakes
 
 ```{r}
-NA > 3
+3 < NA
 mean(c(1, 2, NA))
 mean(c(1, 2, NA), na.rm = TRUE)
 ```
 
 ---
-class:big-code
+
 # Special `NA` functions
 Certain functions deal with missing values explicitly
 ```{r}
@@ -280,11 +368,13 @@ c(1,2)
 ---
 # Creating `NA`s with `na_if()`
 
-You might read in data that has been created in another program or has special values to indicate missingness.
+.midi[
+You might read in data that has special values to indicate missingness.
 
-For example, in the NLSY data, -1 = Refused, -2 = Don't know, -3 = Invalid missing, -4 = Valid missing, -5 = Non-interview
+In NLSY, -1 = Refused, -2 = Don't know, -3 = Invalid missing, -4 = Valid missing, -5 = Non-interview
+]
 
-.pull-left[
+.pull-left-wide[
 ```{r, echo = FALSE}
 colnames_nlsy <- c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
                     "id", "nsibs", "samp", "race_eth", "sex", "region", 
@@ -299,53 +389,78 @@ nlsy_na <- nlsy %>% `na_if`(-1) %>% `na_if`(-2) %>%
 nlsy_na[1, c("id", "glasses", "age_bir")]
 ```
 ]
-.pull-right[
+.pull-right-narrow[.midi[
 This is obviously a bit annoying if you have a lot of values that indicate missingness. In that case, you may want to look into the [naniar package](https://cran.r-project.org/web/packages/naniar/vignettes/replace-with-na.html).
-]
+]]
 
 ---
-class:big-code
+
 # More `na_if()`
 
 The `na_if()` strategy is generally the most useful if you're determining NA's over the course of your analysis, or if you have different NA values for different variables.
 
 ```{r}
+# we decide that person 2 is a mistake...
 nlsy_bad <- nlsy %>% 
-  mutate(id = na_if(id, 1))
-nlsy_bad[1:2, c("id", "glasses", "age_bir")]
+  mutate(id = na_if(id, 2))
+nlsy_bad[1:3, c("id", "glasses", "age_bir")]
 ```
 
 ---
-class:big-code
-# Read in NA's directly
+
+# Better: read in NA's directly
 
 Or, if you know a priori which values indicate missingness (e.g., "."), you can specify that when reading in the data.
 
-```{r}
+.large[
+```{r, echo = FALSE}
 nlsy <- read_csv(here::here("static", "data", "nlsy.csv"), 
+          col_names = colnames_nlsy, skip = 1,
+          na = c("-1", "-2", "-3", "-4", "-5"))
+```
+```{r, eval = FALSE}
+nlsy <- read_csv(here::here("data", "nlsy.csv"), 
           col_names = colnames_nlsy, skip = 1,
           na = c("-1", "-2", "-3", "-4", "-5")) #<<
 ```
-#### (You have to write the values as strings, even if they're numbers)
+]
+
+- You have to write the values as strings, even if they're numbers
+- Caveat: This way you use the info about the reason for missingness. If that's important, read in the data first, create a variable for missingness reason (e.g., use `fct_recode()`), then changes the values to `NA`.
 
 ---
 # Complete cases
 
+.midi[
 Sometimes you may just want to get rid of all the rows with missing values.
-#### Don't do this without good reason!
+
 ```{r, message = FALSE}
 nrow(nlsy)
 nlsy_cc <- nlsy %>% filter(`complete.cases`(nlsy))
 nrow(nlsy_cc)
-nlsy2 <- nlsy %>% select(id, glasses, eyesight) %>% `na.omit`()
+nlsy2 <- nlsy %>% `na.omit`()
 nrow(nlsy2)
 ```
+]
+
+.go[Don't do this without good reason!]
 
 ---
-class:inverse middle center
-# Walk through the code so far and ask questions as needed
+class: inverse
 
-Exercises saved for a final challenge!
+.pull-left[
+.huge-number[
+2
+]
+]
+.hand-large[
+<br>
+Your turn...
+]
+.exercise[
+Exercises 6.2: Create and exclude observations based on missing values.
+]
+
 
 ---
 # Sharing your results
@@ -360,12 +475,12 @@ nlsy_clean <- nlsy %>%
     eyesight = factor(eyesight, labels = c("Excellent", "Very Good", "Good", "Fair", "Poor")),
     race_eth = factor(race_eth, labels = c("Hispanic", "Non-Hispanic Black", "Non-Black, Non-Hispanic"))
   )
-write_rds(nlsy_clean, here::here("static", "data", "nlsy.csv"))
+write_rds(nlsy_clean, here::here("static", "data", "nlsy_clean.rds"))
 ```
 ```{r, eval = FALSE}
 # load packages
 library(tidyverse)
-# must install if haven't already
+# must install with install.packages if haven't already
 library(broom) # for making pretty model output
 library(splines) # for adding splines
 
@@ -373,8 +488,10 @@ library(splines) # for adding splines
 nlsy_clean <- read_rds(here::here("data", "nlsy_clean.rds"))
 ```
 
+- We're not going into many details because this isn't actually a statistical analysis class, but the [broom package](https://broom.tidymodels.org) is very helpful for regression model results!
+
 ---
-# Quick analysis, cont.
+# Quick regression overview
 
 Model formulas will automatically make indicator variables for factors, with the first level the reference. An intercept will be included unless suppressed with `y ~ -1 + x`.
 ```{r, echo = FALSE}
@@ -401,34 +518,39 @@ mod_pois <- `glm`(nsibs ~ sleep_wkdy + sleep_wknd,
 ```
 You can use the `survival` package for time-to-event models.
 ---
-class:big-code
-# Quick analysis, cont.
+
+# Quick regression overview, cont.
 
 - Create interactions with `*` (will automatically include main terms too).
 
-- Create polynomial terms with `I(x^2)`.
+- Create polynomial terms with, e.g., `I(x^2)`.
 
-- Create splines with the splines package and the `ns()` function.
+- Create splines with the splines package and the `ns()` functions (or other packages/functions).
 
 ```{r, eval = FALSE}
-mod_big <- glm(log_inc ~ sex * age_bir +
-                 nsibs + I(nsibs^2) +
-                 ns(sleep_wkdy, knots = 3),
-          family = gaussian(link = "identity"),
-          data = nlsy_clean)
+mod_big <- glm(log_inc ~ sex `*` age_bir +
+                         nsibs + 
+                         `I`(nsibs^2) +
+                         `ns`(sleep_wkdy, knots = 3),
+               family = gaussian(link = "identity"),
+               data = nlsy_clean)
 ```
+
+- Like the `tidyverse` packages, you don't need to quote the variable names or use `data$variable` notation in model formulas
 
 ---
 # Look at results
 
+.midi[
 ```{r}
 summary(mod_log)
 ```
+]
 
 ---
 # Look at results
 
-Or use the `tidy()` function from the `broom` package, which nicely summarizes all types of models.
+Or use the `tidy()` function from the `broom` package, which nicely summarizes all sorts of models.
 ```{r}
 # from the broom package
 tidy(mod_log)
@@ -437,23 +559,49 @@ tidy(mod_log)
 ---
 # Pull off a coefficient
 
+
 ```{r}
 coef(mod_log)
+```
+.pull-left-narrow[
+```{r}
 coef(mod_log)[6]
+```
+]
+.pull-right-wide[
+```{r}
 tidy(mod_log) %>% slice(6) %>% pull(estimate)
+```
+]
+
+Reminder: if you have a model $\beta_0 + \beta_1x_1 +$ etc., coefficient 6 is really $\beta_5$!
+
+---
+# Pull off a coefficient by name
+
+
+```{r}
+coef(mod_log)["sexFemale"]
+tidy(mod_log) %>% filter(term == "sexFemale") %>% pull(estimate)
 ```
 
 ---
 # Creating new values
 
-But you can create new values in this dataframe!
+.midi[
+Since it's just a tibble/dataframe, you can create new columns!
+
+
 ```{r}
+# 95% confidence interval
 res_mod_log <- mod_log %>% tidy() %>% 
   mutate(lci = estimate - 1.96 * std.error,
          uci = estimate + 1.96 * std.error)
 res_mod_log
 ```
+
 We could also clean up the `term` variable, perhaps with `fct_recode()`.
+]
 
 ---
 # Calculating ORs
@@ -463,13 +611,15 @@ Since these are results from a logistic regression, we'll probably want to expon
 ```{r}
 res_mod_log <- res_mod_log %>% select(term, estimate, lci, uci) %>%
   filter(term != "(Intercept)") %>%
-  `mutate_at`(vars(estimate, lci, uci), exp)
+  # exponentiate all three columns at once!
+  mutate(across(c(estimate, lci, uci), exp))
 res_mod_log
 ```
 
 ---
 # Confidence intervals with `str_glue()`
 
+.midi[
 Now we want to combine the lower and upper CI limits.
 
 ```{r}
@@ -477,14 +627,16 @@ res_mod_log %>% select(term, estimate, lci, uci) %>%
   filter(term != "(Intercept)") %>%
   mutate(ci = `str_glue`("({lci}, {uci})"))
 ```
-We can paste text and R code together with `str_glue()`. Everything goes in quotation marks. R code to be evaluated goes in `{}`.
+We can paste text and R code (within `{}`) together with `str_glue()`. Everything goes in quotation marks.
 
-- Which means we can use the `round()` function within the curly braces too!
+- This means we can use the `round()` function within the curly braces too!
+]
 
 ---
 
 # More `str_glue()`
 
+.midi[
 You can paste any R expression you want evaluated in the curly braces.
 
 You can break up chunks of your string to make it easier to read in your code.
@@ -497,19 +649,17 @@ str_glue(
 )
 ```
 
-More functions are available in the `glue` package. For example, you could make the right-hand side of a model like this:
+More functions are available in the `glue` package. For example, you could write a nice list of the regions in the data like this:
 
 ```{r}
-glue::glue_collapse(
-  c("age_bir", "sex", "nsibs", "race_eth"),
-  sep = " + "
-)
+glue::glue_collapse(levels(nlsy_clean$region), sep = ", ", last = ", and ")
 ```
+]
 
 ---
 # Better: Create a function
 
-We want to take these values and print "OR (95% CI LCI, UCI)" for each one. Let's make a function to put together everything we've done so far!
+We want to take these values and print "OR (95% CI *LCI*, *UCI*)" for each one. Let's make a function to put together everything we've done so far!
 
 ```{r}
 ci_func <- function(estimate, lci, uci) {
@@ -527,21 +677,38 @@ ci_func(.2523421, -.142433, .851234)
 
 ---
 # From start to finish
+
+.midi[
 ```{r}
-new_mod <- glm(glasses ~ eyesight*sex, family = binomial(link = "logit"),
+new_mod <- glm(glasses ~ eyesight + sex, family = binomial(link = "logit"),
                data = nlsy_clean)
-new_mod %>% tidy() %>%
-  filter(term != "(Intercept)") %>%
+tidy(new_mod) %>%
+  filter(term != "(Intercept)") %>% # we don't care about this term
   mutate(lci = estimate - 1.96 * std.error,
          uci = estimate + 1.96 * std.error,
          OR = ci_func(estimate, lci, uci),
-         p.value = scales::pvalue(p.value)) %>%
+         p.value = scales::pvalue(p.value)) %>% # for formatting p-values
   select(term, OR, p.value)
 ```
-So, the `tidy()` function could have actually done the exponentiating and confidence interval calculating for us. See `help(tidy.glm)` for more details. But much better to do it ourselves 😉
+]
+
+.footnote[If you want 2 decimal places no matter what, use something like `format(round(x, digits = 2), nsmall = 2)`]
 
 ---
-class: inverse
+# Important R lesson
+
+#### Whatever you want to write code to do, someone else has already probably done it
+
+The `tidy()` function could have actually done the exponentiating and confidence interval calculating for us. See `help(tidy.glm)`. But much more fun to do it ourselves 😉
+
+```{r}
+tidy(new_mod, conf.int = TRUE, exponentiate = TRUE)
+```
+
+.footnote[If you're wondering why these confidence intervals differ slightly from the last slide, these are likelihood-based and ours were Wald confidence intervals. Don't worry if you don't know what this means!]
+
+---
+
 # Final challenge
 ## Data analysis from start to finish
 
@@ -550,9 +717,13 @@ class: inverse
 3. Do some exploratory analysis (table 1, figure)
 4. Do some regression analysis (results table, figure)
 
+.large[.go[You can do it!]]
+
 ---
 
 # Prepare your project
+
+#### Do something totally outside the folders you've used for the course material!
 
 - File -> New Project -> New Directory -> New Project
 - Name it something like NLSY and put it in an appropriate folder on your computer
@@ -573,18 +744,10 @@ NLSY/
 ---
 # Prepare the data
 
-- Copy and paste `nlsy.csv` into `data/raw`.
+- Download the linked dataset and save into `data/raw`.
 - Create a new file and save it as `clean_data.R`.
-- In that file, read in the NLSY data and load any packages you need. Make sure you replace any missing values with NA. Hint: there are extra missnig values in the `age_bir` variable. Also, the variable names might be useful: 
-
-```{r}
-colnames_nlsy <- c(
-  "glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
-  "id", "nsibs", "samp", "race_eth", "sex", "region",
-  "income", "res_1980", "res_2002", "age_bir"
-)
-```
-- Add factor labels to `eyesight`, `sex`, `race_eth`, `region`, as in earlier slides. Select those variables plus `income`, `id`, `nsibs`, `age_bir`, and the sleep variables. Then restrict to complete cases and people with incomes < $30,000. Make a variable for the log of income (replace with NA if income <= 0).
+- In that file, read in the NLSY data and load any packages you need. Make sure you replace any missing values with NA. Hint: there are extra missing values in the some variables.
+- Add factor labels as necessary. Select the factor variables plus `income`, `id`, and 2 others of your choosing. Then restrict to complete cases and people with incomes < $30,000. Make a variable for the log of income (replace with NA if income <= 0).
 - Also in that file, save your new dataset as a `.rds` file to the `data/processed` folder.
   
 ---
@@ -600,7 +763,7 @@ write_csv(tab1, ...)
 ---
 # Do some regression analysis
 
-- In another file called `lin_reg.R`, read in the data and run the following linear regression: `lm(log_inc ~ age_bir + sex + race_eth + nsibs, data = nlsy)`. Modify the CI function to produce a table of results for a *linear* regression. Add an argument `digits = `, with a default of 2, to allow you to choose the number of digits you'd like. Save it in a separate file called `functions.R`. Use `source()` to read in the function at the beginning of your script.
+- In another file called `lin_reg.R`, read in the data and run the following linear regression: `lm(log_inc ~ sex + race_eth +{other variables of your choosing}, data = nlsy)`. Modify the CI function to produce a table of results for a *linear* regression. Add an argument `digits = `, with a default of 2, to allow you to choose the number of digits you'd like. Save it in a separate file called `functions.R`. Use `source()` to read in the function at the beginning of your script.
 - Save a table of your results as a `.csv` file. Make the names of the coefficients nice!
 - Using the results, use `ggplot` to make a figure. Use `geom_point()` for the point estimates and `geom_errorbar()` for the confidence intervals. It will look something like this:
 ```{r, eval = FALSE}
@@ -613,7 +776,6 @@ ggplot(data) +
 ---
 # Appendix: some other packages I like but haven't mentioned
 
-- `rmarkdown`: I write most of my documents (manuscripts, slides, homeworks) in RMarkdown. I couldn't live without it. (https://rmarkdown.rstudio.com)
 - `lubridate`: Work with dates and times really easily. (https://lubridate.tidyverse.org)
 - `janitor`: Helps clean variable names, etc. (http://sfirke.github.io/janitor/)
 - `furrr`: Speed up your code with parallel processing. (https://davisvaughan.github.io/furrr/)
@@ -626,12 +788,13 @@ class: inverse
 
 .pull-left[
 .huge-number[
-4
+3
 ]
 ]
 .hand-large[
+<br>
 Your turn...
 ]
 .exercise[
-Exercises 5.4: Choose one of the resources -- from any of the lectures -- that you haven't looked through yet and read through it.
+Exercises 6.3: Work through the challenge!
 ]

@@ -173,10 +173,11 @@ ggplot(data = {data}) +
 - `"value"`: a fixed value that defines some characteristic of the figure; e.g., "red", 10, "dashed"
 - ... : there are numerous other options to discover!
 ]
+
 ---
 class:middle, center
 # ggplot builds figures by adding on pieces via a particular "*g*rammar of *g*raphics"
-![](img/grammar.png)
+![](../img/grammar.png)
 
 ---
 count: false
@@ -416,7 +417,7 @@ ggplot(data = nlsy) +
 
 ---
 ```{r, echo = FALSE, out.width = "95%", fig.align="center"}
-knitr::include_graphics("img/geoms.png")
+knitr::include_graphics("../img/geoms.png")
 ```
 <!-- - A helpful reference can also be found here: http://sape.inf.usi.ch/quick-reference/ggplot2/geom -->
 
@@ -682,7 +683,7 @@ One of the most useful features of `ggplot2` is the ability to "facet" a graph b
 You might use this to show results for a lot of outcomes or exposures at once, for example, or see how some relationship differs by something like age or geographic region
 
 .center[
-![:scale 80%](img/facets.png)
+![:scale 80%](../img/facets.png)
 ]
 
 ---
@@ -1152,7 +1153,7 @@ ggsave(filename = "scatterplot.pdf", plot = p)
 ]
 
 .right-col[
-![](img/ggplot2.jpg)
+![](../img/ggplot2.jpg)
 ]
 
 ---

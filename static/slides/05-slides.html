@@ -263,7 +263,7 @@ CreateTableOne
 ##     class(TableOneObject) &lt;- "TableOne"
 ##     return(TableOneObject)
 ## }
-## &lt;bytecode: 0x7f94dae88138&gt;
+## &lt;bytecode: 0x7f7f75edfdc8&gt;
 ## &lt;environment: namespace:tableone&gt;
 ```
 
@@ -427,6 +427,7 @@ sum(`x`) / n
 # New mean: function body
 
 Our code seems to be doing what we want, so let's insert it. To be explicit, I've stored the answer (within the function) as `mean_val`, then returned that value.
+
 .large[
 
 ```r
@@ -487,13 +488,16 @@ prop &lt;- function(x) {
 # Testing the code
 
 Now we'll want to test on a vector of 1's and 0's.
+
 .large[
 
 ```r
 x &lt;- c(0, 1, 1)
 ```
 ]
+
 To calculate the proportion and turn it into a percentage, we'll just multiply the mean by 100.
+
 .large[
 
 ```r
@@ -509,6 +513,7 @@ multiplier * sum(x) / length(x)
 ---
 # Testing the code
 We want to give users the option to choose between a proportion and a percentage. So we'll add an argument `multiplier`. When we want to just return the proportion, we can just set `multiplier` to be 1.
+
 .large[
 
 ```r
@@ -535,6 +540,7 @@ multiplier * sum(x) / length(x)
 # Adding another argument
 
 If we add `multiplier` as an argument, we can refer to it in the function body.
+
 .large[
 
 ```r
@@ -692,7 +698,9 @@ First let's choose a value to help us write the code for the body of our functio
 q &lt;- .5
 ```
 ]
+
 Then we can write the code with reference to the variable `q`.
+
 .large[
 
 ```r
@@ -746,6 +754,7 @@ median(nlsy$age_bir)
 
 ---
 # What if we want to change the variable
+
 .midi[
 This is where things get a little tricky. It's hard to use an unquoted variable name as an argument to a function. Since it's not an object in the environment, R will complain if we try to do something like this:
 
@@ -805,6 +814,7 @@ nlsy %&gt;%
 
 ---
 # What if we want to change the variable
+
 Let's just rename the variable we want to `new_var`, then we can pass the variable `new_var` to any function we want:
 
 ```r
@@ -826,6 +836,7 @@ var_q(q = 0.5, var = "income")
 
 ---
 # Use our function on any combination of `var` and `q`
+
 .large[
 
 ```r
@@ -843,6 +854,7 @@ var_q(q = 0.25, var = "sleep_wkdy")
 ---
 count:true
 # Use our function on any combination of `var` and `q`
+
 .large[
 
 ```r
@@ -859,6 +871,7 @@ var_q(q = 0.95, var = "nsibs")
 
 ---
 # Changing a grouping variable
+
 .midi[
 We might run into the same problem with wanting to change a variable, if, say, we want to calculate the mean for a number of different variables:
 
@@ -929,6 +942,7 @@ for (i in 1:3) {
 
 ---
 # Structure of a for loop
+
 .large[
 
 ```r
@@ -940,6 +954,7 @@ for (i in vals) {
 
 ---
 # If we want to print our results to the console, we have to use the `print()` function
+
 
 ```r
 qs &lt;- c(0.1, 0.5, 0.9)
@@ -965,6 +980,7 @@ for (i in qs) {
 
 ---
 # If we want to save our results, we should set up an empty object to do so
+
 .large[
 
 ```r
@@ -1054,7 +1070,9 @@ qs
 
 ---
 # How are we going to cycle through `qs`?
+
 The `seq_along` function is the best way to go from 1 to the length of your vector:
+
 .large[
 
 ```r
@@ -1065,7 +1083,9 @@ seq_along(qs)
 ## [1] 1 2 3 4 5 6 7 8 9
 ```
 ]
+
 We can extract the value from `qs` that we want with whatever value `i` is at:
+
 .large[
 
 ```r
@@ -1093,7 +1113,9 @@ deciles
 ## [1] NA NA NA NA NA NA NA NA NA
 ```
 ]
+
 We can access these with `i` as well:
+
 .large[
 
 ```r

@@ -152,7 +152,7 @@ Sometimes this can be hard to read/keep track of.
 
 ]
 .pull-right[.center[
-![](img/todolist.jpg)
+![](../img/todolist.jpg)
 ]]
 .center[
 #### Before we add another set of functions...
@@ -169,7 +169,7 @@ R uses this as a pipe: `%>%`
 ]
 .pull-right[.center[
 
-![](img/pipe.png)
+![](../img/pipe.png)
 
 The pipe function is originally from the `magrittr` package, named after [René Magritte](https://en.wikipedia.org/wiki/The_Treachery_of_Images)
 ]]
@@ -179,7 +179,7 @@ The pipe function is originally from the `magrittr` package, named after [René 
 It's like a recipe for our dataset.
 
 ```{r, out.width = "75%", echo = FALSE}
-knitr::include_graphics("img/recipe.jpg")
+knitr::include_graphics("../img/recipe.jpg")
 ```
 
 .footnote[Example from [Lise Vaudor](http://perso.ens-lyon.fr/lise.vaudor/utiliser-des-pipes-pour-enchainer-des-instructions/)]
@@ -220,7 +220,7 @@ foo_foo %>%
 .footnote[Example from [Hadley Wickham](https://t.co/Qn4B7Kna2D?amp=1)
 ]
 .pull-right[
-![](img/bunny.jpg)
+![](../img/bunny.jpg)
 ]
 
 ---
@@ -249,7 +249,7 @@ me %>%
 ```
 ]
 .footnote[Example from [Andrew Heiss](https://twitter.com/andrewheiss/status/1173743447171354624?s=20)]
-.pull-left[.middle[.center[![](img/friday.png)
+.pull-left[.middle[.center[![](../img/friday.png)
 ]]]
 
 
