@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 
 First, install R at this link: [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html). Choose a mirror approximately close to you geographically, and then choose the option corresponding to your operating system:
 
-![](../img/download-R.png)
+![](../../slides/img/download-R.png)
 
 Follow all the operating system-specific instructions.
 
@@ -41,11 +41,11 @@ Congratulations! 🥳 You have R installed! That means you could write an R scri
 
 You can download RStudio at this link: [https://rstudio.com/products/rstudio/download/](https://rstudio.com/products/rstudio/download/). Choose the RStudio Desktop free version on the left:
 
-![](../img/rstudio-download.png)
+![](../../slides/img/rstudio-download.png)
 
 And then the blue download button near the top should match your operating system. If not, you can choose from the list below it.
 
-![](../img/rstudio-2.png)
+![](../../slides/img/rstudio-2.png)
 
 Again follow the instructions for download. Now open up RStudio. It should automatically be connected with R!
 
@@ -53,11 +53,11 @@ Again follow the instructions for download. Now open up RStudio. It should autom
 
 There's a lot you can do to personalize RStudio. Feel free to explore all the options and do what you want with it.^[For example, I use the Fira Code font. Instructions to install can be found [here](https://github.com/tonsky/FiraCode/wiki/RStudio-instructions).  Beyond the themes that come pre-installed with RStudio, there are a variety of others available with the `rsthemes` package [here](https://github.com/gadenbuie/rsthemes).  You can also make your own theme! There's more information in [this article](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes).] You can do a lot of personalization through the "Global Options" menu under "Tools". Here's what it looks like on Windows:
 
-![](../img/global-options.png)
+![](../../slides/img/global-options.png)
 
 🛑 One change that I will **request** that you make is to change what RStudio does when you restart R. You want your settings to look like this:
 
-![](../img/workspace-option.png)
+![](../../slides/img/workspace-option.png)
 
 (You will have to restart RStudio.)
 
@@ -150,19 +150,19 @@ Click [here](/exercises/01-week.zip) to download this week's files. You'll have 
 
 1. Save the zip file to Downloads. You should see something like this:
 
-![](../img/save-download.png)
+![](../../slides/img/save-download.png)
 
 2. Go up to `Extract -> Compressed Folder Tools -> Extract All`, like this:
 
-![](../img/extract.png)
+![](../../slides/img/extract.png)
 
 3. Just leave the default folder for extraction. We'll move it later.
 
-![](../img/unzip.png)
+![](../../slides/img/unzip.png)
 
 4. Now you'll see that you're in the `Downloads/01-week/` folder, in which there's *another* folder called `01-week`. We want this one. You can ignore the `_MACOSX` one (that's just there because I made it on a Mac). Move this `01-week` folder to wherever you're keeping files for this class, e.g., in a folder called `R-course` as in the slides. (Here I'm moving it to a folder called `R` -- don't do this, name it something better!)
 
-![](../img/move-unzipped.png)
+![](../../slides/img/move-unzipped.png)
 
 5. Then, back in your downloads folder, you can delete both folders called `01-week`, because you've moved out the stuff you need.
 
@@ -170,17 +170,17 @@ Click [here](/exercises/01-week.zip) to download this week's files. You'll have 
 
 1. Go to `Downloads`, or wherever you have files set to download. You'll see something like this:
 
-![](../img/zipped-mac.png)
+![](../../slides/img/zipped-mac.png)
 
 2. Double click to unzip. You'll now have the unzipped folder as well. Move that one to wherever you're keeping files for this class, e.g., in a folder called `R-course` as in the slides. You can delete `01-week.zip`!
 
-![](../img/zipped-mac.png)
+![](../../slides/img/zipped-mac.png)
 
 ### Open up an R project {-}
 
 Inside the `01-week` folder, you'll see a file called `01-week.Rproj`. If you're on Windows, it should look like this:
 
-![](../img/rproj-file.png)
+![](../../slides/img/rproj-file.png)
 
 Double-clicking on it *should* open up RStudio. If not, follow these instructions:
 
@@ -188,13 +188,13 @@ Double-clicking on it *should* open up RStudio. If not, follow these instruction
 
 Right-click on the file, then choose `Open with -> Choose another app`. Make sure to `Choose another app` even if RStudio shows up in the `Open with` menu, because you want to change the settings for all `.Rproj` files. Find RStudio and change the settings like this: 
 
-![](../img/Rproj-open-windows.png)
+![](../../slides/img/Rproj-open-windows.png)
 
 #### Open up an R project on a Mac {-}
 
 *Don't* do right-click -> `Open with` because you want to change the settings for all files. Instead, right-click -> `Get info` (right-click for you may be a two-fingered click on a trackpad, or `cmd`/`ctrl +` click). Go down to `Open with`, find RStudio, and then make sure to check `Change all` so you don't have to do this again:
 
-![](../img/Rproj-open-mac.png)
+![](../../slides/img/Rproj-open-mac.png)
 
 ### Folder structure {-}
 
@@ -207,7 +207,7 @@ Check out your files in the `Files` viewpane (one of the tabs by `Plots`). You s
 
 Also check to make sure that you're in the correct working directory. You can find that at the top of your console pane. It should look something like this:^[My "c" key wasn't working when I named the "R-course" folder!]
 
-![](../img/working-directory.png)
+![](../../slides/img/working-directory.png)
 
 If not, you didn't open RStudio via the `01-week.Rproj` file. 🤦 Close RStudio and try again!
 
