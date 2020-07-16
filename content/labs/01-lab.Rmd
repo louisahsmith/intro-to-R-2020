@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 ```
 # The basics
 
-You can either download the lab as an RMarkdown file <a href="../../labs/01-lab.Rmd" download="01-lab.Rmd">here</a>, or copy and paste the code as we go into a `.R` script. Either way, save it into the `01-week` folder where you completed the exercises!
+You can either download the lab as an RMarkdown file <a href="../../lab-handouts/01-lab.Rmd" download="01-lab.Rmd">here</a>, or copy and paste the code as we go into a `.R` script. Either way, save it into the `01-week` folder where you completed the exercises!
 
 ## Navigating RStudio
 

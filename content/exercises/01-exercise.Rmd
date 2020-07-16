@@ -144,7 +144,7 @@ You can quit RStudio and you don't have to save this file. We'll be back to figu
 
 ## Organize your files
 
-Click [here](/exercises/01-week.zip) to download this week's files. You'll have to unzip it to access the files inside. This is a little annoying if you are on Windows, but you can follow these instructions:
+Click [here](/exercise-handouts/01-week.zip) to download this week's files. You'll have to unzip it to access the files inside. This is a little annoying if you are on Windows, but you can follow these instructions:
 
 ### Unzip a folder in Windows {-}
 
