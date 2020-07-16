@@ -1,18 +1,34 @@
 ---
-class: middle center
-![](https://www.nlsinfo.org/sites/nlsinfo.org/files/images/NLSY79_0.png)
-
-We're using some data from the [National Longitudinal Survey of Youth 1979](https://www.nlsinfo.org/content/cohorts/nlsy79), a cohort of American young adults aged 14-22 at enrollment in 1979. They continue to be followed to this day, and there is a wealth of publicly available data [online](https://www.nlsinfo.org/investigator/pages/login.jsp). I've downloaded the answers to a survey question about whether respondents wear glasses, a scale about their eyesight with glasses, their (NLSY-assigned 😒) race/ethnicity, their sex, their family's income in 1979, and their age at the birth of their first child.
+title: "Exercises"
+linktitle: "3. Selecting, filtering, and mutating"
+date: "2020-07-27"
+publishdate: "2020-07-27"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=3"]
 ---
-# Read in data
-```{r}
-nlsy <- read_rds("data/nlsy_cc.rds")
-glimpse(nlsy) # handy function for skimming your data!
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = TRUE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message",
+  class.error = "message"
+)
 ```
+# The basics
 
+## Install and set up R and RStudio
 
+### Install R {-}
 
----
 #### 1. Using the NLSY data and `mutate()`, make a standardized (centered at the mean, and divided by the standard deviation) version of income.
 
 ```{r}

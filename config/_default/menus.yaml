@@ -65,10 +65,10 @@ main:
     identifier: lab-top
     url: /labs/
     weight: 5
-  # - name: Week 1
-  #   identifier: lab1
-  #   parent: lab-top
-  #   url: /labs/01-lab/
+  - name: Week 1
+    identifier: lab1
+    parent: lab-top
+    url: /labs/01-lab/
   # - name: Week 2
   #   identifier: lab2
   #   parent: lab-top
@@ -96,8 +96,6 @@ main:
     url: "https://intro-to-r-2020.slack.com"
     weight: 8
     
-
-
 
 # this is for the sidebar on each page
 # video:

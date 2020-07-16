@@ -1,0 +1,39 @@
+---
+title: "Exercises"
+linktitle: "2. Figures"
+date: "2020-07-20"
+publishdate: "2020-07-20"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=1"]
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = TRUE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message",
+  class.error = "message"
+)
+```
+# The basics
+
+## Install and set up R and RStudio
+
+### Install R {-}
+
+First, install R at this link: [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html). Choose a mirror approximately close to you geographically, and then choose the option corresponding to your operating system:
+
+![](../../img/download-R.png)
+
+Follow all the operating system-specific instructions.
+
+Congratulations! 🥳 You have R installed! That means you could write an R script and run it. But let's make things a lot easier by downloading RStudio, which will keep us organized and supply us with lots of shortcuts.
+

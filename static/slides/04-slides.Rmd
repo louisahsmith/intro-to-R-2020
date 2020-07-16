@@ -129,7 +129,7 @@ nlsy2 <- mutate(`nlsy`, only = case_when(
                               TRUE ~ "no"))
 nlsy3 <- select(`nlsy2`, id, contains("sleep"), only)
 only_kids <- filter(`nlsy3`, only == "yes")
-`only_kids`
+only_kids
 ```
 ```{r, echo = FALSE}
 nlsy2 <- mutate(nlsy, only = case_when(

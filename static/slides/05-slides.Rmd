@@ -94,13 +94,10 @@ colnames(nlsy) <- c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
 ```
 
 .hand-large[
-Let's
+Let's be
 ]
 .larger[
-summarize
-]
-.hand-large[
-our data
+efficient
 ]
 
 ---

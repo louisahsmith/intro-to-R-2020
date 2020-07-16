@@ -1,0 +1,36 @@
+---
+title: "Functions"
+linktitle: "5. Functions"
+date: "2020-08-10"
+publishdate: "2020-08-10"
+menu:
+  video:
+    weight: 6
+type: video-docs
+slides: "05-slides"
+output:
+  blogdown::html_page:
+    toc: false
+---
+
+The slides are made as  HTML files. You can flip through the slides here, open them all in a new window/tab, or download them as a PDF if you want to save them for later. To navigate through the HTML slides, use the left and right arrow keys. You can also type `?` while viewing the slides to see a list of other commands you can use.
+
+You can watch the video straight through or in sections, if you leave and come back. Note that you need to stop the video on one tab before you start another one or they'll both be playing!
+
+`r blogdown::shortcode("slide-buttons")`
+
+```{r show-slide-tabs, echo=FALSE, results="asis"}
+source(here::here("R", "slide_tabs.R"))
+
+sections <- tibble::tribble(
+  ~name, ~slide, ~active, ~youtube,
+  "Inside a function", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3",
+  "Functions with variables", "28", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1183",
+  "For loops", "39", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435",
+  "Extras", "51", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435"
+) 
+
+
+slide_tabs(sections, "/slides/05-slides.html")
+```
+

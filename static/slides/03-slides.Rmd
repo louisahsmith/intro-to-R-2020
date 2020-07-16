@@ -1,6 +1,6 @@
 ---
 title: "Introduction to R"
-subtitle: "Week 3: Data manipulation"  
+subtitle: "Week 3: Selecting, filtering, and mutating"  
 author: "Louisa Smith"
 date: "July 27 - July 31"
 output:

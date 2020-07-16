@@ -67,7 +67,7 @@ nlsy2 &lt;- mutate(`nlsy`, only = case_when(
                               TRUE ~ "no"))
 nlsy3 &lt;- select(`nlsy2`, id, contains("sleep"), only)
 only_kids &lt;- filter(`nlsy3`, only == "yes")
-`only_kids`
+only_kids
 ```
 
 ```

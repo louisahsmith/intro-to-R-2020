@@ -1,3 +1,34 @@
+---
+title: "Exercises"
+linktitle: "4. Grouping and tables"
+date: "2020-08-03"
+publishdate: "2020-08-03"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=3"]
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = TRUE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message",
+  class.error = "message"
+)
+```
+# The basics
+
+## Install and set up R and RStudio
+
+### Install R {-}
+
 # Instructions
 
 1. Create a variable called `slp_cat_wkday` categorizing weekday sleep.

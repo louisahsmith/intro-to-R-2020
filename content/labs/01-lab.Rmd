@@ -1,0 +1,242 @@
+---
+title: "Lab"
+linktitle: "1. The basics"
+date: "2020-07-16"
+publishdate: "2020-07-16"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=0"]
+---
+```{r setup, include = FALSE}
+options(width = 95)
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message",
+  class.error = "message"
+)
+```
+# The basics
+
+You can either download the lab as an RMarkdown file <a href="../../labs/01-lab.Rmd" download="01-lab.Rmd">here</a>, or copy and paste the code as we go into a `.R` script. Either way, save it into the `01-week` folder where you completed the exercises!
+
+## Navigating RStudio
+
+Besides the obvious benefits of seeing your environment, console, and scripts all in the same window, RStudio offers a lot of other helpful features. Here we'll go over some that you might find helpful now, but no that there are lots more as well! And if you don't like the default keyboard shortcuts, you can change them!
+
+Here is a list of some helpful ones. If two keys are given, separated by `/`, the first is for Macs and the second for Windows. Try them out with the code below!
+
+1. Run a line of code with `cmd/ctrl` + `enter`.
+```{r}
+x <- 3
+```
+
+2. Insert the assignment arrow `<-` with `opt/alt` + `-`.
+```{r}
+# write the same code above, but with the arrow shortcut
+
+```
+
+3. Restart the R session with `cmd/ctrl` + `shift` + `F10`.
+  - Try it out!
+
+4. Comment/uncomment lines with `cmd/ctrl` + `shift` + `c`.
+```{r, eval = FALSE}
+# comment the next line
+this should be a comment
+```
+
+5. Navigate between previously run lines of code in the console with the up and down arrows. Add `cmd/ctrl` to look at the entire list.
+
+6. Search for files and functions with `cmd/ctrl` + `.`.
+  - Look for and open the `01-todo.R` file.
+
+7. Autocomplete snippets... try it out by typing `lib` then `enter` once the autocomplete pops up.
+```{r}
+# write library(tidyverse) using the snippet here:
+
+```
+
+8. As elsewhere, `cmd/ctrl` + `f` is find, but with `cmd/ctrl` + `shift` + `f` you can find across all the files in a directory.
+  - Look for the word "basics" throughout the directory
+
+9. Drag a cursor to extend across multiple lines with `opt/alt`.
+```{r}
+# edit these dates to use - instead of /
+dates <- c("2020/07/16",
+           "2020/07/17",
+           "2020/07/18",
+           "2020/07/19")
+```
+
+10. Put a new cursor elsewhere by holding down `opt/alt` + `shift` as you click.
+```{r}
+# edit all these numbers to be in the 200s, not 100s
+numbers <- c(100, 101, 104, 109)
+```
+
+11. Reformat code with `cmd/ctrl` + `shift` + `a`.
+```{r}
+# try it out here:
+mat <- matrix(c(
+234,7456,12,654,183,753
+),nrow = 2)
+```
+
+12. Open a new R script with `cmd/ctrl` + `shift` + `n`.
+
+This [blog post](https://www.dataquest.io/blog/rstudio-tips-tricks-shortcuts/) has even more! 
+
+
+## This week's exercises
+
+```{r, eval = FALSE}
+# create a vector of numeric values
+vals <- c(1, 645, 329)
+vals
+
+# run these lines of code one at a time and compare what each does
+# what happens in your environment window? what about your console?
+new_vals
+c(13, 7245, 23, 49.32)
+new_vals <- c(13, 7245, 23, 49.32)
+new_vals
+
+# create and view different types of vectors
+chars <- c("dog", "cat", "rhino")
+chars
+logs <- c(TRUE, FALSE, FALSE)
+logs
+
+# create a matrix
+mat <- matrix(c(234, 7456, 12, 654, 183, 753), nrow = 2)
+mat
+
+# pull out rows
+mat[2, ]
+```
+
+1. Extract `645` from `vals` using square brackets.
+```{r}
+
+```
+
+2. Extract `"rhino"` from `chars` using square brackets.
+```{r}
+
+```
+
+3. You saw how to extract the second row of `mat`. Figure out how to extract the second column.
+```{r}
+
+```
+
+4. Extract `183` from `mat` using square brackets.
+```{r}
+
+```
+
+5. Figure out how to get the following errors:
+    `incorrect number of dimensions`
+    `subscript out of bounds`
+```{r}
+
+```
+
+## Data in R
+
+![](https://www.nlsinfo.org/sites/nlsinfo.org/files/images/NLSY79_0.png)
+
+We're using some data from the [National Longitudinal Survey of Youth 1979](https://www.nlsinfo.org/content/cohorts/nlsy79), a cohort of American young adults aged 14-22 at enrollment in 1979. They continue to be followed to this day, and there is a wealth of publicly available data [online](https://www.nlsinfo.org/investigator/pages/login.jsp). I've downloaded the answers to a survey question about whether respondents wear glasses, a scale about their eyesight with glasses, their (NLSY-assigned 😒) race/ethnicity, their sex, their family's income in 1979, and their age at the birth of their first child.
+
+### Reading in data {-}
+
+I've saved the dataset as a `csv` file. We can read this into R using the `read_csv()` function, which is loaded with the `tidyverse`. For now we'll load it from the internet. We'll talk about other options for reading in data later in the course!
+
+```{r}
+library(tidyverse)
+nlsy <- read_csv("https://raw.githubusercontent.com/louisahsmith/intro-to-R/master/data/nlsy_cc.csv",
+                 col_names = c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
+                               "id", "nsibs", "samp", "race_eth", "sex", "region", 
+                               "income", "res_1980", "res_2002", "age_bir"), 
+                 skip = 1) # this means to skip the first row, which are the NLSY-assigned column names
+```
+
+We can explore the data with a number of functions that we apply to either the whole dataset, or to a single variable in the dataset. Here are a couple of ways we can look at the whole dataset:
+
+```{r}
+nlsy
+```
+
+```{r}
+glimpse(nlsy)
+```
+
+```{r}
+summary(nlsy)
+```
+
+```{r, eval = FALSE}
+# within the RStudio browser
+View(nlsy)
+```
+
+In many functions in R, we refer to specific variables using dollar-sign notation. So to access the `id` variable in the `nlsy` dataset we'd type `nlsy$id` and all of the id numbers would print to the console. Don't do this though, or 1000+ numbers will print out! Instead, we might look at the first or last few with `head()` or `tail()`
+
+```{r}
+head(nlsy$id)
+tail(nlsy$sleep_wknd)
+```
+
+We can use the `summary()` function on a single variable.
+```{r}
+summary(nlsy$sleep_wkdy)
+```
+
+Many of the most basic functions in R are pretty straightforward: 
+```{r}
+table(nlsy$region)
+```
+
+```{r}
+mean(nlsy$age_bir)
+```
+
+We can find out more information from the documentation:
+```{r, eval = FALSE}
+help(cor)
+```
+
+And if you're not sure what you're looking for, there's a ton of info elsewhere:
+
+- https://www.rdocumentation.org
+- https://rdrr.io
+- https://www.r-project.org/help.html
+- GOOGLE!
+
+
+## Group challenge exercises
+
+1. How many people are in the NLSY? How many variables are in this dataset? What are two ways you can answer these questions using tools we've discussed?
+2. Can you find an R function(s) we haven't discussed that answers question 1? Feel free to Google! See how many ways you and your group can come up with!
+3. What's the standard deviation of the number of hours of sleep on weekends?
+4. What's the **Spearman** correlation between hours of sleep on weekends and weekdays in this data?
+5. Try to read in the data from an Excel file (it should be possible even if you don't have Excel on your computer!). It's in a tab called `data`, but there's a header as well. (It might help to open up in whatever spreadsheet program you have.) You'll have to load the `readxl` package (you already installed with with `tidyverse`, but it doesn't load automatically), and probably read some of the documentation: https://readxl.tidyverse.org.
+
+```{r, eval = FALSE}
+# first, use this script to download the data to your current working directory
+download.file("https://github.com/louisahsmith/intro-to-R/blob/master/data/nlsy_cc.xlsx?raw=true",
+              destfile = file.path(getwd(), "nlsy_cc.xlsx"))
+# this will be the path argument you'll need
+path <- "nlsy_cc.xlsx"
+```

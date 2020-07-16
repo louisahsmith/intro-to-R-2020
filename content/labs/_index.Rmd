@@ -8,4 +8,6 @@ weight: 1
 shiny: true
 ---
 
-Coming soon!
+Labs are held on Zoom on Thursdays at 2pm Eastern time. Check Slack or your email for the link!
+
+During lab, you'll have a chance to go over the week's material, ask questions, and work through some problems. Feel free to suggest questions or problems you'd like to go over in lab ahead of time via Slack!
