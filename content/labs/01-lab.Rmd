@@ -56,21 +56,16 @@ x <- 3
 this should be a comment
 ```
 
-5. Navigate between previously run lines of code in the console with the up and down arrows. Add `cmd/ctrl` to look at the entire list.
-
-6. Search for files and functions with `cmd/ctrl` + `.`.
-  - Look for and open the `01-todo.R` file.
-
-7. Autocomplete snippets... try it out by typing `lib` then `enter` once the autocomplete pops up.
+5. Autocomplete snippets... try it out by typing `lib` then `enter` once the autocomplete pops up.
 ```{r}
 # write library(tidyverse) using the snippet here:
 
 ```
 
-8. As elsewhere, `cmd/ctrl` + `f` is find, but with `cmd/ctrl` + `shift` + `f` you can find across all the files in a directory.
+6. As elsewhere, `cmd/ctrl` + `f` is find, but with `cmd/ctrl` + `shift` + `f` you can find across all the files in a directory.
   - Look for the word "basics" throughout the directory
 
-9. Drag a cursor to extend across multiple lines with `opt/alt`.
+7. Drag a cursor to extend across multiple lines with `opt/alt`.
 ```{r}
 # edit these dates to use - instead of /
 dates <- c("2020/07/16",
@@ -79,19 +74,23 @@ dates <- c("2020/07/16",
            "2020/07/19")
 ```
 
-10. Put a new cursor elsewhere by holding down `opt/alt` + `shift` as you click.
+8. Put a new cursor elsewhere by holding down `opt/alt` + `cmd/ctrl` as you click.
 ```{r}
 # edit all these numbers to be in the 200s, not 100s
 numbers <- c(100, 101, 104, 109)
 ```
 
-11. Reformat code with `cmd/ctrl` + `shift` + `a`.
+9. Reformat code with `cmd/ctrl` + `shift` + `a`.
 ```{r}
 # try it out here:
-mat <- matrix(c(
+mat<-matrix(c(
 234,7456,12,654,183,753
-),nrow = 2)
+),nrow=2)
 ```
+
+10. Navigate between previously run lines of code in the console with the up and down arrows. Add `cmd/ctrl` to look at the entire list.
+
+11. Compile this document with `cmd/ctrl` + `shift` + `k`.
 
 12. Open a new R script with `cmd/ctrl` + `shift` + `n`.
 
