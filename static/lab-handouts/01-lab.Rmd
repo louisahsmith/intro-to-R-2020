@@ -162,11 +162,7 @@ I've saved the dataset as a `csv` file. We can read this into R using the `read_
 
 ```{r}
 library(tidyverse)
-nlsy <- read_csv("https://raw.githubusercontent.com/louisahsmith/intro-to-R/master/data/nlsy_cc.csv",
-                 col_names = c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
-                               "id", "nsibs", "samp", "race_eth", "sex", "region", 
-                               "income", "res_1980", "res_2002", "age_bir"), 
-                 skip = 1) # this means to skip the first row, which are the NLSY-assigned column names
+nlsy <- read_csv("https://intro-to-R-2020.louisahsmith.com/data/nlsy_cc.csv")
 ```
 
 We can explore the data with a number of functions that we apply to either the whole dataset, or to a single variable in the dataset. Here are a couple of ways we can look at the whole dataset:
@@ -232,8 +228,12 @@ And if you're not sure what you're looking for, there's a ton of info elsewhere:
 
 ```{r, eval = FALSE}
 # first, use this script to download the data to your current working directory
-download.file("https://github.com/louisahsmith/intro-to-R/blob/master/data/nlsy_cc.xlsx?raw=true",
+download.file("https://intro-to-R-2020.louisahsmith.com/data/nlsy_cc.xlsx",
               destfile = file.path(getwd(), "nlsy_cc.xlsx"))
 # this will be the path argument you'll need
 path <- "nlsy_cc.xlsx"
+# the variables also still have the NLSY-assigned names, so you'll need these
+col_names <- c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd", "id", "nsibs", 
+               "samp", "race_eth", "sex", "region", "income", "res_1980",
+               "res_2002", "age_bir")
 ```
