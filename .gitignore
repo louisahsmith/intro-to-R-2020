@@ -7,3 +7,5 @@ public/*
 private/*
 resources/_gen/*
 temp_figs/*
+**/0[2-6]-*/**
+**/0[2-6]-*

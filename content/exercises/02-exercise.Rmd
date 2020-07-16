@@ -29,11 +29,3 @@ knitr::opts_chunk$set(
 
 ### Install R {-}
 
-First, install R at this link: [https://cran.r-project.org/mirrors.html](https://cran.r-project.org/mirrors.html). Choose a mirror approximately close to you geographically, and then choose the option corresponding to your operating system:
-
-![](../../img/download-R.png)
-
-Follow all the operating system-specific instructions.
-
-Congratulations! 🥳 You have R installed! That means you could write an R script and run it. But let's make things a lot easier by downloading RStudio, which will keep us organized and supply us with lots of shortcuts.
-
