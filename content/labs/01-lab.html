@@ -1,0 +1,244 @@
+---
+title: "Lab"
+linktitle: "1. The basics"
+date: "2020-07-16"
+publishdate: "2020-07-16"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=0"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#the-basics"><span class="toc-section-number">1</span> The basics</a><ul>
+<li><a href="#navigating-rstudio"><span class="toc-section-number">1.1</span> Navigating RStudio</a></li>
+<li><a href="#this-weeks-exercises"><span class="toc-section-number">1.2</span> This week’s exercises</a></li>
+<li><a href="#data-in-r"><span class="toc-section-number">1.3</span> Data in R</a></li>
+<li><a href="#group-challenge-exercises"><span class="toc-section-number">1.4</span> Group challenge exercises</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="the-basics" class="section level1">
+<h1><span class="header-section-number">1</span> The basics</h1>
+<p>You can either download the lab as an RMarkdown file <a href="../../labs/01-lab.Rmd" download="01-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>01-week</code> folder where you completed the exercises!</p>
+<div id="navigating-rstudio" class="section level2">
+<h2><span class="header-section-number">1.1</span> Navigating RStudio</h2>
+<p>Besides the obvious benefits of seeing your environment, console, and scripts all in the same window, RStudio offers a lot of other helpful features. Here we’ll go over some that you might find helpful now, but no that there are lots more as well! And if you don’t like the default keyboard shortcuts, you can change them!</p>
+<p>Here is a list of some helpful ones. If two keys are given, separated by <code>/</code>, the first is for Macs and the second for Windows. Try them out with the code below!</p>
+<ol style="list-style-type: decimal">
+<li>Run a line of code with <code>cmd/ctrl</code> + <code>enter</code>.</li>
+</ol>
+<pre class="r"><code>x &lt;- 3</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Insert the assignment arrow <code>&lt;-</code> with <code>opt/alt</code> + <code>-</code>.</li>
+</ol>
+<pre class="r"><code># write the same code above, but with the arrow shortcut</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Restart the R session with <code>cmd/ctrl</code> + <code>shift</code> + <code>F10</code>.</li>
+</ol>
+<ul>
+<li>Try it out!</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Comment/uncomment lines with <code>cmd/ctrl</code> + <code>shift</code> + <code>c</code>.</li>
+</ol>
+<pre class="r"><code># comment the next line
+this should be a comment</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Navigate between previously run lines of code in the console with the up and down arrows. Add <code>cmd/ctrl</code> to look at the entire list.</p></li>
+<li><p>Search for files and functions with <code>cmd/ctrl</code> + <code>.</code>.</p></li>
+</ol>
+<ul>
+<li>Look for and open the <code>01-todo.R</code> file.</li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li>Autocomplete snippets… try it out by typing <code>lib</code> then <code>enter</code> once the autocomplete pops up.</li>
+</ol>
+<pre class="r"><code># write library(tidyverse) using the snippet here:</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>As elsewhere, <code>cmd/ctrl</code> + <code>f</code> is find, but with <code>cmd/ctrl</code> + <code>shift</code> + <code>f</code> you can find across all the files in a directory.</li>
+</ol>
+<ul>
+<li>Look for the word “basics” throughout the directory</li>
+</ul>
+<ol start="9" style="list-style-type: decimal">
+<li>Drag a cursor to extend across multiple lines with <code>opt/alt</code>.</li>
+</ol>
+<pre class="r"><code># edit these dates to use - instead of /
+dates &lt;- c(&quot;2020/07/16&quot;,
+           &quot;2020/07/17&quot;,
+           &quot;2020/07/18&quot;,
+           &quot;2020/07/19&quot;)</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Put a new cursor elsewhere by holding down <code>opt/alt</code> + <code>shift</code> as you click.</li>
+</ol>
+<pre class="r"><code># edit all these numbers to be in the 200s, not 100s
+numbers &lt;- c(100, 101, 104, 109)</code></pre>
+<ol start="11" style="list-style-type: decimal">
+<li>Reformat code with <code>cmd/ctrl</code> + <code>shift</code> + <code>a</code>.</li>
+</ol>
+<pre class="r"><code># try it out here:
+mat &lt;- matrix(c(
+234,7456,12,654,183,753
+),nrow = 2)</code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>Open a new R script with <code>cmd/ctrl</code> + <code>shift</code> + <code>n</code>.</li>
+</ol>
+<p>This <a href="https://www.dataquest.io/blog/rstudio-tips-tricks-shortcuts/">blog post</a> has even more!</p>
+</div>
+<div id="this-weeks-exercises" class="section level2">
+<h2><span class="header-section-number">1.2</span> This week’s exercises</h2>
+<pre class="r"><code># create a vector of numeric values
+vals &lt;- c(1, 645, 329)
+vals
+
+# run these lines of code one at a time and compare what each does
+# what happens in your environment window? what about your console?
+new_vals
+c(13, 7245, 23, 49.32)
+new_vals &lt;- c(13, 7245, 23, 49.32)
+new_vals
+
+# create and view different types of vectors
+chars &lt;- c(&quot;dog&quot;, &quot;cat&quot;, &quot;rhino&quot;)
+chars
+logs &lt;- c(TRUE, FALSE, FALSE)
+logs
+
+# create a matrix
+mat &lt;- matrix(c(234, 7456, 12, 654, 183, 753), nrow = 2)
+mat
+
+# pull out rows
+mat[2, ]</code></pre>
+<ol style="list-style-type: decimal">
+<li><p>Extract <code>645</code> from <code>vals</code> using square brackets.</p></li>
+<li><p>Extract <code>"rhino"</code> from <code>chars</code> using square brackets.</p></li>
+<li><p>You saw how to extract the second row of <code>mat</code>. Figure out how to extract the second column.</p></li>
+<li><p>Extract <code>183</code> from <code>mat</code> using square brackets.</p></li>
+<li><p>Figure out how to get the following errors:
+<code>incorrect number of dimensions</code>
+<code>subscript out of bounds</code></p></li>
+</ol>
+</div>
+<div id="data-in-r" class="section level2">
+<h2><span class="header-section-number">1.3</span> Data in R</h2>
+<p><img src="https://www.nlsinfo.org/sites/nlsinfo.org/files/images/NLSY79_0.png" /></p>
+<p>We’re using some data from the <a href="https://www.nlsinfo.org/content/cohorts/nlsy79">National Longitudinal Survey of Youth 1979</a>, a cohort of American young adults aged 14-22 at enrollment in 1979. They continue to be followed to this day, and there is a wealth of publicly available data <a href="https://www.nlsinfo.org/investigator/pages/login.jsp">online</a>. I’ve downloaded the answers to a survey question about whether respondents wear glasses, a scale about their eyesight with glasses, their (NLSY-assigned 😒) race/ethnicity, their sex, their family’s income in 1979, and their age at the birth of their first child.</p>
+<div id="reading-in-data" class="section level3 unnumbered">
+<h3>Reading in data</h3>
+<p>I’ve saved the dataset as a <code>csv</code> file. We can read this into R using the <code>read_csv()</code> function, which is loaded with the <code>tidyverse</code>. For now we’ll load it from the internet. We’ll talk about other options for reading in data later in the course!</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;https://raw.githubusercontent.com/louisahsmith/intro-to-R/master/data/nlsy_cc.csv&quot;,
+                 col_names = c(&quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+                               &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;, 
+                               &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;), 
+                 skip = 1) # this means to skip the first row, which are the NLSY-assigned column names</code></pre>
+<p>We can explore the data with a number of functions that we apply to either the whole dataset, or to a single variable in the dataset. Here are a couple of ways we can look at the whole dataset:</p>
+<pre class="r"><code>nlsy</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1,205 x 14
+#&gt;     glasses eyesight sleep_wkdy sleep_wknd    id nsibs  samp race_eth   sex region income
+#&gt;       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;   1       0        1          5          7     3     3     5        3     2      1  22390
+#&gt;   2       1        2          6          7     6     1     1        3     1      1  35000
+#&gt;   3       0        2          7          9     8     7     6        3     2      1   7227
+#&gt;   4       1        3          6          7    16     3     5        3     2      1  48000
+#&gt;   5       0        3         10         10    18     2     1        3     1      3   4510
+#&gt;   6       1        2          7          8    20     2     5        3     2      1  50000
+#&gt;   7       0        1          8          8    27     1     5        3     2      1  20000
+#&gt;   8       1        1          8          8    49     6     5        3     2      1  23900
+#&gt;   9       1        2          7          8    57     1     5        3     2      1  23289
+#&gt;  10       0        1          8          8    67     1     1        3     1      1  35000
+#&gt;  # … with 1,195 more rows, and 3 more variables: res_1980 &lt;dbl&gt;, res_2002 &lt;dbl&gt;, age_bir &lt;dbl&gt;</code></pre>
+<pre class="r"><code>glimpse(nlsy)</code></pre>
+<pre class="output"><code>#&gt;  Rows: 1,205
+#&gt;  Columns: 14
+#&gt;  $ glasses    &lt;dbl&gt; 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0…
+#&gt;  $ eyesight   &lt;dbl&gt; 1, 2, 2, 3, 3, 2, 1, 1, 2, 1, 3, 5, 1, 1, 1, 1, 3, 2, 3, 3, 4, 2, 2, 5, 1…
+#&gt;  $ sleep_wkdy &lt;dbl&gt; 5, 6, 7, 6, 10, 7, 8, 8, 7, 8, 8, 7, 7, 7, 8, 7, 7, 8, 8, 8, 7, 6, 8, 7, …
+#&gt;  $ sleep_wknd &lt;dbl&gt; 7, 7, 9, 7, 10, 8, 8, 8, 8, 8, 8, 7, 8, 7, 8, 7, 4, 8, 8, 9, 7, 10, 8, 7,…
+#&gt;  $ id         &lt;dbl&gt; 3, 6, 8, 16, 18, 20, 27, 49, 57, 67, 86, 96, 97, 98, 117, 137, 172, 179, …
+#&gt;  $ nsibs      &lt;dbl&gt; 3, 1, 7, 3, 2, 2, 1, 6, 1, 1, 7, 2, 7, 2, 2, 4, 9, 2, 2, 2, 4, 2, 4, 4, 2…
+#&gt;  $ samp       &lt;dbl&gt; 5, 1, 6, 5, 1, 5, 5, 5, 5, 1, 7, 6, 5, 6, 1, 5, 6, 5, 5, 5, 8, 1, 7, 5, 5…
+#&gt;  $ race_eth   &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 2, 3, 3…
+#&gt;  $ sex        &lt;dbl&gt; 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2…
+#&gt;  $ region     &lt;dbl&gt; 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1…
+#&gt;  $ income     &lt;dbl&gt; 22390, 35000, 7227, 48000, 4510, 50000, 20000, 23900, 23289, 35000, 1688,…
+#&gt;  $ res_1980   &lt;dbl&gt; 11, 3, 11, 11, 11, 3, 11, 11, 11, 3, 11, 11, 11, 11, 6, 3, 11, 11, 3, 11,…
+#&gt;  $ res_2002   &lt;dbl&gt; 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 19, 11, 11, 11, 11, 11, 11, 11, 1…
+#&gt;  $ age_bir    &lt;dbl&gt; 19, 30, 17, 31, 19, 30, 27, 24, 21, 36, 17, 19, 29, 30, 26, 26, 35, 22, 3…</code></pre>
+<pre class="r"><code>summary(nlsy)</code></pre>
+<pre class="output"><code>#&gt;      glasses          eyesight      sleep_wkdy       sleep_wknd           id       
+#&gt;   Min.   :0.0000   Min.   :1.00   Min.   : 0.000   Min.   : 0.000   Min.   :    3  
+#&gt;   1st Qu.:0.0000   1st Qu.:1.00   1st Qu.: 6.000   1st Qu.: 6.000   1st Qu.: 2317  
+#&gt;   Median :1.0000   Median :2.00   Median : 7.000   Median : 7.000   Median : 4744  
+#&gt;   Mean   :0.5178   Mean   :1.99   Mean   : 6.643   Mean   : 7.267   Mean   : 5229  
+#&gt;   3rd Qu.:1.0000   3rd Qu.:3.00   3rd Qu.: 8.000   3rd Qu.: 8.000   3rd Qu.: 7937  
+#&gt;   Max.   :1.0000   Max.   :5.00   Max.   :13.000   Max.   :14.000   Max.   :12667  
+#&gt;       nsibs             samp           race_eth          sex            region     
+#&gt;   Min.   : 0.000   Min.   : 1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+#&gt;   1st Qu.: 2.000   1st Qu.: 4.000   1st Qu.:2.000   1st Qu.:1.000   1st Qu.:2.000  
+#&gt;   Median : 3.000   Median : 5.000   Median :3.000   Median :2.000   Median :3.000  
+#&gt;   Mean   : 3.937   Mean   : 7.002   Mean   :2.395   Mean   :1.584   Mean   :2.593  
+#&gt;   3rd Qu.: 5.000   3rd Qu.:11.000   3rd Qu.:3.000   3rd Qu.:2.000   3rd Qu.:3.000  
+#&gt;   Max.   :16.000   Max.   :20.000   Max.   :3.000   Max.   :2.000   Max.   :4.000  
+#&gt;       income         res_1980        res_2002        age_bir     
+#&gt;   Min.   :    0   Min.   : 1.00   Min.   : 5.00   Min.   :13.00  
+#&gt;   1st Qu.: 6000   1st Qu.:11.00   1st Qu.:11.00   1st Qu.:19.00  
+#&gt;   Median :11155   Median :11.00   Median :11.00   Median :22.00  
+#&gt;   Mean   :15289   Mean   : 9.14   Mean   :11.05   Mean   :23.45  
+#&gt;   3rd Qu.:20000   3rd Qu.:11.00   3rd Qu.:11.00   3rd Qu.:27.00  
+#&gt;   Max.   :75001   Max.   :16.00   Max.   :19.00   Max.   :52.00</code></pre>
+<pre class="r"><code># within the RStudio browser
+View(nlsy)</code></pre>
+<p>In many functions in R, we refer to specific variables using dollar-sign notation. So to access the <code>id</code> variable in the <code>nlsy</code> dataset we’d type <code>nlsy$id</code> and all of the id numbers would print to the console. Don’t do this though, or 1000+ numbers will print out! Instead, we might look at the first or last few with <code>head()</code> or <code>tail()</code></p>
+<pre class="r"><code>head(nlsy$id)</code></pre>
+<pre class="output"><code>#&gt;  [1]  3  6  8 16 18 20</code></pre>
+<pre class="r"><code>tail(nlsy$sleep_wknd)</code></pre>
+<pre class="output"><code>#&gt;  [1] 12  8 12  5  7  5</code></pre>
+<p>We can use the <code>summary()</code> function on a single variable.</p>
+<pre class="r"><code>summary(nlsy$sleep_wkdy)</code></pre>
+<pre class="output"><code>#&gt;     Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#&gt;    0.000   6.000   7.000   6.643   8.000  13.000</code></pre>
+<p>Many of the most basic functions in R are pretty straightforward:</p>
+<pre class="r"><code>table(nlsy$region)</code></pre>
+<pre class="output"><code>#&gt;  
+#&gt;    1   2   3   4 
+#&gt;  206 333 411 255</code></pre>
+<pre class="r"><code>mean(nlsy$age_bir)</code></pre>
+<pre class="output"><code>#&gt;  [1] 23.44813</code></pre>
+<p>We can find out more information from the documentation:</p>
+<pre class="r"><code>help(cor)</code></pre>
+<p>And if you’re not sure what you’re looking for, there’s a ton of info elsewhere:</p>
+<ul>
+<li><a href="https://www.rdocumentation.org" class="uri">https://www.rdocumentation.org</a></li>
+<li><a href="https://rdrr.io" class="uri">https://rdrr.io</a></li>
+<li><a href="https://www.r-project.org/help.html" class="uri">https://www.r-project.org/help.html</a></li>
+<li>GOOGLE!</li>
+</ul>
+</div>
+</div>
+<div id="group-challenge-exercises" class="section level2">
+<h2><span class="header-section-number">1.4</span> Group challenge exercises</h2>
+<ol style="list-style-type: decimal">
+<li>How many people are in the NLSY? How many variables are in this dataset? What are two ways you can answer these questions using tools we’ve discussed?</li>
+<li>Can you find an R function(s) we haven’t discussed that answers question 1? Feel free to Google! See how many ways you and your group can come up with!</li>
+<li>What’s the standard deviation of the number of hours of sleep on weekends?</li>
+<li>What’s the <strong>Spearman</strong> correlation between hours of sleep on weekends and weekdays in this data?</li>
+<li>Try to read in the data from an Excel file (it should be possible even if you don’t have Excel on your computer!). It’s in a tab called <code>data</code>, but there’s a header as well. (It might help to open up in whatever spreadsheet program you have.) You’ll have to load the <code>readxl</code> package (you already installed with with <code>tidyverse</code>, but it doesn’t load automatically), and probably read some of the documentation: <a href="https://readxl.tidyverse.org" class="uri">https://readxl.tidyverse.org</a>.</li>
+</ol>
+<pre class="r"><code># first, use this script to download the data to your current working directory
+download.file(&quot;https://github.com/louisahsmith/intro-to-R/blob/master/data/nlsy_cc.xlsx?raw=true&quot;,
+              destfile = file.path(getwd(), &quot;nlsy_cc.xlsx&quot;))
+# this will be the path argument you&#39;ll need
+path &lt;- &quot;nlsy_cc.xlsx&quot;</code></pre>
+</div>
+</div>
