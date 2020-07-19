@@ -23,43 +23,108 @@ knitr::opts_chunk$set(
   class.error = "message"
 )
 ```
-# The basics
+# Functions
 
-## Install and set up R and RStudio
+## Write a function to calculate exponents
 
-### Install R {-}
-# Exercises 1
-.center[
-<iframe src="https://giphy.com/embed/2WUkAVDzuQbUA" width="220" height="220" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/line-cube-shapes-2WUkAVDzuQbUA"></a></p>
-]
+### Square a number {-}
 
-1. You're tired of writing `x^2` when you want to square `x`. Make a function to square a number. You can call it `square()`.
-2. You don't just want to square numbers, you want to raise them to higher powers too. Make a function that uses two arguments, `x` for a number, and `power` for the power. Call it `raise()`.
-3. Change your `raise()` function to default to squaring `x` when the user doesn't enter a value for `power`.
-4. Use your function to square and cube 524 with `raise(524)` and `raise(524, power = 3)`.
+You're tired of writing `x^2` when you want to square `x`. Make a function to square a number. You can call it `square()`.
 
-# Exercises 2
-.center[
-<iframe src="https://giphy.com/embed/l3vR4Fp4U1DhW8bhS" width="384" height="222" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/l3vR4Fp4U1DhW8bhS"></a></p>
-]
-1. Write a function to calculate the stratified mean income for grouping variable `var`. In other words, write a function such that `mean_group_inc(var = "sex")` produces the same results as the first line on the previous slide, `mean_group_inc(var = "race_eth")` the second.
-2. Rewrite your function to accept two arguments: `group_var` to determine what the grouping variable is, and `mean_var` to determine what variable you want to take the mean of (e.g., `mean_group(group_var = "sex", mean_var = "income")` should give you the same results as above).
+```{r, eval = FALSE}
+# start out with a number to test
+x <- 3
+# you'll want your function to return this number
+x^2
+square <- function() {
+  
+}
+# test it out
+square(x)
+square(53)
+53^2 # does this match?
+```
+
+### Raise to any power {-}
+
+You don't just want to square numbers, you want to raise them to higher powers too. Make a function that uses two arguments, `x` for a number, and `power` for the power. Call it `raise()`.
+
+```{r, eval = FALSE}
+raise <- function() {
+  
+}
+
+# test with
+raise(x = 2, power = 4)
+# should give you
+2^4
+```
+
+### Exercise {-}
+
+Change your `raise()` function to default to squaring `x` when the user doesn't enter a value for `power`.
+
+```{r}
+
+# test
+raise(x = 5)
+# should give you
+5^2
+```
+
+## Change the grouping variable when summarizing
 
 
-# Exercises 3
+### Grouping argument {-}
 
-.center[
-<iframe src="https://giphy.com/embed/EmMWgjxt6HqXC" width="384" height="257" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/loop-cat-EmMWgjxt6HqXC"></a></p>
-]
-1. Change the last for loop in the slides to loop over different variables instead of different quantiles. That is, calculate the 0.25 quantile for each of `c("income", "age_bir", "nsibs")` in a for loop.
-2. You can nest for loops inside each other, as long as you use different iteration variables. Write a nested for loop to iterate over variables (with `i`) and quantiles (with `j`). You'll need to start with an empty matrix instead of a vector, with rows indexed by `i` and columns by `j`. Calculate each of the deciles for each of the above variables.
+Write a function to calculate the stratified mean income for grouping variable `var`. In other words, write a function such that `mean_group_inc(var = "sex")` produces the same results as the first line on the previous slide, `mean_group_inc(var = "race_eth")` the second.
 
-# Challenge
+```{r}
+mean_group_inc <- function(var) {
+  
+}
+
+# test with
+mean_group_inc(var = "race_eth")
+```
+
+### Grouping and summarizing arguments {-}
+
+Rewrite your function to accept two arguments: `group_var` to determine what the grouping variable is, and `mean_var` to determine what variable you want to take the mean of (e.g., `mean_group(group_var = "sex", mean_var = "income")` should give you the same results as above).
+
+```{r}
+mean_group <- function(group_var, mean_var) {
+  
+}
+
+# test with
+mean_group(group_var = "sex", mean_var = "income")
+```
+
+## For loops
+
+### Exercise {-}
+
+Change the last for loop in the slides to loop over different variables instead of different quantiles. That is, calculate the 0.25 quantile for each of `c("income", "age_bir", "nsibs")` in a for loop.
+
+```{r}
+
+```
+
+
+### Exercise {-}
+
+You can nest for loops inside each other, as long as you use different iteration variables. Write a nested for loop to iterate over variables (with `i`) and quantiles (with `j`). You'll need to start with an empty matrix instead of a vector, with rows indexed by `i` and columns by `j`. Calculate each of the deciles for each of the above variables.
+
+```{r}
+
+```
+
+## Challenge
 
 Create a function that calculates the stratified proportion of people with different levels of `eyesight` by any categorical variable. Then use any technique (besides copying and pasting) to calculate the proportions stratified by `sex`, `race_eth`, and `region`. You should end up with something like this:
 
----
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 eye_func <- function(var) {
   nlsy %>%
   rename(var_level = var) %>%

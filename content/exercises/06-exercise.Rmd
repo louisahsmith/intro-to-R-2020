@@ -23,14 +23,12 @@ knitr::opts_chunk$set(
   class.error = "message"
 )
 ```
-# The basics
+# Analyze your data
 
-## Install and set up R and RStudio
 
-### Install R {-}
-
-TODO: Change to match slides
 ## Challenge
+
+I've given instructions for a project using the NLSY data. If you have data that you're working with and you'd like to practice with that data instead, go for it! Instead of the variables mentioned below, use whatever variables from your dataset you want. For example, change categorical variables that are currently numeric to factors as needed in your data. Then restrict your sample based on whatever conditions make sense to you for a project you're working on (or want to work on), and run a regression with whichever variables interest you!
 
 ### Prepare your project {-}
 

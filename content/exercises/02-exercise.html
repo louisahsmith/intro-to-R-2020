@@ -1,0 +1,149 @@
+---
+title: "Exercises"
+linktitle: "2. Figures"
+date: "2020-07-20"
+publishdate: "2020-07-20"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=1"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#figures"><span class="toc-section-number">2</span> Figures</a><ul>
+<li><a href="#prepare">Prepare</a></li>
+<li><a href="#intro-to-ggplot2"><span class="toc-section-number">2.1</span> Intro to <code>ggplot2</code></a></li>
+<li><a href="#facets"><span class="toc-section-number">2.2</span> Facets</a></li>
+<li><a href="#saving-your-work"><span class="toc-section-number">2.3</span> Saving your work</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="figures" class="section level1">
+<h1><span class="header-section-number">2</span> Figures</h1>
+<div id="prepare" class="section level2 unnumbered">
+<h2>Prepare</h2>
+<p>Download the materials for this week’s exercises <a href="/exercise-handouts/00-week.zip">here</a>. Once you’ve unzipped (and extracted, if you’re on Windows) the file and moved the folder wherever you want, open up a new RStudio session using the <code>02-week.Rproj</code> file. You should have nothing in your environment. If you’re having trouble with this, look back at <a href="/exercises/01-exercise/#1-3-organize-your-files">last week’s exercises</a> for guidance.</p>
+<p>Then you’ll need to load the <code>tidyverse</code> package and read in the data. In lab we read it in from a url, this time I gave you the data in the zipped folder. The funciton to read it in is the same:</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+</div>
+<div id="intro-to-ggplot2" class="section level2">
+<h2><span class="header-section-number">2.1</span> Intro to <code>ggplot2</code></h2>
+<div id="make-a-scatterplot" class="section level3 unnumbered">
+<h3>Make a scatterplot</h3>
+<p>Make a scatter plot of the relationship between hours of sleep on weekends and weekdays. Color it according to region (where 1 = northeast, 2 = north central, 3 = south, and 4 = west). Use the code from the example below to get started!</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, color = factor(eyesight))) +
+  scale_color_brewer(palette = &quot;Set1&quot;, name = &quot;Eyesight&quot;,
+                     labels = c(&quot;Excellent&quot;, &quot;Very Good&quot;, &quot;Good&quot;,
+                                &quot;Fair&quot;, &quot;Poor&quot;))</code></pre>
+<p><img src="/exercises/02-exercise_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<!-- If you are using the RMarkdown document, you can write your answers in the empty chunk below -->
+<!-- Also, this is how you write a comment in the text sections of an R Markdown document! You can use the same keyboard shortcut we learned last week for R code. -->
+</div>
+<div id="jittering" class="section level3 unnumbered">
+<h3>Jittering</h3>
+<p>Using your plot from the previous question, replace <code>geom_point()</code> with <code>geom_jitter()</code>. What does this do? Why might this be a good choice for this graph? Play with the <code>width =</code> and <code>height =</code> options within <code>geom_jitter()</code>. This site may help: <a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html" class="uri">https://ggplot2.tidyverse.org/reference/geom_jitter.html</a></p>
+</div>
+<div id="shapes" class="section level3 unnumbered">
+<h3>Shapes</h3>
+<p>Use the <code>shape =</code> argument to map the sex variable to different shapes. Change the shapes to squares and diamonds. (Hint: how did we manually change colors to certain values? This page might also help:
+<a href="https://ggplot2.tidyverse.org/articles/ggplot2-specs.html" class="uri">https://ggplot2.tidyverse.org/articles/ggplot2-specs.html</a>)</p>
+</div>
+<div id="explore" class="section level3 unnumbered">
+<h3>Explore!</h3>
+<p>Using a structure like this, you can explore changing what’s in the <code>&lt;&gt;</code>.</p>
+<ul>
+<li>Use either the resources in the slides (now also on the resources page), or just start typing e.g., <code>geom_</code> or <code>scale_color</code> and choose one of the autocompletes.</li>
+<li>Depending on what you choose, different arguments might be required/allowed. For example, <code>geom_point()</code> requires both <code>x =</code> and <code>y =</code>, but <code>geom_histogram()</code> only <code>x =</code>. You can use <code>help(geom_point)</code> for guidance, under the “Aesthetics” section.</li>
+<li>What happens if you include <code>color =</code> both within and outside of the <code>aes()</code> argument? What happens if you use an actual color, like <code>"blue"</code> inside? Or a variable name outside?</li>
+<li>It might be helpful for you to keep a script with all the different things you try, with a comment about whether or not it worked and what you did.
+<!-- If you are using the RMarkdown document, the `eval = FALSE` in the chunk below is me telling R not to run this section when I knit it, since I don't want that plot to show up again. -->
+<!-- If you want to knit this page, instead of just running it chunk-by-chunk, change the eval = FALSE to eval = TRUE, or delete everything besides the r entirely. --></li>
+</ul>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_&lt;&gt;(aes(x = &lt;&gt;, y = &lt;&gt;, color = &lt;&gt;, ...), color = &lt;&gt;, ...) +
+  scale_color_&lt;&gt;(name = &lt;&gt;, ...)</code></pre>
+</div>
+</div>
+<div id="facets" class="section level2">
+<h2><span class="header-section-number">2.2</span> Facets</h2>
+<p>First we made a graph faceted by columns. Then we switched to rows. Try that out with this code. Try out another variable to facet by, instead of region. What if we facet by both columns and rows? You can also play around with the <code>margins =</code> and the <code>scales =</code> arguments. Use <code>help(facet_grid)</code> to find out more.</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = &quot;Number of siblings&quot;) +
+  facet_grid(cols = vars(region), margins = TRUE, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="/exercises/02-exercise_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>We also saw that we could (maybe) make better use of space with <code>facet_wrap()</code>. Try changing the variable we’re facetting by (<code>region</code>), and the <code>ncol =</code> argument. Alternatively, you can specify the number of rows with <code>nrow =</code>.</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = &quot;Number of siblings&quot;) +
+  facet_wrap(vars(region),
+             ncol = 3)</code></pre>
+<p><img src="/exercises/02-exercise_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We also learned to make a histogram, with a bin for every $1,000 of income. Try out some different <code>binwidth =</code> or <code>bins =</code> argument. Or leave it out and see the warning you get!</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), binwidth = 1000)</code></pre>
+<p><img src="/exercises/02-exercise_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div id="density-histograms" class="section level3 unnumbered">
+<h3>Density histograms</h3>
+<p>When we’re comparing distributions with very different numbers of
+observations, instead of scaling the y-axis like we did with the
+<code>facet_grid()</code> function, we might want to make <em>density</em> histograms, where instead of the count of observations along the y-axis, we have the density (i.e., the histogram is scaled so that its entire area adds up to 1). Use google to figure out how to make a <em>density</em> histogram of income. Facet it by region.</p>
+</div>
+<div id="color-your-histograms" class="section level3 unnumbered">
+<h3>Color your histograms</h3>
+<p>Make each of the regions in your previous histogram a different color. (Hint: compare what <code>col =</code> and <code>fill =</code> do to histograms).</p>
+</div>
+<div id="scale_x_..." class="section level3 unnumbered">
+<h3><code>scale_x_...</code></h3>
+<p>Instead of a log-transformed x-axis, make a square-root transformed x-axis. See what other options for the x-axis you have, using the autocomplete in RStudio.</p>
+</div>
+<div id="label-your-x-axis" class="section level3 unnumbered">
+<h3>Label your x-axis</h3>
+<p>Doing the last part squishes the labels on the x-axis. Using the <code>breaks =</code> argument that all the <code>scale_x_...()</code> functions have, make labels at 1000, 10000, 25000, and 50000.</p>
+</div>
+</div>
+<div id="saving-your-work" class="section level2">
+<h2><span class="header-section-number">2.3</span> Saving your work</h2>
+<p>Here’s a plot to start you off. Look through each line and make sure you understand what it’s doing.</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_boxplot(aes(x = factor(sleep_wknd), y = sleep_wkdy,
+                   fill = factor(sleep_wknd))) +
+  scale_fill_discrete(guide = FALSE) +
+  labs(x = &quot;hours slept on weekends&quot;,
+       y = &quot;hours slept on weekends&quot;,
+       title = &quot;The more people sleep on weekends, 
+       the more they sleep on weekdays&quot;,
+       subtitle = &quot;According to NLSY data&quot;) +
+  theme_classic()</code></pre>
+<p><img src="/exercises/02-exercise_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div id="using-ggsave" class="section level3 unnumbered">
+<h3>Using <code>ggsave()</code></h3>
+<p>Using the plot above as guidance, change at least 3 elements, if not more! Then save it using the code below. These are probably not the right dimensions for your plot, so experiment! You can also change from pdf to e.g., png by changing the file name. Look in the files pane to see where your saved plot shows up.</p>
+<pre class="r"><code>ggplot()
+
+ggsave(filename = &quot;my_plot.pdf&quot;, height = 8, width = 4)</code></pre>
+</div>
+<div id="storing-your-plot-as-an-object" class="section level3 unnumbered">
+<h3>Storing your plot as an object</h3>
+<p>That function will automatically save the last plot you made. If you’re making lots of plots, you should store them and refer to them by name. Try that with a new plot here. Notice what happens in the plots pane, and in the environment pane, when you do so.</p>
+<pre class="r"><code>new_plot &lt;- ggplot()
+
+ggsave(plot = new_plot, filename = &quot;another_plot.png&quot;)</code></pre>
+</div>
+<div id="challenge-recreate-the-plot-from-the-slides" class="section level3 unnumbered">
+<h3>Challenge: Recreate the plot from the slides</h3>
+<p>This will definitely require some Googling (reminder: I have to Google something for almost every plot I make!) so is a challenge! See how close you can get. We’ll also be working on this in lab, so don’t worry if you don’t get very far!</p>
+<p><img src="../../static/img/family_age_bir.png" width="308" /></p>
+</div>
+</div>
+</div>
