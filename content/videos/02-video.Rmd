@@ -24,9 +24,9 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "Introduction to ggplot", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3",
-  "Facetting", "41", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1183",
-  "Themes", "53", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435"
+  "Introduction to ggplot", "1", TRUE, "https://www.youtube.com/embed/4IzOQSL6Nj8?enablejsapi=1&modestbranding=1&rel=0&start=2",
+  "Facetting", "41", FALSE, "https://www.youtube.com/embed/4IzOQSL6Nj8?enablejsapi=1&modestbranding=1&rel=0&start=1320",
+  "Themes", "56", FALSE, "https://www.youtube.com/embed/4IzOQSL6Nj8?enablejsapi=1&modestbranding=1&rel=0&start=1958"
 ) 
 
 
