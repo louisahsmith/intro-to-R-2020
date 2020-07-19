@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 ## Prepare {-}
 
-Download the materials for this week's exercises [here](/exercise-handouts/00-week.zip). Once you've unzipped (and extracted, if you're on Windows) the file and moved the folder wherever you want, open up a new RStudio session using the `02-week.Rproj` file. You should have nothing in your environment. If you're having trouble with this, look back at [last week's exercises](/exercises/01-exercise/#1-3-organize-your-files) for guidance.
+Download the materials for this week's exercises [here](/exercise-handouts/02-week.zip). Once you've unzipped (and extracted, if you're on Windows) the file and moved the folder wherever you want, open up a new RStudio session using the `02-week.Rproj` file. You should have nothing in your environment. If you're having trouble with this, look back at [last week's exercises](/exercises/01-exercise/#1-3-organize-your-files) for guidance.
 
 Then you'll need to load the `tidyverse` package and read in the data. In lab we read it in from a url, this time I gave you the data in the zipped folder. The funciton to read it in is the same:
 
