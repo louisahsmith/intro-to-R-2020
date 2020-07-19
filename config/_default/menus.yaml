@@ -13,10 +13,10 @@ main:
     identifier: video1
     parent: video-top
     url: /videos/01-video/
-  # - name: Week 2
-  #   identifier: video2
-  #   parent: video-top
-  #   url: /videos/02-video/
+  - name: Week 2
+    identifier: video2
+    parent: video-top
+    url: /videos/02-video/
   # - name: Week 3
   #   identifier: video3
   #   parent: video-top
@@ -41,10 +41,10 @@ main:
     identifier: exercise1
     parent: exercise-top
     url: /exercises/01-exercise/
-  # - name: Week 2
-  #   identifier: exercise2
-  #   parent: exercise-top
-  #   url: /exercises/02-exercise/
+  - name: Week 2
+    identifier: exercise2
+    parent: exercise-top
+    url: /exercises/02-exercise/
   # - name: Week 3
   #   identifier: exercise3
   #   parent: exercise-top

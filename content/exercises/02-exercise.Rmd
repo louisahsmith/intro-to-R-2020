@@ -196,5 +196,5 @@ ggsave(plot = new_plot, filename = "another_plot.png")
 This will definitely require some Googling (reminder: I have to Google something for almost every plot I make!) so is a challenge! See how close you can get. We'll also be working on this in lab, so don't worry if you don't get very far!
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../../static/img/family_age_bir.png")
+knitr::include_graphics("../../img/family_age_bir.png")
 ```
