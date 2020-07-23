@@ -1,0 +1,193 @@
+---
+title: "Lab"
+linktitle: "2. Figures"
+date: "2020-07-23"
+publishdate: "2020-07-23"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=1"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#figures"><span class="toc-section-number">2</span> Figures</a><ul>
+<li><a href="#plots-in-r"><span class="toc-section-number">2.1</span> Plots in R</a></li>
+<li><a href="#ggplot"><span class="toc-section-number">2.2</span> ggplot</a></li>
+<li><a href="#challenge"><span class="toc-section-number">2.3</span> Challenge</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="figures" class="section level1">
+<h1><span class="header-section-number">2</span> Figures</h1>
+<p>You can either download the lab as an RMarkdown file <a href="../../lab-handouts/02-lab.Rmd" download="02-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>02-week</code> folder where you completed the exercises!</p>
+<div id="plots-in-r" class="section level2">
+<h2><span class="header-section-number">2.1</span> Plots in R</h2>
+<div id="rstudio" class="section level3 unnumbered">
+<h3>RStudio</h3>
+<p>In RStudio, plots you make pop up in the “Plots” window, as I’m sure you have found. This is helpful for interactive exploration and saving of your plots. Using <code>Export -&gt; Save as Image</code> is especially useful for helping to figure out the best aspect ratio for your plot. Try it out:</p>
+<pre class="r"><code>data(mtcars)
+plot(mtcars$mpg, mtcars$wt)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+Notice that we didn’t need to load any packages for that to work. The <code>mtcars</code> dataset is built into R, as is the <code>plot()</code> function. This is <code>base R</code> plotting. For making figures in R, the <code>ggplot2</code> package is much more popular because it is essentially endlessly flexible, as well as more asthetically pleasing (at least in my opinion).</p>
+<p>One problem that always trips people up is not actually an R error, but a message that shows up in the “Plots” window about margins. All that’s required is resizing the window, but I’ve seen it lead to panic (in myself included, before I learned what the problem was). I’ll demonstrate.</p>
+<pre class="r"><code>plot(mtcars$mpg, mtcars$wt)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="rmarkdown" class="section level3 unnumbered">
+<h3>RMarkdown</h3>
+<p>We’ll gradually be introducing some RMarkdown concepts. Today I’ll show you some “chunk options”. These tell R specifics about how to evaluate the code inside a chunk. There are <em>tons</em> and you can make your own! Here’s a write-up of all the options related to plotting: <a href="https://yihui.org/knitr/options/#plots" class="uri">https://yihui.org/knitr/options/#plots</a>. The ones I use most often are: <code>fig.width</code>, <code>fig.height</code>, and sometimes <code>fig.cap</code>.</p>
+<p>If you knit this document (or look at it on the website), you can see the difference.</p>
+<pre class="r"><code>plot(mtcars$mpg, mtcars$wt)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-3-1.png" width="384" /></p>
+<pre class="r"><code>plot(mtcars$mpg, mtcars$wt)</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="/labs/02-lab_files/figure-html/unnamed-chunk-4-1.png" alt="Tiny picture" width="192" />
+<p class="caption">
+Figure 2.1: Tiny picture
+</p>
+</div>
+<p>You can also set these options for the whole document in the <code>setup</code> chunk at the beginning. You’ve probably noticed all the options I include there; you could add others. For example, if you had this code:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  fig.width = 2,
+  fig.height = 2
+)</code></pre>
+<p>all your plots would be very tiny!</p>
+</div>
+</div>
+<div id="ggplot" class="section level2">
+<h2><span class="header-section-number">2.2</span> ggplot</h2>
+<p>OK, on to the main attraction: the <code>ggplot2</code> package, aka simply, “ggplot.” (Yes, there was a “ggplot1”, which you can see here: <a href="https://github.com/hadley/ggplot1" class="uri">https://github.com/hadley/ggplot1</a>.)</p>
+<p>First let’s read in the data. If you have this document in your <code>02-week</code> folder and opened your session via the R Project, this should work:</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+<p>Here’s the scatterplot we started off with:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, color = factor(eyesight))) +
+  scale_color_brewer(palette = &quot;Set1&quot;, name = &quot;Eyesight&quot;,
+                     labels = c(&quot;Excellent&quot;, &quot;Very Good&quot;, &quot;Good&quot;,
+                                &quot;Fair&quot;, &quot;Poor&quot;))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Then we replaced <code>geom_point()</code> with <code>geom_jitter()</code>. What did this do? Why might this be a good choice for this graph? Play with the <code>width =</code> and <code>height =</code> options within <code>geom_jitter()</code>.</p>
+<p>We used the <code>shape =</code> argument to map the sex variable to different shapes. We wanted to change the shapes to squares and diamonds. Let’s explore</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir), shape = sex)</code></pre>
+<pre class="message"><code>#&gt;  Error in layer(data = data, mapping = mapping, stat = stat, geom = GeomPoint, : object &#39;sex&#39; not found</code></pre>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, shape = sex))</code></pre>
+<pre class="message"><code>#&gt;  Error: A continuous variable can not be mapped to shape</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, shape = factor(sex)))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Now we can look at this site to see how to specify the values: <a href="https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#sec:shape-spec" class="uri">https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#sec:shape-spec</a></p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, shape = factor(sex))) +
+  scale_shape_manual(values = c(&quot;square&quot;, &quot;diamond&quot;))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, shape = factor(sex))) +
+  scale_shape_manual(values = c(15, 18))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>If we want them to match specific levels (remembering that <code>sex</code> just has two levels, <code>1</code> and <code>2</code>), we can do so like this:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_point(aes(x = income, y = age_bir, shape = factor(sex))) +
+  scale_shape_manual(values = c(&quot;1&quot; = &quot;diamond&quot;, &quot;2&quot; = &quot;square&quot;))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Any good creations built out of this exploration?</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_&lt;&gt;(aes(x = &lt;&gt;, y = &lt;&gt;, color = &lt;&gt;, ...), color = &lt;&gt;, ...) +
+  scale_color_&lt;&gt;(name = &lt;&gt;, ...)</code></pre>
+<div id="facets" class="section level3 unnumbered">
+<h3>Facets</h3>
+<p>We saw that we can split up the graphs by category with the <code>facet_</code> functions:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = &quot;Number of siblings&quot;) +
+  facet_grid(cols = vars(region), rows = vars(glasses), scales = &quot;free&quot;)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>We can also put multiple variables along the rows and/or columns:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = &quot;Number of siblings&quot;) +
+  facet_grid(rows = vars(region, glasses), scales = &quot;free&quot;)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Since we haven’t assigned better labels to these categories, neither of these is very readable. We can use the <code>labeller =</code> argument to help. Its syntax is a bit confusing so I usually just copy and paste from the examples in the help or that I’ve figured out before!</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = &quot;Number of siblings&quot;) +
+  facet_grid(rows = vars(region, glasses), scales = &quot;free&quot;,
+             labeller = labeller(glasses = c(&quot;0&quot; = &quot;Doesn&#39;t wear glasses&quot;,
+                                             &quot;1&quot; = &quot;Wears glasses/contacts&quot;),
+                                 region = c(&quot;1&quot; = &quot;Northeast&quot;, &quot;2&quot; = &quot;North Central&quot;, 
+                                            &quot;3&quot; = &quot;South&quot;, &quot;4&quot; = &quot;West&quot;)))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_bar(aes(x = nsibs)) +
+  labs(x = &quot;Number of siblings&quot;) +
+  facet_grid(rows = vars(region, glasses), scales = &quot;free&quot;,
+             labeller = label_both)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="histograms" class="section level3 unnumbered">
+<h3>Histograms</h3>
+<p>We started with an example of a histogram for income:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), binwidth = 1000)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>To make a density histogram, which scales the x-axis so the bins sum to 1, this is the method that the <a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">documentation</a> currently suggests:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_histogram(aes(x = income, after_stat(density)), binwidth = 1000)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>This can be useful to compare distributions, e.g., when facetting. Compare:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), binwidth = 1000) +
+  facet_grid(cols = vars(region))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_histogram(aes(x = income, after_stat(density)), binwidth = 1000) +
+  facet_grid(cols = vars(region))</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>How would we color the histogram above?</p>
+<p>And how would we transform the x-axis scale? And label that scale?</p>
+</div>
+<div id="perfecting-and-saving-your-work" class="section level3 unnumbered">
+<h3>Perfecting and saving your work</h3>
+<p>Besides manually saving using the “Export” button in the “Plots” window, the <code>ggsave()</code> function is super useful for programmatically saving your figures.</p>
+<pre class="r"><code>plot1 &lt;- ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), binwidth = 1000)
+plot2 &lt;- ggplot(data = nlsy) +
+  geom_histogram(aes(x = income, after_stat(density)), binwidth = 1000)
+ggsave(&quot;plot1.png&quot;, plot = plot1, height = 5, width = 8)
+ggsave(&quot;plot2.pdf&quot;, plot = plot2, height = 6, width = 12)</code></pre>
+<p>Usually you want to perfect the formatting a bit more before saving, though. You could spend hours perfecting the theme yourself, or choose a built-in theme from <code>ggplot2</code> or another package:</p>
+<pre class="r"><code># install.packages(&quot;ggthemes&quot;)
+ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), binwidth = 1000) +
+  ggthemes::theme_solarized_2()</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>You probably also what to change the labels:</p>
+<pre class="r"><code>ggplot(data = nlsy) +
+  geom_histogram(aes(x = income), binwidth = 1000) +
+  labs(x = &quot;Income in USD&quot;, y = &quot;Count&quot;, title = &quot;Income in NLSY&quot;, subtitle = &quot;in 1979\nin a subset of participants&quot;)</code></pre>
+<p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+</div>
+<div id="challenge" class="section level2">
+<h2><span class="header-section-number">2.3</span> Challenge</h2>
+<p>We couldn’t possibly go over all there is to do in ggplot – it could take a semester. The best way to learn, once you have these basics down, is just to explore.</p>
+<p>In your groups:</p>
+<ol style="list-style-type: decimal">
+<li><p>Try to recreate this figure:
+<img src="../../img/family_age_bir.png" /></p></li>
+<li><p>Looking over the examples and options on <a href="https://ggplot2.tidyverse.org/reference/theme.html">this page</a>, try to make the <em>ugliest</em> figure you can using the NLSY data.</p></li>
+</ol>
+</div>
+</div>

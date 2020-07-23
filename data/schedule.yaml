@@ -12,7 +12,7 @@ lessons:
     date: "July 20 - July 24"
     video: "02-video"
     exercise: "02-exercise"
-    # lab: "02-lab"
+    lab: "02-lab"
  
   - title: 'Selecting, filtering, and mutating'
     session: 3

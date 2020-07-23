@@ -69,10 +69,10 @@ main:
     identifier: lab1
     parent: lab-top
     url: /labs/01-lab/
-  # - name: Week 2
-  #   identifier: lab2
-  #   parent: lab-top
-  #   url: /labs/02-lab/
+  - name: Week 2
+    identifier: lab2
+    parent: lab-top
+    url: /labs/02-lab/
   # - name: Week 3
   #   identifier: lab3
   #   parent: lab-top

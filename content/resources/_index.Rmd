@@ -8,6 +8,12 @@ weight: -1
 
 Here's where I'll put links to helpful resources or things I mention in lab or in the videos.
 
+### On `<-` vs. `=` for assignment:
+
+- Blog post: https://colinfay.me/r-assignment/
+- Blog post: https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html
+- Long StackOverflow discussion if you want to know *all* the differences: https://stackoverflow.com/questions/1741820/what-are-the-differences-between-and-assignment-operators-in-r/1742550#1742550
+
 ### To start off:
 
 - [Here's](https://www.rstudio.com/online-learning/) RStudio's great list of online resources. In particular, there are some more online tutorials [here](https://rstudio.cloud/learn/primers).
