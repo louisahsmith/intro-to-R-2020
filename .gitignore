@@ -9,3 +9,4 @@ resources/_gen/*
 temp_figs/*
 **/0[4-6]-*/**
 **/0[4-6]-*
+nlsy_cc.csv
