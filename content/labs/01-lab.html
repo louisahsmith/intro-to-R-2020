@@ -14,10 +14,12 @@ output:
     pandoc_args: ["--number-offset=0"]
 ---
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 <div id="TOC">
 <ul>
-<li><a href="#the-basics"><span class="toc-section-number">1</span> The basics</a><ul>
+<li><a href="#the-basics"><span class="toc-section-number">1</span> The basics</a>
+<ul>
 <li><a href="#navigating-rstudio"><span class="toc-section-number">1.1</span> Navigating RStudio</a></li>
 <li><a href="#this-weeks-exercises"><span class="toc-section-number">1.2</span> This week’s exercises</a></li>
 <li><a href="#data-in-r"><span class="toc-section-number">1.3</span> Data in R</a></li>
@@ -26,10 +28,10 @@ output:
 </ul>
 </div>
 
-<div id="the-basics" class="section level1">
+<div id="the-basics" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The basics</h1>
 <p>You can either download the lab as an RMarkdown file <a href="../../lab-handouts/01-lab.Rmd" download="01-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>01-week</code> folder where you completed the exercises!</p>
-<div id="navigating-rstudio" class="section level2">
+<div id="navigating-rstudio" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Navigating RStudio</h2>
 <p>Besides the obvious benefits of seeing your environment, console, and scripts all in the same window, RStudio offers a lot of other helpful features. Here we’ll go over some that you might find helpful now, but no that there are lots more as well! And if you don’t like the default keyboard shortcuts, you can change them!</p>
 <p>Here is a list of some helpful ones. If two keys are given, separated by <code>/</code>, the first is for Macs and the second for Windows. Try them out with the code below!</p>
@@ -89,7 +91,7 @@ mat&lt;-matrix(c(
 </ol>
 <p>This <a href="https://www.dataquest.io/blog/rstudio-tips-tricks-shortcuts/">blog post</a> has even more!</p>
 </div>
-<div id="this-weeks-exercises" class="section level2">
+<div id="this-weeks-exercises" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> This week’s exercises</h2>
 <pre class="r"><code># create a vector of numeric values
 vals &lt;- c(1, 645, 329)
@@ -124,11 +126,11 @@ mat[2, ]</code></pre>
 <code>subscript out of bounds</code></p></li>
 </ol>
 </div>
-<div id="data-in-r" class="section level2">
+<div id="data-in-r" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Data in R</h2>
 <p><img src="https://www.nlsinfo.org/sites/nlsinfo.org/files/images/NLSY79_0.png" /></p>
 <p>We’re using some data from the <a href="https://www.nlsinfo.org/content/cohorts/nlsy79">National Longitudinal Survey of Youth 1979</a>, a cohort of American young adults aged 14-22 at enrollment in 1979. They continue to be followed to this day, and there is a wealth of publicly available data <a href="https://www.nlsinfo.org/investigator/pages/login.jsp">online</a>. I’ve downloaded the answers to a survey question about whether respondents wear glasses, a scale about their eyesight with glasses, their (NLSY-assigned 😒) race/ethnicity, their sex, their family’s income in 1979, and their age at the birth of their first child.</p>
-<div id="reading-in-data" class="section level3 unnumbered">
+<div id="reading-in-data" class="section level3 unnumbered" number="">
 <h3>Reading in data</h3>
 <p>I’ve saved the dataset as a <code>csv</code> file. We can read this into R using the <code>read_csv()</code> function, which is loaded with the <code>tidyverse</code>. For now we’ll load it from the internet. We’ll talk about other options for reading in data later in the course!</p>
 <pre class="r"><code>library(tidyverse)
@@ -217,7 +219,7 @@ View(nlsy)</code></pre>
 </ul>
 </div>
 </div>
-<div id="group-challenge-exercises" class="section level2">
+<div id="group-challenge-exercises" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Group challenge exercises</h2>
 <ol style="list-style-type: decimal">
 <li>How many people are in the NLSY? How many variables are in this dataset? What are two ways you can answer these questions using tools we’ve discussed?</li>

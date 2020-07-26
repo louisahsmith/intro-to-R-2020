@@ -14,10 +14,12 @@ output:
     pandoc_args: ["--number-offset=1"]
 ---
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 <div id="TOC">
 <ul>
-<li><a href="#figures"><span class="toc-section-number">2</span> Figures</a><ul>
+<li><a href="#figures"><span class="toc-section-number">2</span> Figures</a>
+<ul>
 <li><a href="#plots-in-r"><span class="toc-section-number">2.1</span> Plots in R</a></li>
 <li><a href="#ggplot"><span class="toc-section-number">2.2</span> ggplot</a></li>
 <li><a href="#challenge"><span class="toc-section-number">2.3</span> Challenge</a></li>
@@ -25,12 +27,12 @@ output:
 </ul>
 </div>
 
-<div id="figures" class="section level1">
+<div id="figures" class="section level1" number="1">
 <h1><span class="header-section-number">2</span> Figures</h1>
 <p>You can either download the lab as an RMarkdown file <a href="../../lab-handouts/02-lab.Rmd" download="02-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>02-week</code> folder where you completed the exercises!</p>
-<div id="plots-in-r" class="section level2">
+<div id="plots-in-r" class="section level2" number="1.1">
 <h2><span class="header-section-number">2.1</span> Plots in R</h2>
-<div id="rstudio" class="section level3 unnumbered">
+<div id="rstudio" class="section level3 unnumbered" number="">
 <h3>RStudio</h3>
 <p>In RStudio, plots you make pop up in the “Plots” window, as I’m sure you have found. This is helpful for interactive exploration and saving of your plots. Using <code>Export -&gt; Save as Image</code> is especially useful for helping to figure out the best aspect ratio for your plot. Try it out:</p>
 <pre class="r"><code>data(mtcars)
@@ -41,7 +43,7 @@ Notice that we didn’t need to load any packages for that to work. The <code>mt
 <pre class="r"><code>plot(mtcars$mpg, mtcars$wt)</code></pre>
 <p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
-<div id="rmarkdown" class="section level3 unnumbered">
+<div id="rmarkdown" class="section level3 unnumbered" number="">
 <h3>RMarkdown</h3>
 <p>We’ll gradually be introducing some RMarkdown concepts. Today I’ll show you some “chunk options”. These tell R specifics about how to evaluate the code inside a chunk. There are <em>tons</em> and you can make your own! Here’s a write-up of all the options related to plotting: <a href="https://yihui.org/knitr/options/#plots" class="uri">https://yihui.org/knitr/options/#plots</a>. The ones I use most often are: <code>fig.width</code>, <code>fig.height</code>, and sometimes <code>fig.cap</code>.</p>
 <p>If you knit this document (or look at it on the website), you can see the difference.</p>
@@ -62,7 +64,7 @@ Figure 2.1: Tiny picture
 <p>all your plots would be very tiny!</p>
 </div>
 </div>
-<div id="ggplot" class="section level2">
+<div id="ggplot" class="section level2" number="1.2">
 <h2><span class="header-section-number">2.2</span> ggplot</h2>
 <p>OK, on to the main attraction: the <code>ggplot2</code> package, aka simply, “ggplot.” (Yes, there was a “ggplot1”, which you can see here: <a href="https://github.com/hadley/ggplot1" class="uri">https://github.com/hadley/ggplot1</a>.)</p>
 <p>First let’s read in the data. If you have this document in your <code>02-week</code> folder and opened your session via the R Project, this should work:</p>
@@ -105,7 +107,7 @@ nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
 <pre class="r"><code>ggplot(data = nlsy) +
   geom_&lt;&gt;(aes(x = &lt;&gt;, y = &lt;&gt;, color = &lt;&gt;, ...), color = &lt;&gt;, ...) +
   scale_color_&lt;&gt;(name = &lt;&gt;, ...)</code></pre>
-<div id="facets" class="section level3 unnumbered">
+<div id="facets" class="section level3 unnumbered" number="">
 <h3>Facets</h3>
 <p>We saw that we can split up the graphs by category with the <code>facet_</code> functions:</p>
 <pre class="r"><code>ggplot(data = nlsy) +
@@ -136,7 +138,7 @@ nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
              labeller = label_both)</code></pre>
 <p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
-<div id="histograms" class="section level3 unnumbered">
+<div id="histograms" class="section level3 unnumbered" number="">
 <h3>Histograms</h3>
 <p>We started with an example of a histogram for income:</p>
 <pre class="r"><code>ggplot(data = nlsy) +
@@ -158,7 +160,7 @@ nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
 <p>How would we color the histogram above?</p>
 <p>And how would we transform the x-axis scale? And label that scale?</p>
 </div>
-<div id="perfecting-and-saving-your-work" class="section level3 unnumbered">
+<div id="perfecting-and-saving-your-work" class="section level3 unnumbered" number="">
 <h3>Perfecting and saving your work</h3>
 <p>Besides manually saving using the “Export” button in the “Plots” window, the <code>ggsave()</code> function is super useful for programmatically saving your figures.</p>
 <pre class="r"><code>plot1 &lt;- ggplot(data = nlsy) +
@@ -180,7 +182,7 @@ ggplot(data = nlsy) +
 <p><img src="/labs/02-lab_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 </div>
 </div>
-<div id="challenge" class="section level2">
+<div id="challenge" class="section level2" number="1.3">
 <h2><span class="header-section-number">2.3</span> Challenge</h2>
 <p>We couldn’t possibly go over all there is to do in ggplot – it could take a semester. The best way to learn, once you have these basics down, is just to explore.</p>
 <p>In your groups:</p>
