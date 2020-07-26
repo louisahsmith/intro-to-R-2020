@@ -1,0 +1,120 @@
+---
+title: "Exercises"
+linktitle: "3. Selecting, filtering, and mutating"
+date: "2020-07-27"
+publishdate: "2020-07-26"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=2"]
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#selecting-filtering-and-mutating"><span class="toc-section-number">3</span> Selecting, filtering, and mutating</a>
+<ul>
+<li><a href="#prepare"><span class="toc-section-number">2</span> Prepare</a></li>
+<li><a href="#making-new-variables-with-mutate"><span class="toc-section-number">3.1</span> Making new variables with <code>mutate()</code></a></li>
+<li><a href="#factors-in-r-using-the-forcats-package"><span class="toc-section-number">3.2</span> Factors in R using the <code>forcats</code> package</a></li>
+<li><a href="#selecting-variables-using-select"><span class="toc-section-number">3.3</span> Selecting variables using <code>select()</code></a></li>
+<li><a href="#subset-your-data-with-filter"><span class="toc-section-number">3.4</span> Subset your data with <code>filter()</code></a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="selecting-filtering-and-mutating" class="section level1" number="1">
+<h1><span class="header-section-number">3</span> Selecting, filtering, and mutating</h1>
+<div id="prepare" class="section level2 unnumbered" number="">
+<h2>Prepare</h2>
+<p>Download the materials for this week’s exercises <a href="/exercise-handouts/03-week.zip">here</a>. Once you’ve unzipped (and extracted, if you’re on Windows) the file and moved the folder wherever you want, open up a new RStudio session using the <code>03-week.Rproj</code> file. You should have nothing in your environment. If you’re having trouble with this, look back at the <a href="/exercises/01-exercise/#1-3-organize-your-files">first week’s exercises</a> for guidance.</p>
+<p>Then you’ll need to load the <code>tidyverse</code> package and read in the data like before. I included it in this week’s materials too, so we don’t have to worry about reading it in from a different directory:</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+</div>
+<div id="making-new-variables-with-mutate" class="section level2" number="1.1">
+<h2><span class="header-section-number">3.1</span> Making new variables with <code>mutate()</code></h2>
+<div id="standardized-income" class="section level3 unnumbered" number="">
+<h3>Standardized income</h3>
+<p>Using the NLSY data and <code>mutate()</code>, make a standardized (centered at the mean, and divided by the standard deviation) version of income.</p>
+<pre class="r"><code># replace the ... with your code
+nlsy &lt;- mutate(nlsy, income_stand = ...)</code></pre>
+</div>
+<div id="standardized-logincome" class="section level3 unnumbered" number="">
+<h3>Standardized log(income)</h3>
+<p>Do the same thing, but using income on the log scale. Look at this variable using <code>summary()</code>. Can you figure out what happened? (Hint: look at your log(income) variable.)</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy, log_income_stand = ...)
+summary(nlsy$log_income_stand)</code></pre>
+</div>
+<div id="case_when" class="section level3 unnumbered" number="">
+<h3><code>case_when()</code></h3>
+<p>Redo the previous question, but if you are not able to calculate log(income) for an observation, replace it with a missing value (using <code>case_when()</code>). This time, when you standardize log(income), you’ll have to use <code>na.rm = TRUE</code> to remove missing values both when you take the mean and the standard deviation.</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy,
+               log_income_stand = case_when(
+                 ...
+               ))</code></pre>
+</div>
+</div>
+<div id="factors-in-r-using-the-forcats-package" class="section level2" number="1.2">
+<h2><span class="header-section-number">3.2</span> Factors in R using the <code>forcats</code> package</h2>
+<div id="recode-a-factor" class="section level3 unnumbered" number="">
+<h3>Recode a factor</h3>
+<p>Turn the eyesight variable into a factor variable. The numbers 1-5 correspond to “excellent”, “very good”, “good”, “fair”, and “poor.” Make sure that categories are in an appropriate order.</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy, eyesight_fact = ...)</code></pre>
+</div>
+<div id="combining-factor-levels" class="section level3 unnumbered" number="">
+<h3>Combining factor levels</h3>
+<p>Use two different methods to combine the worst two categories of eyesight into one category.</p>
+</div>
+<div id="relevel-a-factor" class="section level3 unnumbered" number="">
+<h3>Relevel a factor</h3>
+<p>Make a new categorical income variable with at least 3 levels (you can choose the cutoffs). Make a bar graph with this new variable where the bars are in the correct order from low to high.</p>
+</div>
+</div>
+<div id="selecting-variables-using-select" class="section level2" number="1.3">
+<h2><span class="header-section-number">3.3</span> Selecting variables using <code>select()</code></h2>
+<div id="select-centered-variables" class="section level3 unnumbered" number="">
+<h3>Select centered variables</h3>
+<p>Create mean-centered versions of “age_bir”, “nsibs”, “income”, and the two sleep variables. Use the same ending (e.g., "_cent") for all of them. Then make a new dataset of just the centered variables using <code>select()</code> and a helper.</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy,
+               age_bir_cent = ...,
+               nsibs_cent = ...,
+               ...)
+nlsy_new &lt;- select(nlsy, ...)</code></pre>
+</div>
+<div id="go-back-to-the-beginning" class="section level3 unnumbered" number="">
+<h3>Go back to the beginning</h3>
+<p>You may have added a lot of variables to the original dataset by now. Create a dataset called <code>nlsy_orig</code> that contains only the variables we started off with, using the vector of names we originally used to name the columns and the <code>all_of()</code> helper. I’ll start you off with the variable names.</p>
+<pre class="r"><code>colnames_orig &lt;- c(&quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+                   &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;, 
+                   &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;)
+</code></pre>
+</div>
+<div id="rename-variables" class="section level3 unnumbered" number="">
+<h3>Rename variables</h3>
+<p>Look at <code>help(rename)</code>. Looking at the examples to help, rename “age_bir” to “age_1st_birth” without making a new column.</p>
+</div>
+</div>
+<div id="subset-your-data-with-filter" class="section level2" number="1.4">
+<h2><span class="header-section-number">3.4</span> Subset your data with <code>filter()</code></h2>
+<div id="or-conditions" class="section level3 unnumbered" number="">
+<h3>“Or” conditions</h3>
+<p>Create a dataset with all the observations that get over 7 hours of sleep on both weekends and weekdays <em>or</em> who have an income greater than/equal to 20,000 and less than/equal to 50,000.</p>
+<pre class="r"><code>nlsy_or &lt;- filter(nlsy, ...)</code></pre>
+</div>
+<div id="missing-values" class="section level3 unnumbered" number="">
+<h3>Missing values</h3>
+<p>Create a dataset that consists <em>only</em> of the missing values in <code>slp_cat_wkdy</code>. Check how many rows it has (there should be 3!).</p>
+</div>
+<div id="greater-thanless-than" class="section level3 unnumbered" number="">
+<h3>Greater than/less than</h3>
+<p>Look up the <code>between()</code> function in help. Figure out how to use this to answer the first question in this section, when choosing people whose income is between 20,000 and 50,000. Check to make sure you get the same number of rows.</p>
+</div>
+</div>
+</div>

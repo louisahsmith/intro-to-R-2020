@@ -17,10 +17,10 @@ main:
     identifier: video2
     parent: video-top
     url: /videos/02-video/
-  # - name: Week 3
-  #   identifier: video3
-  #   parent: video-top
-  #   url: /videos/03-video/
+  - name: Week 3
+    identifier: video3
+    parent: video-top
+    url: /videos/03-video/
   # - name: Week 4
   #   identifier: video4
   #   parent: video-top
@@ -45,10 +45,10 @@ main:
     identifier: exercise2
     parent: exercise-top
     url: /exercises/02-exercise/
-  # - name: Week 3
-  #   identifier: exercise3
-  #   parent: exercise-top
-  #   url: /exercises/03-exercise/
+  - name: Week 3
+    identifier: exercise3
+    parent: exercise-top
+    url: /exercises/03-exercise/
   # - name: Week 4
   #   identifier: exercise4
   #   parent: exercise-top
@@ -118,3 +118,4 @@ main:
 #     weight: 1
 #   - name: Guides
 #     weight: 2
+#

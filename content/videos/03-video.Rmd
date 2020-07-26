@@ -2,7 +2,7 @@
 title: "Selecting, filtering, and mutating"
 linktitle: "3. Selecting, filtering, and mutating"
 date: "2020-07-27"
-publishdate: "2020-07-27"
+publishdate: "2020-07-26"
 menu:
   video:
     weight: 4
@@ -24,10 +24,10 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "New variables", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3",
-  "Factors", "12", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1183",
-  "Selecting variables", "23", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435",
-  "Subsetting data", "32", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435"
+  "New variables", "1", TRUE, "https://www.youtube.com/embed/YdX4EOZbNWA?enablejsapi=1&modestbranding=1&rel=0&start=1",
+  "Factors", "12", FALSE, "https://www.youtube.com/embed/YdX4EOZbNWA?enablejsapi=1&modestbranding=1&rel=0&start=1125",
+  "Selecting variables", "23", FALSE, "https://www.youtube.com/embed/YdX4EOZbNWA?enablejsapi=1&modestbranding=1&rel=0&start=1843",
+  "Subsetting data", "32", FALSE, "https://www.youtube.com/embed/YdX4EOZbNWA?enablejsapi=1&modestbranding=1&rel=0&start=2380"
 ) 
 
 

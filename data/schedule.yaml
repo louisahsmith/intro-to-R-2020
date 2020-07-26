@@ -17,8 +17,8 @@ lessons:
   - title: 'Selecting, filtering, and mutating'
     session: 3
     date: "July 27 - July 31"
-    # video: "03-video"
-    # exercise: "03-exercise"
+    video: "03-video"
+    exercise: "03-exercise"
     # lab: "03-lab"
 
   - title: 'Grouping and tables'
