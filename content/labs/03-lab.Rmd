@@ -1,0 +1,218 @@
+---
+title: "Lab"
+linktitle: "3. Selecting, filtering, mutating"
+date: "2020-07-30"
+publishdate: "2020-07-30"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=2"]
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = TRUE,
+  eval = FALSE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message"
+)
+```
+
+# Data manipulation
+
+You can either download the lab as an RMarkdown file <a href="../../lab-handouts/03-lab.Rmd" download="03-lab.Rmd">here</a>, or copy and paste the code as we go into a `.R` script. Either way, save it into the `03-week` folder where you completed the exercises!
+
+As always, we'll be using the tidyverse package and the NLSY data.
+
+```{r, eval = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
+nlsy <- read_csv("nlsy_cc.csv")
+```
+
+## Stay organized
+
+This week we covered a lot of data manipulation tasks. It can be easy to get confused about what you have done to your dataset. We'll talk more about project organization later in this course, but here are some brief recommendations to avoid confusion, or worse, errors:
+
+1.  Restart R frequently. This encourages you to make sure your script will work from the top down. In general, avoid skipping around in your code -- you find be convinced that something works, but it's only due to something happening *later* in the script, which you already ran when coding interactively. If you run something above, run all the code from there down to where you're working.
+2.  Rename the dataset you're working with after every few steps. Then if you do make a mistake and need to go back, you don't need to start from the very beginning, just from when you made your current object.
+3.  Give your objects meaningful names. Autocomplete can help if they start getting really long. Choose a naming convention and stick with it. I usually use "snake case": all lowercase, separated by underscores.
+
+-   You can use periods to name your objects, but keep in mind that R has a special use for periods: they're used to create methods for different classes when you're building a package, e.g., `plot.stepfun()` is the plotting method for step function objects, and `plot.ecdf()` is the plotting method for empirical cumulative distribution functions. This isn't something you need to know about right now, but you may confuse readers of your code if you're using periods for other reasons.
+
+4.  There's a [cool package](https://github.com/elbersb/tidylog#readme) you can use with the functions we're learning this week that may be helpful: `tidylog`. It prints a log to the console about how you've changed your data. I'll demonstrate.
+
+```{r, eval = TRUE}
+# install.packages(tidylog)
+library(tidylog, warn.conflicts = FALSE)
+
+nlsy_log <- mutate(nlsy, blah = 2 * sleep_wkdy)
+nlsy_log <- filter(nlsy_log, blah > 14)
+nlsy_log <- select(nlsy_log, id, sleep_wkdy, blah)
+```
+
+If you want to turn it off, you can either restart R or run the following:
+
+```{r, eval = TRUE}
+detach("package:tidylog", unload = TRUE)
+```
+
+## Making new variables with `mutate()`
+
+### Standardized income {-}
+
+Using the NLSY data and `mutate()`, make a standardized (centered at the mean, and divided by the standard deviation) version of income.
+
+```{r}
+# replace the ... with your code
+nlsy <- mutate(nlsy, income_stand = ...)
+```
+
+### Standardized log(income) {-}
+
+Do the same thing, but using income on the log scale. Look at this variable using `summary()`. Can you figure out what happened? (Hint: look at your log(income) variable.)
+
+```{r}
+nlsy <- mutate(nlsy, log_income_stand = ...)
+summary(nlsy$log_income_stand)
+```
+
+## Factors in R using the `forcats` package
+
+### Recode a factor {-}
+
+Turn the eyesight variable into a factor variable. The numbers 1-5 correspond to "excellent", "very good", "good", "fair", and "poor." Make sure that categories are in an appropriate order.
+
+```{r}
+nlsy <- mutate(nlsy, eyesight_fact = ...)
+```
+
+### Combining factor levels {-}
+
+Use two different methods to combine the worst two categories of eyesight into one category.
+
+```{r}
+```
+
+
+## Selecting variables using `select()`
+
+### Select centered variables {-}
+
+Create mean-centered versions of "age\_bir", "nsibs", "income", and the two sleep variables. Use the same ending (e.g., \"\_cent\") for all of them. Then make a new dataset of just the centered variables using `select()` and a helper.
+
+```{r}
+nlsy <- mutate(nlsy,
+               age_bir_cent = ...,
+               nsibs_cent = ...,
+               ...)
+nlsy_new <- select(nlsy, ...)
+```
+
+### Go back to the beginning {-}
+
+You may have added a lot of variables to the original dataset by now. Create a dataset called `nlsy_orig` that contains only the variables we started off with, using the vector of names we originally used to name the columns and the `all_of()` helper. I'll start you off with the variable names.
+
+```{r}
+colnames_orig <- c("glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
+                   "id", "nsibs", "samp", "race_eth", "sex", "region", 
+                   "income", "res_1980", "res_2002", "age_bir")
+
+
+```
+
+## Subset your data with `filter()`
+
+### "Or" conditions {-}
+
+Create a dataset with all the observations that get over 7 hours of sleep on both weekends and weekdays *or* who have an income greater than/equal to 20,000 and less than/equal to 50,000.
+
+```{r}
+nlsy_or <- filter(nlsy, ...)
+```
+
+### Missing values {-}
+
+Create a dataset that consists *only* of the missing values in `slp_cat_wkdy`. Check how many rows it has (there should be 3!).
+
+```{r}
+```
+
+
+## With your group
+
+
+### `case_when()` {-}
+
+Try again to make a new variable for standardized log-income. This time, if you are not able to calculate log(income) for an observation, replace it with a missing value (using `case_when()`). This time, when you standardize log(income), you'll have to use `na.rm = TRUE` to remove missing values both when you take the mean and the standard deviation.
+
+```{r}
+nlsy <- mutate(nlsy,
+               log_income_stand = case_when(
+                 ...
+               ))
+```
+
+
+### Relevel a factor {-}
+
+Make a new categorical income variable with at least 3 levels (you can choose the cutoffs). Make a bar graph with this new variable where the bars are in the correct order from low to high.
+
+```{r}
+```
+
+
+### Rename variables {-}
+
+Look at `help(rename)`. Looking at the examples to help, rename "age_bir" to "age_1st_birth" without making a new column.
+
+```{r}
+```
+
+### Greater than/less than {-}
+
+Look up the `between()` function in help. Figure out how to use this to create a dataset with all the observations that get over 7 hours of sleep on both weekends and weekdays *or* who have an income greater than/equal to 20,000 and less than/equal to 50,000. Check to make sure you get the same number of rows as we did earlier.
+
+```{r}
+```
+
+### Challenges {-}
+
+1. Figure out how to use the `num_range()` function to select the `res_` variables from 1980 to 2000. There should only be one. Then try from 1980 to 2002. There should be two.
+
+2. Download and save the <a href="../../data/nlsy.rds" download="nlsy.rds">full nlsy dataset</a>
+ into your `03-week` folder. Then run the following lines to read it in.
+
+```{r}
+nlsy_full <- read_rds("nlsy.rds")
+colnames(nlsy_full) <- colnames_orig
+```
+
+You'll see if you run `levels(nlsy_full$res_1980)` and 
+`levels(nlsy_full$res_2002)`, the participants' residences in those years, what the levels of those factors are:
+
+ `res_1980` | `res_2002`
+---------------------- | ----------------------
+ABOARD SHIP, BARRACKS | OPEN BAY OR TROOP BARRACKS, ABOARD SHIP
+BACHELOR, OFFICER QUARTERS | BACHELOR ENLISTED OR OFFICER QUARTERS
+DORM, FRATERNITY, SORORITY | DORMITORY, FRATERNITY OR SORORITY
+HOSPITAL | JAIL
+JAIL | HOSPITAL
+OTHER TEMPORARY QUARTERS | OTHER TEMPORARY INDIVIDUAL QUARTERS (SPECIFY)
+OWN DWELLING UNIT | OWN DWELLING UNIT
+ON-BASE MIL FAM HOUSING | ON-BASE MILITARY FAMILY HOUSING
+OFF-BASE MIL FAM HOUSING | OFF-BASE MILITARY FAMILY HOUSING
+ORPHANAGE | CONVENT, MONASTERY, OTHER RELIGIOUS INSTITUTE
+RELIGIOUS INSTITUTION | OTHER INDIVIDUAL QUARTERS (SPECIFY)
+OTHER INDIVIDUAL QUARTERS | RESPONDENT IN PARENT HOUSEHOLD
+PARENTAL |
+HHI CONDUCTED WITH PARENT |
+R IN PARENTAL HOUSEHOLD |
+
+Imagine that you are doing an analysis with these data. Make a new factor variable for each year, that has the same, concise and readable levels, so that you could make a nice table comparing the distribution of residences across years.

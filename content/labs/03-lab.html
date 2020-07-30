@@ -1,0 +1,230 @@
+---
+title: "Lab"
+linktitle: "3. Selecting, filtering, mutating"
+date: "2020-07-30"
+publishdate: "2020-07-30"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=2"]
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#data-manipulation"><span class="toc-section-number">3</span> Data manipulation</a>
+<ul>
+<li><a href="#stay-organized"><span class="toc-section-number">3.1</span> Stay organized</a></li>
+<li><a href="#making-new-variables-with-mutate"><span class="toc-section-number">3.2</span> Making new variables with <code>mutate()</code></a></li>
+<li><a href="#factors-in-r-using-the-forcats-package"><span class="toc-section-number">3.3</span> Factors in R using the <code>forcats</code> package</a></li>
+<li><a href="#selecting-variables-using-select"><span class="toc-section-number">3.4</span> Selecting variables using <code>select()</code></a></li>
+<li><a href="#subset-your-data-with-filter"><span class="toc-section-number">3.5</span> Subset your data with <code>filter()</code></a></li>
+<li><a href="#with-your-group"><span class="toc-section-number">3.6</span> With your group</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="data-manipulation" class="section level1" number="1">
+<h1><span class="header-section-number">3</span> Data manipulation</h1>
+<p>You can either download the lab as an RMarkdown file <a href="../../lab-handouts/03-lab.Rmd" download="03-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>03-week</code> folder where you completed the exercises!</p>
+<p>As always, we’ll be using the tidyverse package and the NLSY data.</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+<div id="stay-organized" class="section level2" number="1.1">
+<h2><span class="header-section-number">3.1</span> Stay organized</h2>
+<p>This week we covered a lot of data manipulation tasks. It can be easy to get confused about what you have done to your dataset. We’ll talk more about project organization later in this course, but here are some brief recommendations to avoid confusion, or worse, errors:</p>
+<ol style="list-style-type: decimal">
+<li>Restart R frequently. This encourages you to make sure your script will work from the top down. In general, avoid skipping around in your code – you find be convinced that something works, but it’s only due to something happening <em>later</em> in the script, which you already ran when coding interactively. If you run something above, run all the code from there down to where you’re working.</li>
+<li>Rename the dataset you’re working with after every few steps. Then if you do make a mistake and need to go back, you don’t need to start from the very beginning, just from when you made your current object.</li>
+<li>Give your objects meaningful names. Autocomplete can help if they start getting really long. Choose a naming convention and stick with it. I usually use “snake case”: all lowercase, separated by underscores.</li>
+</ol>
+<ul>
+<li>You can use periods to name your objects, but keep in mind that R has a special use for periods: they’re used to create methods for different classes when you’re building a package, e.g., <code>plot.stepfun()</code> is the plotting method for step function objects, and <code>plot.ecdf()</code> is the plotting method for empirical cumulative distribution functions. This isn’t something you need to know about right now, but you may confuse readers of your code if you’re using periods for other reasons.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>There’s a <a href="https://github.com/elbersb/tidylog#readme">cool package</a> you can use with the functions we’re learning this week that may be helpful: <code>tidylog</code>. It prints a log to the console about how you’ve changed your data. I’ll demonstrate.</li>
+</ol>
+<pre class="r"><code># install.packages(tidylog)
+library(tidylog, warn.conflicts = FALSE)
+
+nlsy_log &lt;- mutate(nlsy, blah = 2 * sleep_wkdy)</code></pre>
+<pre class="message"><code>#&gt;  mutate: new variable &#39;blah&#39; (double) with 13 unique values and 0% NA
+nlsy_log &lt;- filter(nlsy_log, blah &gt; 14)</code></pre>
+<pre class="message"><code>#&gt;  filter: removed 886 rows (74%), 319 rows remaining
+nlsy_log &lt;- select(nlsy_log, id, sleep_wkdy, blah)</code></pre>
+<pre class="message"><code>#&gt;  select: dropped 12 variables (glasses, eyesight, sleep_wknd, nsibs, samp, …)</code></pre>
+<p>If you want to turn it off, you can either restart R or run the following:</p>
+<pre class="r"><code>detach(&quot;package:tidylog&quot;, unload = TRUE)</code></pre>
+</div>
+<div id="making-new-variables-with-mutate" class="section level2" number="1.2">
+<h2><span class="header-section-number">3.2</span> Making new variables with <code>mutate()</code></h2>
+<div id="standardized-income" class="section level3 unnumbered" number="">
+<h3>Standardized income</h3>
+<p>Using the NLSY data and <code>mutate()</code>, make a standardized (centered at the mean, and divided by the standard deviation) version of income.</p>
+<pre class="r"><code># replace the ... with your code
+nlsy &lt;- mutate(nlsy, income_stand = ...)</code></pre>
+</div>
+<div id="standardized-logincome" class="section level3 unnumbered" number="">
+<h3>Standardized log(income)</h3>
+<p>Do the same thing, but using income on the log scale. Look at this variable using <code>summary()</code>. Can you figure out what happened? (Hint: look at your log(income) variable.)</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy, log_income_stand = ...)
+summary(nlsy$log_income_stand)</code></pre>
+</div>
+</div>
+<div id="factors-in-r-using-the-forcats-package" class="section level2" number="1.3">
+<h2><span class="header-section-number">3.3</span> Factors in R using the <code>forcats</code> package</h2>
+<div id="recode-a-factor" class="section level3 unnumbered" number="">
+<h3>Recode a factor</h3>
+<p>Turn the eyesight variable into a factor variable. The numbers 1-5 correspond to “excellent”, “very good”, “good”, “fair”, and “poor.” Make sure that categories are in an appropriate order.</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy, eyesight_fact = ...)</code></pre>
+</div>
+<div id="combining-factor-levels" class="section level3 unnumbered" number="">
+<h3>Combining factor levels</h3>
+<p>Use two different methods to combine the worst two categories of eyesight into one category.</p>
+</div>
+</div>
+<div id="selecting-variables-using-select" class="section level2" number="1.4">
+<h2><span class="header-section-number">3.4</span> Selecting variables using <code>select()</code></h2>
+<div id="select-centered-variables" class="section level3 unnumbered" number="">
+<h3>Select centered variables</h3>
+<p>Create mean-centered versions of “age_bir”, “nsibs”, “income”, and the two sleep variables. Use the same ending (e.g., "_cent") for all of them. Then make a new dataset of just the centered variables using <code>select()</code> and a helper.</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy,
+               age_bir_cent = ...,
+               nsibs_cent = ...,
+               ...)
+nlsy_new &lt;- select(nlsy, ...)</code></pre>
+</div>
+<div id="go-back-to-the-beginning" class="section level3 unnumbered" number="">
+<h3>Go back to the beginning</h3>
+<p>You may have added a lot of variables to the original dataset by now. Create a dataset called <code>nlsy_orig</code> that contains only the variables we started off with, using the vector of names we originally used to name the columns and the <code>all_of()</code> helper. I’ll start you off with the variable names.</p>
+<pre class="r"><code>colnames_orig &lt;- c(&quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+                   &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;, 
+                   &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;)
+</code></pre>
+</div>
+</div>
+<div id="subset-your-data-with-filter" class="section level2" number="1.5">
+<h2><span class="header-section-number">3.5</span> Subset your data with <code>filter()</code></h2>
+<div id="or-conditions" class="section level3 unnumbered" number="">
+<h3>“Or” conditions</h3>
+<p>Create a dataset with all the observations that get over 7 hours of sleep on both weekends and weekdays <em>or</em> who have an income greater than/equal to 20,000 and less than/equal to 50,000.</p>
+<pre class="r"><code>nlsy_or &lt;- filter(nlsy, ...)</code></pre>
+</div>
+<div id="missing-values" class="section level3 unnumbered" number="">
+<h3>Missing values</h3>
+<p>Create a dataset that consists <em>only</em> of the missing values in <code>slp_cat_wkdy</code>. Check how many rows it has (there should be 3!).</p>
+</div>
+</div>
+<div id="with-your-group" class="section level2" number="1.6">
+<h2><span class="header-section-number">3.6</span> With your group</h2>
+<div id="case_when" class="section level3 unnumbered" number="">
+<h3><code>case_when()</code></h3>
+<p>Try again to make a new variable for standardized log-income. This time, if you are not able to calculate log(income) for an observation, replace it with a missing value (using <code>case_when()</code>). This time, when you standardize log(income), you’ll have to use <code>na.rm = TRUE</code> to remove missing values both when you take the mean and the standard deviation.</p>
+<pre class="r"><code>nlsy &lt;- mutate(nlsy,
+               log_income_stand = case_when(
+                 ...
+               ))</code></pre>
+</div>
+<div id="relevel-a-factor" class="section level3 unnumbered" number="">
+<h3>Relevel a factor</h3>
+<p>Make a new categorical income variable with at least 3 levels (you can choose the cutoffs). Make a bar graph with this new variable where the bars are in the correct order from low to high.</p>
+</div>
+<div id="rename-variables" class="section level3 unnumbered" number="">
+<h3>Rename variables</h3>
+<p>Look at <code>help(rename)</code>. Looking at the examples to help, rename “age_bir” to “age_1st_birth” without making a new column.</p>
+</div>
+<div id="greater-thanless-than" class="section level3 unnumbered" number="">
+<h3>Greater than/less than</h3>
+<p>Look up the <code>between()</code> function in help. Figure out how to use this to create a dataset with all the observations that get over 7 hours of sleep on both weekends and weekdays <em>or</em> who have an income greater than/equal to 20,000 and less than/equal to 50,000. Check to make sure you get the same number of rows as we did earlier.</p>
+</div>
+<div id="challenges" class="section level3 unnumbered" number="">
+<h3>Challenges</h3>
+<ol style="list-style-type: decimal">
+<li><p>Figure out how to use the <code>num_range()</code> function to select the <code>res_</code> variables from 1980 to 2000. There should only be one. Then try from 1980 to 2002. There should be two.</p></li>
+<li><p>Download and save the <a href="../../data/nlsy.rds" download="nlsy.rds">full nlsy dataset</a>
+into your <code>03-week</code> folder. Then run the following lines to read it in.</p></li>
+</ol>
+<pre class="r"><code>nlsy_full &lt;- read_rds(&quot;nlsy.rds&quot;)
+colnames(nlsy_full) &lt;- colnames_orig</code></pre>
+<p>You’ll see if you run <code>levels(nlsy_full$res_1980)</code> and
+<code>levels(nlsy_full$res_2002)</code>, the participants’ residences in those years, what the levels of those factors are:</p>
+<table>
+<thead>
+<tr class="header">
+<th><code>res_1980</code></th>
+<th><code>res_2002</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ABOARD SHIP, BARRACKS</td>
+<td>OPEN BAY OR TROOP BARRACKS, ABOARD SHIP</td>
+</tr>
+<tr class="even">
+<td>BACHELOR, OFFICER QUARTERS</td>
+<td>BACHELOR ENLISTED OR OFFICER QUARTERS</td>
+</tr>
+<tr class="odd">
+<td>DORM, FRATERNITY, SORORITY</td>
+<td>DORMITORY, FRATERNITY OR SORORITY</td>
+</tr>
+<tr class="even">
+<td>HOSPITAL</td>
+<td>JAIL</td>
+</tr>
+<tr class="odd">
+<td>JAIL</td>
+<td>HOSPITAL</td>
+</tr>
+<tr class="even">
+<td>OTHER TEMPORARY QUARTERS</td>
+<td>OTHER TEMPORARY INDIVIDUAL QUARTERS (SPECIFY)</td>
+</tr>
+<tr class="odd">
+<td>OWN DWELLING UNIT</td>
+<td>OWN DWELLING UNIT</td>
+</tr>
+<tr class="even">
+<td>ON-BASE MIL FAM HOUSING</td>
+<td>ON-BASE MILITARY FAMILY HOUSING</td>
+</tr>
+<tr class="odd">
+<td>OFF-BASE MIL FAM HOUSING</td>
+<td>OFF-BASE MILITARY FAMILY HOUSING</td>
+</tr>
+<tr class="even">
+<td>ORPHANAGE</td>
+<td>CONVENT, MONASTERY, OTHER RELIGIOUS INSTITUTE</td>
+</tr>
+<tr class="odd">
+<td>RELIGIOUS INSTITUTION</td>
+<td>OTHER INDIVIDUAL QUARTERS (SPECIFY)</td>
+</tr>
+<tr class="even">
+<td>OTHER INDIVIDUAL QUARTERS</td>
+<td>RESPONDENT IN PARENT HOUSEHOLD</td>
+</tr>
+<tr class="odd">
+<td>PARENTAL</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>HHI CONDUCTED WITH PARENT</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>R IN PARENTAL HOUSEHOLD</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Imagine that you are doing an analysis with these data. Make a new factor variable for each year, that has the same, concise and readable levels, so that you could make a nice table comparing the distribution of residences across years.</p>
+</div>
+</div>
+</div>
