@@ -2,7 +2,6 @@
 title: "Grouping and tables"
 linktitle: "4.Grouping and tables"
 date: "2020-08-03"
-publishdate: "2020-08-03"
 menu:
   video:
     weight: 5
@@ -24,12 +23,11 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "The pipe", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3",
-  "Summary statistics", "20", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1183",
-  "Grouped data", "25", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435",
-  "Table 1", "36", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435"
+  "The pipe", "1", TRUE, "https://www.youtube.com/embed/RSrkREoGxGk?enablejsapi=1&modestbranding=1&rel=0&start=3",
+  "Summary statistics", "20", FALSE, "https://www.youtube.com/embed/RSrkREoGxGk?enablejsapi=1&modestbranding=1&rel=0&start=765",
+  "Grouped data", "25", FALSE, "https://www.youtube.com/embed/RSrkREoGxGk?enablejsapi=1&modestbranding=1&rel=0&start=1238",
+  "Table 1", "36", FALSE, "https://www.youtube.com/embed/RSrkREoGxGk?enablejsapi=1&modestbranding=1&rel=0&start=1695"
 ) 
-
 
 slide_tabs(sections, "/slides/04-slides.html")
 ```

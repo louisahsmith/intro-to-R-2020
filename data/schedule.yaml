@@ -19,13 +19,13 @@ lessons:
     date: "July 27 - July 31"
     video: "03-video"
     exercise: "03-exercise"
-    # lab: "03-lab"
+    lab: "03-lab"
 
   - title: 'Grouping and tables'
     session: 4
     date: "August 3 - August 7"
-    # video: "04-video"
-    # exercise: "04-exercise"
+    video: "04-video"
+    exercise: "04-exercise"
     # lab: "04-lab"
 
   - title: 'Functions'

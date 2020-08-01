@@ -1,12 +1,11 @@
 ---
-title: "Exercises"
-linktitle: "4. Grouping and tables"
+title: "Week 4 Exercises"
 date: "2020-08-03"
-menu:
-  exercise:
-type: docs
 output:
-  blogdown::html_page:
+  html_document:
+  # prettydoc::html_pretty:
+  #   theme: architect
+  #   highlight: vignette
     toc: true
     toc_depth: 2
     number_sections: true
@@ -18,13 +17,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#> ",
   class.output = "output",
-  class.message = "message",
-  class.error = "message"
+  class.message = "message"
 )
 ```
 # Grouping and tables
-
-Download the materials for this week's exercises [here](/exercise-handouts/04-week.zip).
 
 Yup, still the same old package and data, though we'll be introducing another package today!
 ```{r, message = FALSE, warning = FALSE}

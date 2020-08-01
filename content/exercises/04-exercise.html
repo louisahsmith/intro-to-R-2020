@@ -1,0 +1,344 @@
+---
+title: "Exercises"
+linktitle: "4. Grouping and tables"
+date: "2020-08-03"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=3"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#grouping-and-tables"><span class="toc-section-number">4</span> Grouping and tables</a><ul>
+<li><a href="#using-pipes"><span class="toc-section-number">4.1</span> Using pipes</a></li>
+<li><a href="#summary-statistics"><span class="toc-section-number">4.2</span> Summary statistics</a></li>
+<li><a href="#stratified-summary-statistics"><span class="toc-section-number">4.3</span> Stratified summary statistics</a></li>
+<li><a href="#tables-with-the-tableone-package"><span class="toc-section-number">4.4</span> Tables with the <code>tableone</code> package</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="grouping-and-tables" class="section level1">
+<h1><span class="header-section-number">4</span> Grouping and tables</h1>
+<p>Download the materials for this week’s exercises <a href="/exercise-handouts/04-week.zip">here</a>.</p>
+<p>Yup, still the same old package and data, though we’ll be introducing another package today!</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+<div id="using-pipes" class="section level2">
+<h2><span class="header-section-number">4.1</span> Using pipes</h2>
+<p>Compare these two ways of making the same dataset:</p>
+<pre class="r"><code>nlsy2 &lt;- mutate(nlsy, 
+                only = case_when(
+                  nsibs == 0 ~ &quot;yes&quot;,
+                  TRUE ~ &quot;no&quot;)
+                )
+nlsy3 &lt;- select(nlsy2, 
+                id, contains(&quot;sleep&quot;), only)
+only_kids &lt;- filter(nlsy3, 
+                    only == &quot;yes&quot;)</code></pre>
+<p>vs:</p>
+<pre class="r"><code>only_kids &lt;- filter(
+  select(
+    mutate(nlsy,
+      only = case_when(
+        nsibs == 0 ~ &quot;yes&quot;,
+        TRUE ~ &quot;no&quot;
+      )
+    ),
+    id, contains(&quot;sleep&quot;), only
+  ),
+  only == &quot;yes&quot;
+)</code></pre>
+<p>vs:</p>
+<pre class="r"><code>only_kids &lt;- nlsy %&gt;%
+  mutate(only = case_when(
+                nsibs == 0 ~ &quot;yes&quot;,
+                TRUE ~ &quot;no&quot;
+                )
+         ) %&gt;%
+  select(id, contains(&quot;sleep&quot;), only) %&gt;%
+  filter(only == &quot;yes&quot;)</code></pre>
+<p>All 3 techniques – making new datasets, nesting functions, and using pipes – can be useful, and which one is easier to write and read depends on the situation. Today we’ll practice using pipes.</p>
+<div id="translate-code" class="section level3 unnumbered">
+<h3>Translate code</h3>
+<p>Consider the following instructions for making a dataset:</p>
+<ol style="list-style-type: decimal">
+<li>Create a variable called <code>slp_cat_wkday</code> categorizing weekday sleep.</li>
+<li>Subset the dataset to only include people with missing values.</li>
+<li>Remove non-sleep-related variables from the dataset.</li>
+<li>Call your finished dataset <code>missing_sleep</code>.</li>
+</ol>
+<p>I’ve followed these instructions here.</p>
+<pre class="r"><code>nlsy2 &lt;- mutate(nlsy, slp_cat_wkdy = case_when(
+  sleep_wkdy &lt; 5 ~ &quot;little&quot;,
+  sleep_wkdy &lt; 7 ~ &quot;some&quot;,
+  sleep_wkdy &lt; 9 ~ &quot;ideal&quot;,
+  sleep_wkdy &lt; 12 ~ &quot;lots&quot;,
+  TRUE ~ NA_character_))
+missing_sleep &lt;- filter(nlsy2, is.na(slp_cat_wkdy))
+missing_sleep &lt;- select(missing_sleep, starts_with(&quot;slp&quot;), contains(&quot;sleep&quot;))
+missing_sleep</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 3 x 3
+#&gt;    slp_cat_wkdy sleep_wkdy sleep_wknd
+#&gt;    &lt;chr&gt;             &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1 &lt;NA&gt;                 12         12
+#&gt;  2 &lt;NA&gt;                 12         12
+#&gt;  3 &lt;NA&gt;                 13         13</code></pre>
+<p>Now follow the instructions using pipes.</p>
+<pre class="r"><code>missing_sleep &lt;- nlsy %&gt;% ...</code></pre>
+</div>
+<div id="order-of-operations" class="section level3 unnumbered">
+<h3>Order of operations</h3>
+<p>Experiment with switching up the “order of operations”. Can you complete the instructions in a different order and get the same result? Can you think of a situation when you might not be able to do so?</p>
+</div>
+</div>
+<div id="summary-statistics" class="section level2">
+<h2><span class="header-section-number">4.2</span> Summary statistics</h2>
+<p>We can use the <code>summarize()</code> function to calculate summary statistics:</p>
+<pre class="r"><code>summarize(nlsy, 
+          med_age_bir = median(age_bir),
+          cor_sleep = cor(sleep_wkdy, sleep_wknd),
+          ten_pctle_inc = quantile(income, probs = 0.1),
+          ninety_pctle_inc = quantile(income, probs = 0.9))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 4
+#&gt;    med_age_bir cor_sleep ten_pctle_inc ninety_pctle_inc
+#&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+#&gt;  1          22     0.710         3177.           33024.</code></pre>
+<p>It always helps to read the documentation when you learn a new function! Run this in your RStudio session.</p>
+<pre class="r"><code>help(summarize)</code></pre>
+<p>Note from the documentation that you can also spell the function <code>summarise()</code>. Even though I consistently use American spellings in every other aspect of my life, you will find me spelling it like this often!</p>
+<pre class="r"><code>nlsy %&gt;% summarise(q.1 = quantile(age_bir, probs = 0.1),
+                   q.2 = quantile(age_bir, probs = 0.2),
+                   q.3 = quantile(age_bir, probs = 0.3),
+                   q.4 = quantile(age_bir, probs = 0.4),
+                   q.5 = quantile(age_bir, probs = 0.5))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 5
+#&gt;      q.1   q.2   q.3   q.4   q.5
+#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1    17    18    20    21    22</code></pre>
+<p>You can use <code>summarize()</code> at the end (or the beginning, or middle, depending on what you’re doing!) of a pipe:</p>
+<pre class="r"><code>nlsy %&gt;%
+  mutate(age_bir_stand = (age_bir - mean(age_bir)) / sd(age_bir)) %&gt;%
+  filter(sex == 1) %&gt;%
+  summarize(mean_men = mean(age_bir_stand))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 1
+#&gt;    mean_men
+#&gt;       &lt;dbl&gt;
+#&gt;  1    0.283</code></pre>
+<div id="correlation" class="section level3 unnumbered">
+<h3>Correlation</h3>
+<p>Among the only children, find the correlation between hours of sleep on weekdays and weekends.</p>
+</div>
+<div id="proportions" class="section level3 unnumbered">
+<h3>Proportions</h3>
+<p>Create a variable that is 1 if an observation has an income between 20,000 and 30,000, and 0 otherwise. Calculate the proportion of people in the dataset who fit that criterion.</p>
+</div>
+<div id="summary-reimagined" class="section level3 unnumbered">
+<h3><code>summary()</code> reimagined</h3>
+<p>Recreate the <code>summary()</code> function using <code>summarize()</code> (i.e., produce all the same statistics) for a variable of your choice.</p>
+</div>
+</div>
+<div id="stratified-summary-statistics" class="section level2">
+<h2><span class="header-section-number">4.3</span> Stratified summary statistics</h2>
+<p>Note the grouping information that gets printed out when you use <code>group_by()</code>:</p>
+<pre class="r"><code># grouped dataset
+nlsy %&gt;%
+  mutate(income_stand = (income - mean(income))/sd(income)) %&gt;%
+  select(id, region, income_stand, race_eth, sex) %&gt;%
+  group_by(race_eth)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1,205 x 5
+#&gt;  # Groups:   race_eth [3]
+#&gt;        id region income_stand race_eth   sex
+#&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+#&gt;   1     3      1        0.533        3     2
+#&gt;   2     6      1        1.48         3     1
+#&gt;   3     8      1       -0.605        3     2
+#&gt;   4    16      1        2.45         3     2
+#&gt;   5    18      3       -0.809        3     1
+#&gt;   6    20      1        2.60         3     2
+#&gt;   7    27      1        0.353        3     2
+#&gt;   8    49      1        0.646        3     2
+#&gt;   9    57      1        0.600        3     2
+#&gt;  10    67      1        1.48         3     1
+#&gt;  # … with 1,195 more rows</code></pre>
+<p>Now functions within <code>summarize()</code> will be applied within the groups:</p>
+<pre class="r"><code>nlsy %&gt;%
+  mutate(income_stand = (income - mean(income))/sd(income)) %&gt;%
+  group_by(region) %&gt;%
+  summarize(mean_inc = mean(income_stand),
+            sd_inc = sd(income_stand))</code></pre>
+<pre class="message"><code>#&gt;  `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 4 x 3
+#&gt;    region mean_inc sd_inc
+#&gt;     &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1      1   0.186   1.17 
+#&gt;  2      2   0.106   0.958
+#&gt;  3      3  -0.0891  1.03 
+#&gt;  4      4  -0.145   0.810</code></pre>
+<p>(The message is just telling us that the new dataset is no longer grouped, and that we can change that using the <code>.groups =</code> argument.)</p>
+<p>You can group by multiple variables:</p>
+<pre class="r"><code>nlsy %&gt;%
+  group_by(region, sex) %&gt;%
+  summarize(mean_inc = mean(income),
+            sd_inc = sd(income))</code></pre>
+<pre class="message"><code>#&gt;  `summarise()` regrouping output by &#39;region&#39; (override with `.groups` argument)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 8 x 4
+#&gt;  # Groups:   region [4]
+#&gt;    region   sex mean_inc sd_inc
+#&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1      1     1   20393. 16929.
+#&gt;  2      1     2   15928. 14442.
+#&gt;  3      2     1   19488. 14885.
+#&gt;  4      2     2   14699. 10613.
+#&gt;  5      3     1   15137. 14592.
+#&gt;  6      3     2   13293. 12879.
+#&gt;  7      4     1   12315.  9244.
+#&gt;  8      4     2   14001. 11621.</code></pre>
+<p>When you group by multiple variables and then summarize, the default is to “peel off” the last grouping layer and leave the rest, as the message describes. This can be confusing/annoying if you don’t realize it, so you might want to use <code>.groups = "drop"</code>.</p>
+<p>Here are three different ways to do the same thing (a common “problem” in R!):</p>
+<pre class="r"><code>nlsy %&gt;%
+  group_by(sex) %&gt;%
+  summarize(n = n())</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 2
+#&gt;      sex     n
+#&gt;    &lt;dbl&gt; &lt;int&gt;
+#&gt;  1     1   501
+#&gt;  2     2   704
+
+nlsy %&gt;%
+  group_by(sex) %&gt;%
+  tally()</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 2
+#&gt;      sex     n
+#&gt;    &lt;dbl&gt; &lt;int&gt;
+#&gt;  1     1   501
+#&gt;  2     2   704
+
+nlsy %&gt;% 
+  count(sex)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 2
+#&gt;      sex     n
+#&gt;    &lt;dbl&gt; &lt;int&gt;
+#&gt;  1     1   501
+#&gt;  2     2   704</code></pre>
+<p>You can use any one of them to calculate proportions:</p>
+<pre class="r"><code>nlsy %&gt;%
+  group_by(sex) %&gt;%
+  summarize(n = n()) %&gt;%
+  mutate(prop = n / sum(n))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 3
+#&gt;      sex     n  prop
+#&gt;    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+#&gt;  1     1   501 0.416
+#&gt;  2     2   704 0.584</code></pre>
+<div id="by-region" class="section level3 unnumbered">
+<h3>By region</h3>
+<p>Find the median income per region. Before doing so, make sure that you’ve made region into a factor variable with appropriate names so we can easily read your results.</p>
+</div>
+<div id="by-a-new-variable" class="section level3 unnumbered">
+<h3>By a new variable</h3>
+<p>Calculate and compare the median income for people who sleep at least 8 hours on weekdays and those who sleep less.</p>
+</div>
+<div id="proportions-by-region" class="section level3 unnumbered">
+<h3>Proportions by region</h3>
+<p>Among the women (<code>sex = 2</code>), calculate the proportion who live in each region.</p>
+</div>
+</div>
+<div id="tables-with-the-tableone-package" class="section level2">
+<h2><span class="header-section-number">4.4</span> Tables with the <code>tableone</code> package</h2>
+<p>If you have never installed the <code>tableone</code> package, you’ll need to do that first:</p>
+<pre class="r"><code>install.packages(&quot;tableone&quot;)</code></pre>
+<p>Then load the library and create a table 1!</p>
+<pre class="r"><code>library(tableone) # in general, put at the top of your script
+
+tab1 &lt;- CreateTableOne(
+  data = nlsy,
+  vars = c(&quot;eyesight&quot;, &quot;nsibs&quot;, &quot;race_eth&quot;,
+           &quot;sex&quot;, &quot;region&quot;, &quot;income&quot;, &quot;age_bir&quot;),
+  strata = &quot;glasses&quot;,
+  factorVars = c(&quot;eyesight&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;)
+)
+
+tab1</code></pre>
+<pre class="output"><code>#&gt;                       Stratified by glasses
+#&gt;                        0                   1                   p      test
+#&gt;    n                        581                 624                       
+#&gt;    eyesight (%)                                                 0.333     
+#&gt;       1                     220 (37.9)          254 (40.7)                
+#&gt;       2                     185 (31.8)          200 (32.1)                
+#&gt;       3                     122 (21.0)          127 (20.4)                
+#&gt;       4                      46 ( 7.9)           32 ( 5.1)                
+#&gt;       5                       8 ( 1.4)           11 ( 1.8)                
+#&gt;    nsibs (mean (SD))       4.03 (2.65)         3.85 (2.47)      0.210     
+#&gt;    race_eth (%)                                                &lt;0.001     
+#&gt;       1                     103 (17.7)          108 (17.3)                
+#&gt;       2                     177 (30.5)          130 (20.8)                
+#&gt;       3                     301 (51.8)          386 (61.9)                
+#&gt;    sex = 2 (%)              301 (51.8)          403 (64.6)     &lt;0.001     
+#&gt;    region (%)                                                   0.230     
+#&gt;       1                     102 (17.6)          104 (16.7)                
+#&gt;       2                     146 (25.1)          187 (30.0)                
+#&gt;       3                     211 (36.3)          200 (32.1)                
+#&gt;       4                     122 (21.0)          133 (21.3)                
+#&gt;    income (mean (SD))  13852.78 (12011.51) 16626.22 (14329.16) &lt;0.001     
+#&gt;    age_bir (mean (SD))    23.07 (5.91)        23.80 (6.05)      0.036</code></pre>
+<p>Not only are there many possible arguments to the <code>CreateTableOne()</code> function, but also for the <code>print()</code> function when applied to a <code>TableOne</code> object. You can look up the documentation for both:</p>
+<pre class="r"><code>print(tab1, catDigits = 2, contDigits = 2, test = FALSE, smd = TRUE)</code></pre>
+<pre class="output"><code>#&gt;                       Stratified by glasses
+#&gt;                        0                   1                   SMD   
+#&gt;    n                        581                 624                  
+#&gt;    eyesight (%)                                                 0.123
+#&gt;       1                     220 (37.87)         254 (40.71)          
+#&gt;       2                     185 (31.84)         200 (32.05)          
+#&gt;       3                     122 (21.00)         127 (20.35)          
+#&gt;       4                      46 ( 7.92)          32 ( 5.13)          
+#&gt;       5                       8 ( 1.38)          11 ( 1.76)          
+#&gt;    nsibs (mean (SD))       4.03 (2.65)         3.85 (2.47)      0.072
+#&gt;    race_eth (%)                                                 0.234
+#&gt;       1                     103 (17.73)         108 (17.31)          
+#&gt;       2                     177 (30.46)         130 (20.83)          
+#&gt;       3                     301 (51.81)         386 (61.86)          
+#&gt;    sex = 2 (%)              301 (51.81)         403 (64.58)     0.261
+#&gt;    region (%)                                                   0.120
+#&gt;       1                     102 (17.56)         104 (16.67)          
+#&gt;       2                     146 (25.13)         187 (29.97)          
+#&gt;       3                     211 (36.32)         200 (32.05)          
+#&gt;       4                     122 (21.00)         133 (21.31)          
+#&gt;    income (mean (SD))  13852.78 (12011.51) 16626.22 (14329.16)  0.210
+#&gt;    age_bir (mean (SD))    23.07 (5.91)        23.80 (6.05)      0.121
+
+help(&quot;CreateTableOne&quot;)
+help(&quot;print.TableOne&quot;)</code></pre>
+<p>You can use this code to help get your table 1 in an easy-to-share format:</p>
+<pre class="r"><code>table1_to_share &lt;- tab1 %&gt;% 
+  print() %&gt;% 
+  as_tibble(rownames = &quot;id&quot;)
+write_csv(table1_to_share, &quot;table1.csv&quot;)</code></pre>
+<p>Check out some other packages for tables as well:
+<a href="https://github.com/kaz-yos/tableone#similar-or-complementary-projects" class="uri">https://github.com/kaz-yos/tableone#similar-or-complementary-projects</a>.</p>
+<div id="prepare-a-dataset" class="section level3 unnumbered">
+<h3>Prepare a dataset</h3>
+<p>Apply the following inclusion criteria to the NLSY dataset to make a analysis dataset: from region 1 or 4, with at least 2 siblings, and doesn’t wear glasses.</p>
+</div>
+<div id="make-a-stratification-variable" class="section level3 unnumbered">
+<h3>Make a stratification variable</h3>
+<p>Make a variable in that dataset that categorizes people in quartiles (split at 25th, 50th, and 75% percentiles of the new dataset) by income. Make sure the categories have descriptive names.</p>
+</div>
+<div id="make-table-1" class="section level3 unnumbered">
+<h3>Make table 1</h3>
+<p>Make a table 1 for this new dataset, stratified by the new income variable. Make sure they show up in the correct order in your table. Include p-values testing across strata but only print 2 digits for them. Perform an exact test for the region comparison.</p>
+</div>
+<div id="share-your-table-1" class="section level3 unnumbered">
+<h3>Share your table 1</h3>
+<p>Using the code above as a starting point, save your table 1 as a csv file.</p>
+<p>Open up the csv file in another program (Excel, Google Sheets, etc.) and check it out!</p>
+</div>
+</div>
+</div>
