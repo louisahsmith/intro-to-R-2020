@@ -77,10 +77,10 @@ main:
     identifier: lab3
     parent: lab-top
     url: /labs/03-lab/
-  # - name: Week 4
-  #   identifier: lab4
-  #   parent: lab-top
-  #   url: /labs/04-lab/
+  - name: Week 4
+    identifier: lab4
+    parent: lab-top
+    url: /labs/04-lab/
   # - name: Week 5
   #   identifier: lab5
   #   parent: lab-top

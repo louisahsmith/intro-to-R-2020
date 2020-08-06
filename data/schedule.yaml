@@ -26,7 +26,7 @@ lessons:
     date: "August 3 - August 7"
     video: "04-video"
     exercise: "04-exercise"
-    # lab: "04-lab"
+    lab: "04-lab"
 
   - title: 'Functions'
     session: 5

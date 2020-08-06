@@ -1,0 +1,320 @@
+---
+title: "Week 4 Lab"
+output:
+  html_document:
+  # prettydoc::html_pretty:
+  #   theme: architect
+  #   highlight: vignette
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=3"]
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = FALSE,
+  eval = FALSE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message"
+)
+```
+
+# Summary statistics
+
+You can either download the lab as an RMarkdown file <a href="../../lab-handouts/04-lab.Rmd" download="04-lab.Rmd">here</a>, or copy and paste the code as we go into a `.R` script. Either way, save it into the `04-week` folder where you completed the exercises!
+
+As always, we'll be using the tidyverse package and the NLSY data.
+
+```{r, eval = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
+nlsy <- read_csv("nlsy_cc.csv")
+```
+
+## Using pipes in Rstudio
+
+There's a keyboard shortcut for entering the pipe: `ctrl/cmd` + `m`. Try adding one after `nlsy` below, and then keep typing to add some code. Might save you a split second!
+
+```{r}
+nlsy
+```
+
+You can also create "snippets" of your own if you find there's something you're typing out a lot. We saw in an earlier lab that if you start typing `lib`, you can then press enter to finish typing `library()` and have your cursor ready to type in the package name.
+
+```{r}
+
+```
+
+Others you might find useful for the content in the next few weeks of the course are `fun` and `for`.
+
+You can also use snippets in the text area of R Markdown documents, you just have to press `shift` + `tab` to make them appear. For example, `r` makes a code chunk.
+
+
+One snippet that I saw online somewhere and liked, so I added to my own RStudio setup, is for typing something like this, when I want to make some changes to the dataset but don't want to change its name:
+```{r}
+nlsy <- nlsy %>%
+```
+
+I'll demonstrate how to make a snippet!
+
+- Tools -> Global Options -> Code -> Editing -> Edit Snippets
+- read more about snippets [here](https://support.rstudio.com/hc/en-us/articles/204463668-Code-Snippets)
+
+```{r}
+
+```
+
+## Why pipes?
+
+We compared several ways of making the same dataset:
+```{r}
+nlsy2 <- mutate(nlsy, 
+                only = case_when(
+                  nsibs == 0 ~ "yes",
+                  TRUE ~ "no")
+                )
+nlsy3 <- select(nlsy2, 
+                id, contains("sleep"), only)
+only_kids <- filter(nlsy3, 
+                    only == "yes")
+```
+
+vs:
+
+```{r}
+only_kids <- filter(
+  select(
+    mutate(nlsy,
+      only = case_when(
+        nsibs == 0 ~ "yes",
+        TRUE ~ "no"
+      )
+    ),
+    id, contains("sleep"), only
+  ),
+  only == "yes"
+)
+```
+
+vs: 
+```{r}
+only_kids <- nlsy %>%
+  mutate(only = case_when(
+                nsibs == 0 ~ "yes",
+                TRUE ~ "no"
+                )
+         ) %>%
+  select(id, contains("sleep"), only) %>%
+  filter(only == "yes")
+```
+
+Then I asked you to translate this code into a piped version:
+
+```{r, eval = TRUE}
+nlsy2 <- mutate(nlsy, slp_cat_wkdy = case_when(
+  sleep_wkdy < 5 ~ "little",
+  sleep_wkdy < 7 ~ "some",
+  sleep_wkdy < 9 ~ "ideal",
+  sleep_wkdy < 12 ~ "lots",
+  TRUE ~ NA_character_))
+missing_sleep <- filter(nlsy2, is.na(slp_cat_wkdy))
+missing_sleep <- select(missing_sleep, starts_with("slp"), contains("sleep"))
+missing_sleep
+```
+
+```{r, eval = FALSE}
+missing_sleep <- nlsy %>% ...
+```
+
+Which functions could we move around? 
+
+```{r}
+
+```
+
+## Summary statistics
+
+We also used the `summarize()` function to calculate summary statistics:
+```{r, eval = TRUE}
+summarize(nlsy, 
+          med_age_bir = median(age_bir),
+          cor_sleep = cor(sleep_wkdy, sleep_wknd),
+          ten_pctle_inc = quantile(income, probs = 0.1),
+          ninety_pctle_inc = quantile(income, probs = 0.9))
+```
+
+You can use `summarize()` at the end (or the beginning, or middle, depending on what you're doing!) of a pipe:
+```{r, eval = TRUE}
+nlsy %>%
+  mutate(age_bir_stand = (age_bir - mean(age_bir)) / sd(age_bir)) %>%
+  filter(sex == 1) %>%
+  summarize(mean_men = mean(age_bir_stand))
+```
+
+### Correlation {-}
+
+Among the only children, find the correlation between hours of sleep on weekdays and weekends.
+
+```{r, eval = TRUE}
+nlsy %>%
+  filter(nsibs == 1) %>%
+  summarise(cor(sleep_wkdy, sleep_wknd))
+```
+
+### Proportions {-}
+
+Create a variable that is 1 if an observation has an income between 20,000 and 30,000, and 0 otherwise. Calculate the proportion of people in the dataset who fit that criterion.
+
+```{r, eval = TRUE}
+nlsy %>%
+  mutate(yes = between(income, 20000, 30000)) %>%
+  summarise(prop = mean(yes))
+
+nlsy %>%
+  summarise(prop = mean(between(income, 20000, 30000)))
+
+nlsy %>%
+  count(between(income, 20000, 30000)) %>%
+  mutate(prop = n / sum(n))
+```
+
+## Stratified summary statistics
+
+When we group data, functions within `summarize()` will be applied within the groups:
+```{r, eval = TRUE}
+nlsy %>%
+  mutate(income_stand = (income - mean(income))/sd(income)) %>%
+  group_by(region) %>%
+  summarize(mean_inc = mean(income_stand),
+            sd_inc = sd(income_stand), 
+            .groups = "drop")
+```
+
+You can group by multiple variables, but notice what happens to the grouping if you don't specify what to do with the grouping structure:
+```{r, eval = TRUE}
+nlsy %>%
+  group_by(region, sex) %>%
+  summarize(mean_inc = mean(income),
+            sd_inc = sd(income))
+```
+
+When you group by multiple variables and then summarize, the default is to "peel off" the last grouping layer and leave the rest, as the message describes. This can be confusing/annoying if you don't realize it, so you might want to use `.groups = "drop"`.
+
+
+### By region {-}
+
+Find the median income per region. Before doing so, make sure that you've made region into a factor variable with appropriate names so we can easily read your results.
+
+```{r, eval = TRUE}
+nlsy %>%
+  mutate(region = fct_recode(factor(region),
+                             "Northeast" = "1", "North Central" = "2", 
+                             "South" = "3", "West" = "4")) %>%
+  group_by(region) %>%
+  summarise(med_inc = median(income))
+```
+
+## Tables with the `tableone` package
+
+We saw how we could use the `tableone` package to create easy tables:
+```{r}
+library(tableone) # in general, put at the top of your script
+
+tab1 <- CreateTableOne(
+  data = nlsy,
+  vars = c("eyesight", "nsibs", "race_eth",
+           "sex", "region", "income", "age_bir"),
+  strata = "glasses",
+  factorVars = c("eyesight", "race_eth", "sex", "region")
+)
+
+tab1
+```
+
+Not only are there many possible arguments to the `CreateTableOne()` function, but also for the `print()` function when applied to a `TableOne` object. You can look up the documentation for both:
+```{r}
+print(tab1, catDigits = 2, contDigits = 2, test = FALSE, smd = TRUE)
+
+help("CreateTableOne")
+help("print.TableOne")
+```
+
+You can use this code to help get your table 1 in an easy-to-share format:
+
+```{r, eval = FALSE}
+table1_to_share <- tab1 %>% 
+  print() %>% 
+  as_tibble(rownames = "id")
+write_csv(table1_to_share, "table1.csv")
+```
+
+Check out some other packages for tables as well: 
+https://github.com/kaz-yos/tableone#similar-or-complementary-projects.
+
+### Prepare a dataset {-}
+
+Apply the following inclusion criteria to the NLSY dataset to make a analysis dataset: from region 1 or 4, with at least 2 siblings, and doesn't wear glasses.
+
+```{r, eval = TRUE}
+analysis_dat <- nlsy %>%
+  filter(region %in% c(1, 4), nsibs >= 2, glasses == 0)
+```
+
+### Make a stratification variable {-}
+
+Make a variable in that dataset that categorizes people in quartiles (split at 25th, 50th, and 75% percentiles of the new dataset) by income. Make sure the categories have descriptive names.
+
+```{r, eval = TRUE}
+analysis_dat <- analysis_dat %>%
+  mutate(income_cat = 
+           case_when(
+             income < quantile(income, probs = .25) ~ "lowest quartile",
+             income < quantile(income, probs = .5) ~ "second quartile",
+             income < quantile(income, probs = .75) ~ "third quartile",
+             TRUE ~ "highest quartile"
+             ),
+         income_cat = fct_relevel(income_cat, 
+                                  "lowest quartile", "second quartile", 
+                                  "third quartile", "highest quartile"))
+```
+
+### Make table 1 {-}
+
+Make a table 1 for this new dataset, stratified by the new income variable. Make sure they show up in the correct order in your table. Include p-values testing across strata but only print 2 digits for them. Perform an exact test for the region comparison.
+
+```{r}
+tab1 <- CreateTableOne(
+  data = analysis_dat,
+  vars = c("eyesight", "nsibs", "race_eth",
+           "sex", "region", "income", "age_bir"),
+  strata = "income_cat",
+  factorVars = c("eyesight", "race_eth", "sex", "region")
+)
+print(tab1, exact = "region", pDigits = 2)
+```
+
+# In groups
+
+### Some fun new data! {-}
+
+`r knitr::include_graphics("https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png")`
+
+The [`palmerpenguins`](https://allisonhorst.github.io/palmerpenguins/) dataset was collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network. It has been made available in R as a good dataset to use for teaching/simple data exploration as an alternative to the `iris` dataset, which has been commonly used for the same reasons, but which was ["first published with the express intent to advance the science of eugenics"](https://armchairecology.blog/iris-dataset/)... so I and a number of others in the R community have been avoiding using it. [Allison Horst](https://twitter.com/allison_horst/status/1270046399418138625) is responsible for the artwork above and for helping make the penguins dataset available instead!
+
+It's available in the `palmerpenguins` package, or we can download it directly here:
+```{r}
+penguins_raw <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins_raw.csv')
+penguins <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins.csv')
+```
+
+Take a few minutes to explore the dataset.
+
+### Summarize the data {-}
+
+In the exercises, I asked you to recreate the `summary()` function using `summarize()` (i.e., produce all the same statistics). Compare your code with your group and use it to summarize the bill length of the penguins of each species (you can do this in the `penguins` dataset, which is more cleaned up than the `penguins_raw` dataset).
+
+```{r}
+
+```

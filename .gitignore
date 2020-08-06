@@ -13,3 +13,5 @@ nlsy_cc.csv
 nlsy.rds
 content/labs/nlsy_cc.csv
 content/exercises/nlsy_cc.csv
+*.gform
+*.gsheet

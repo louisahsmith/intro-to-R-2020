@@ -1,0 +1,293 @@
+---
+title: "Lab"
+linktitle: "4. Grouping and tables"
+date: "2020-08-06"
+publishdate: "2020-08-06"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=3"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#summary-statistics"><span class="toc-section-number">4</span> Summary statistics</a><ul>
+<li><a href="#using-pipes-in-rstudio"><span class="toc-section-number">4.1</span> Using pipes in Rstudio</a></li>
+<li><a href="#why-pipes"><span class="toc-section-number">4.2</span> Why pipes?</a></li>
+<li><a href="#summary-statistics-1"><span class="toc-section-number">4.3</span> Summary statistics</a></li>
+<li><a href="#stratified-summary-statistics"><span class="toc-section-number">4.4</span> Stratified summary statistics</a></li>
+<li><a href="#tables-with-the-tableone-package"><span class="toc-section-number">4.5</span> Tables with the <code>tableone</code> package</a></li>
+</ul></li>
+<li><a href="#in-groups"><span class="toc-section-number">5</span> In groups</a></li>
+</ul>
+</div>
+
+<div id="summary-statistics" class="section level1">
+<h1><span class="header-section-number">4</span> Summary statistics</h1>
+<p>You can either download the lab as an RMarkdown file <a href="../../lab-handouts/04-lab.Rmd" download="04-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>04-week</code> folder where you completed the exercises!</p>
+<p>As always, we’ll be using the tidyverse package and the NLSY data.</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+<div id="using-pipes-in-rstudio" class="section level2">
+<h2><span class="header-section-number">4.1</span> Using pipes in Rstudio</h2>
+<p>There’s a keyboard shortcut for entering the pipe: <code>ctrl/cmd</code> + <code>m</code>. Try adding one after <code>nlsy</code> below, and then keep typing to add some code. Might save you a split second!</p>
+<pre class="r"><code>nlsy</code></pre>
+<p>You can also create “snippets” of your own if you find there’s something you’re typing out a lot. We saw in an earlier lab that if you start typing <code>lib</code>, you can then press enter to finish typing <code>library()</code> and have your cursor ready to type in the package name.</p>
+<p>Others you might find useful for the content in the next few weeks of the course are <code>fun</code> and <code>for</code>.</p>
+<p>You can also use snippets in the text area of R Markdown documents, you just have to press <code>shift</code> + <code>tab</code> to make them appear. For example, <code>r</code> makes a code chunk.</p>
+<p>One snippet that I saw online somewhere and liked, so I added to my own RStudio setup, is for typing something like this, when I want to make some changes to the dataset but don’t want to change its name:</p>
+<pre class="r"><code>nlsy &lt;- nlsy %&gt;%</code></pre>
+<p>I’ll demonstrate how to make a snippet!</p>
+<ul>
+<li>Tools -&gt; Global Options -&gt; Code -&gt; Editing -&gt; Edit Snippets</li>
+<li>read more about snippets <a href="https://support.rstudio.com/hc/en-us/articles/204463668-Code-Snippets">here</a></li>
+</ul>
+</div>
+<div id="why-pipes" class="section level2">
+<h2><span class="header-section-number">4.2</span> Why pipes?</h2>
+<p>We compared several ways of making the same dataset:</p>
+<pre class="r"><code>nlsy2 &lt;- mutate(nlsy, 
+                only = case_when(
+                  nsibs == 0 ~ &quot;yes&quot;,
+                  TRUE ~ &quot;no&quot;)
+                )
+nlsy3 &lt;- select(nlsy2, 
+                id, contains(&quot;sleep&quot;), only)
+only_kids &lt;- filter(nlsy3, 
+                    only == &quot;yes&quot;)</code></pre>
+<p>vs:</p>
+<pre class="r"><code>only_kids &lt;- filter(
+  select(
+    mutate(nlsy,
+      only = case_when(
+        nsibs == 0 ~ &quot;yes&quot;,
+        TRUE ~ &quot;no&quot;
+      )
+    ),
+    id, contains(&quot;sleep&quot;), only
+  ),
+  only == &quot;yes&quot;
+)</code></pre>
+<p>vs:</p>
+<pre class="r"><code>only_kids &lt;- nlsy %&gt;%
+  mutate(only = case_when(
+                nsibs == 0 ~ &quot;yes&quot;,
+                TRUE ~ &quot;no&quot;
+                )
+         ) %&gt;%
+  select(id, contains(&quot;sleep&quot;), only) %&gt;%
+  filter(only == &quot;yes&quot;)</code></pre>
+<p>Then I asked you to translate this code into a piped version:</p>
+<pre class="r"><code>nlsy2 &lt;- mutate(nlsy, slp_cat_wkdy = case_when(
+  sleep_wkdy &lt; 5 ~ &quot;little&quot;,
+  sleep_wkdy &lt; 7 ~ &quot;some&quot;,
+  sleep_wkdy &lt; 9 ~ &quot;ideal&quot;,
+  sleep_wkdy &lt; 12 ~ &quot;lots&quot;,
+  TRUE ~ NA_character_))
+missing_sleep &lt;- filter(nlsy2, is.na(slp_cat_wkdy))
+missing_sleep &lt;- select(missing_sleep, starts_with(&quot;slp&quot;), contains(&quot;sleep&quot;))
+missing_sleep</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 3 x 3
+#&gt;    slp_cat_wkdy sleep_wkdy sleep_wknd
+#&gt;    &lt;chr&gt;             &lt;dbl&gt;      &lt;dbl&gt;
+#&gt;  1 &lt;NA&gt;                 12         12
+#&gt;  2 &lt;NA&gt;                 12         12
+#&gt;  3 &lt;NA&gt;                 13         13</code></pre>
+<pre class="r"><code>missing_sleep &lt;- nlsy %&gt;% ...</code></pre>
+<p>Which functions could we move around?</p>
+</div>
+<div id="summary-statistics-1" class="section level2">
+<h2><span class="header-section-number">4.3</span> Summary statistics</h2>
+<p>We also used the <code>summarize()</code> function to calculate summary statistics:</p>
+<pre class="r"><code>summarize(nlsy, 
+          med_age_bir = median(age_bir),
+          cor_sleep = cor(sleep_wkdy, sleep_wknd),
+          ten_pctle_inc = quantile(income, probs = 0.1),
+          ninety_pctle_inc = quantile(income, probs = 0.9))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 4
+#&gt;    med_age_bir cor_sleep ten_pctle_inc ninety_pctle_inc
+#&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+#&gt;  1          22     0.710         3177.           33024.</code></pre>
+<p>You can use <code>summarize()</code> at the end (or the beginning, or middle, depending on what you’re doing!) of a pipe:</p>
+<pre class="r"><code>nlsy %&gt;%
+  mutate(age_bir_stand = (age_bir - mean(age_bir)) / sd(age_bir)) %&gt;%
+  filter(sex == 1) %&gt;%
+  summarize(mean_men = mean(age_bir_stand))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 1
+#&gt;    mean_men
+#&gt;       &lt;dbl&gt;
+#&gt;  1    0.283</code></pre>
+<div id="correlation" class="section level3 unnumbered">
+<h3>Correlation</h3>
+<p>Among the only children, find the correlation between hours of sleep on weekdays and weekends.</p>
+<pre class="r"><code>nlsy %&gt;%
+  filter(nsibs == 1) %&gt;%
+  summarise(cor(sleep_wkdy, sleep_wknd))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 1
+#&gt;    `cor(sleep_wkdy, sleep_wknd)`
+#&gt;                            &lt;dbl&gt;
+#&gt;  1                         0.581</code></pre>
+</div>
+<div id="proportions" class="section level3 unnumbered">
+<h3>Proportions</h3>
+<p>Create a variable that is 1 if an observation has an income between 20,000 and 30,000, and 0 otherwise. Calculate the proportion of people in the dataset who fit that criterion.</p>
+<pre class="r"><code>nlsy %&gt;%
+  mutate(yes = between(income, 20000, 30000)) %&gt;%
+  summarise(prop = mean(yes))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 1
+#&gt;     prop
+#&gt;    &lt;dbl&gt;
+#&gt;  1 0.166</code></pre>
+<pre class="r"><code>nlsy %&gt;%
+  summarise(prop = mean(between(income, 20000, 30000)))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 1
+#&gt;     prop
+#&gt;    &lt;dbl&gt;
+#&gt;  1 0.166</code></pre>
+<pre class="r"><code>nlsy %&gt;%
+  count(between(income, 20000, 30000)) %&gt;%
+  mutate(prop = n / sum(n))</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 3
+#&gt;    `between(income, 20000, 30000)`     n  prop
+#&gt;    &lt;lgl&gt;                           &lt;int&gt; &lt;dbl&gt;
+#&gt;  1 FALSE                            1005 0.834
+#&gt;  2 TRUE                              200 0.166</code></pre>
+</div>
+</div>
+<div id="stratified-summary-statistics" class="section level2">
+<h2><span class="header-section-number">4.4</span> Stratified summary statistics</h2>
+<p>When we group data, functions within <code>summarize()</code> will be applied within the groups:</p>
+<pre class="r"><code>nlsy %&gt;%
+  mutate(income_stand = (income - mean(income))/sd(income)) %&gt;%
+  group_by(region) %&gt;%
+  summarize(mean_inc = mean(income_stand),
+            sd_inc = sd(income_stand), 
+            .groups = &quot;drop&quot;)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 4 x 3
+#&gt;    region mean_inc sd_inc
+#&gt;     &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1      1   0.186   1.17 
+#&gt;  2      2   0.106   0.958
+#&gt;  3      3  -0.0891  1.03 
+#&gt;  4      4  -0.145   0.810</code></pre>
+<p>You can group by multiple variables, but notice what happens to the grouping if you don’t specify what to do with the grouping structure:</p>
+<pre class="r"><code>nlsy %&gt;%
+  group_by(region, sex) %&gt;%
+  summarize(mean_inc = mean(income),
+            sd_inc = sd(income))</code></pre>
+<pre class="message"><code>#&gt;  `summarise()` regrouping output by &#39;region&#39; (override with `.groups` argument)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 8 x 4
+#&gt;  # Groups:   region [4]
+#&gt;    region   sex mean_inc sd_inc
+#&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+#&gt;  1      1     1   20393. 16929.
+#&gt;  2      1     2   15928. 14442.
+#&gt;  3      2     1   19488. 14885.
+#&gt;  4      2     2   14699. 10613.
+#&gt;  5      3     1   15137. 14592.
+#&gt;  6      3     2   13293. 12879.
+#&gt;  7      4     1   12315.  9244.
+#&gt;  8      4     2   14001. 11621.</code></pre>
+<p>When you group by multiple variables and then summarize, the default is to “peel off” the last grouping layer and leave the rest, as the message describes. This can be confusing/annoying if you don’t realize it, so you might want to use <code>.groups = "drop"</code>.</p>
+<div id="by-region" class="section level3 unnumbered">
+<h3>By region</h3>
+<p>Find the median income per region. Before doing so, make sure that you’ve made region into a factor variable with appropriate names so we can easily read your results.</p>
+<pre class="r"><code>nlsy %&gt;%
+  mutate(region = fct_recode(factor(region),
+                             &quot;Northeast&quot; = &quot;1&quot;, &quot;North Central&quot; = &quot;2&quot;, 
+                             &quot;South&quot; = &quot;3&quot;, &quot;West&quot; = &quot;4&quot;)) %&gt;%
+  group_by(region) %&gt;%
+  summarise(med_inc = median(income))</code></pre>
+<pre class="message"><code>#&gt;  `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 4 x 2
+#&gt;    region        med_inc
+#&gt;    &lt;fct&gt;           &lt;dbl&gt;
+#&gt;  1 Northeast       13000
+#&gt;  2 North Central   13460
+#&gt;  3 South           10000
+#&gt;  4 West            10000</code></pre>
+</div>
+</div>
+<div id="tables-with-the-tableone-package" class="section level2">
+<h2><span class="header-section-number">4.5</span> Tables with the <code>tableone</code> package</h2>
+<p>We saw how we could use the <code>tableone</code> package to create easy tables:</p>
+<pre class="r"><code>library(tableone) # in general, put at the top of your script
+
+tab1 &lt;- CreateTableOne(
+  data = nlsy,
+  vars = c(&quot;eyesight&quot;, &quot;nsibs&quot;, &quot;race_eth&quot;,
+           &quot;sex&quot;, &quot;region&quot;, &quot;income&quot;, &quot;age_bir&quot;),
+  strata = &quot;glasses&quot;,
+  factorVars = c(&quot;eyesight&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;)
+)
+
+tab1</code></pre>
+<p>Not only are there many possible arguments to the <code>CreateTableOne()</code> function, but also for the <code>print()</code> function when applied to a <code>TableOne</code> object. You can look up the documentation for both:</p>
+<pre class="r"><code>print(tab1, catDigits = 2, contDigits = 2, test = FALSE, smd = TRUE)
+
+help(&quot;CreateTableOne&quot;)
+help(&quot;print.TableOne&quot;)</code></pre>
+<p>You can use this code to help get your table 1 in an easy-to-share format:</p>
+<pre class="r"><code>table1_to_share &lt;- tab1 %&gt;% 
+  print() %&gt;% 
+  as_tibble(rownames = &quot;id&quot;)
+write_csv(table1_to_share, &quot;table1.csv&quot;)</code></pre>
+<p>Check out some other packages for tables as well:
+<a href="https://github.com/kaz-yos/tableone#similar-or-complementary-projects" class="uri">https://github.com/kaz-yos/tableone#similar-or-complementary-projects</a>.</p>
+<div id="prepare-a-dataset" class="section level3 unnumbered">
+<h3>Prepare a dataset</h3>
+<p>Apply the following inclusion criteria to the NLSY dataset to make a analysis dataset: from region 1 or 4, with at least 2 siblings, and doesn’t wear glasses.</p>
+<pre class="r"><code>analysis_dat &lt;- nlsy %&gt;%
+  filter(region %in% c(1, 4), nsibs &gt;= 2, glasses == 0)</code></pre>
+</div>
+<div id="make-a-stratification-variable" class="section level3 unnumbered">
+<h3>Make a stratification variable</h3>
+<p>Make a variable in that dataset that categorizes people in quartiles (split at 25th, 50th, and 75% percentiles of the new dataset) by income. Make sure the categories have descriptive names.</p>
+<pre class="r"><code>analysis_dat &lt;- analysis_dat %&gt;%
+  mutate(income_cat = 
+           case_when(
+             income &lt; quantile(income, probs = .25) ~ &quot;lowest quartile&quot;,
+             income &lt; quantile(income, probs = .5) ~ &quot;second quartile&quot;,
+             income &lt; quantile(income, probs = .75) ~ &quot;third quartile&quot;,
+             TRUE ~ &quot;highest quartile&quot;
+             ),
+         income_cat = fct_relevel(income_cat, 
+                                  &quot;lowest quartile&quot;, &quot;second quartile&quot;, 
+                                  &quot;third quartile&quot;, &quot;highest quartile&quot;))</code></pre>
+</div>
+<div id="make-table-1" class="section level3 unnumbered">
+<h3>Make table 1</h3>
+<p>Make a table 1 for this new dataset, stratified by the new income variable. Make sure they show up in the correct order in your table. Include p-values testing across strata but only print 2 digits for them. Perform an exact test for the region comparison.</p>
+<pre class="r"><code>tab1 &lt;- CreateTableOne(
+  data = analysis_dat,
+  vars = c(&quot;eyesight&quot;, &quot;nsibs&quot;, &quot;race_eth&quot;,
+           &quot;sex&quot;, &quot;region&quot;, &quot;income&quot;, &quot;age_bir&quot;),
+  strata = &quot;income_cat&quot;,
+  factorVars = c(&quot;eyesight&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;)
+)
+print(tab1, exact = &quot;region&quot;, pDigits = 2)</code></pre>
+</div>
+</div>
+</div>
+<div id="in-groups" class="section level1">
+<h1><span class="header-section-number">5</span> In groups</h1>
+<div id="some-fun-new-data" class="section level3 unnumbered">
+<h3>Some fun new data!</h3>
+<p><img src="https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png" /><!-- --></p>
+<p>The <a href="https://allisonhorst.github.io/palmerpenguins/"><code>palmerpenguins</code></a> dataset was collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network. It has been made available in R as a good dataset to use for teaching/simple data exploration as an alternative to the <code>iris</code> dataset, which has been commonly used for the same reasons, but which was <a href="https://armchairecology.blog/iris-dataset/">“first published with the express intent to advance the science of eugenics”</a>… so I and a number of others in the R community have been avoiding using it. <a href="https://twitter.com/allison_horst/status/1270046399418138625">Allison Horst</a> is responsible for the artwork above and for helping make the penguins dataset available instead!</p>
+<p>It’s available in the <code>palmerpenguins</code> package, or we can download it directly here:</p>
+<pre class="r"><code>penguins_raw &lt;- read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins_raw.csv&#39;)
+penguins &lt;- read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins.csv&#39;)</code></pre>
+<p>Take a few minutes to explore the dataset.</p>
+</div>
+<div id="summarize-the-data" class="section level3 unnumbered">
+<h3>Summarize the data</h3>
+<p>In the exercises, I asked you to recreate the <code>summary()</code> function using <code>summarize()</code> (i.e., produce all the same statistics). Compare your code with your group and use it to summarize the bill length of the penguins of each species (you can do this in the <code>penguins</code> dataset, which is more cleaned up than the <code>penguins_raw</code> dataset).</p>
+</div>
+</div>
