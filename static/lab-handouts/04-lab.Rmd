@@ -35,7 +35,7 @@ nlsy <- read_csv("nlsy_cc.csv")
 
 ## Using pipes in Rstudio
 
-There's a keyboard shortcut for entering the pipe: `ctrl/cmd` + `m`. Try adding one after `nlsy` below, and then keep typing to add some code. Might save you a split second!
+There's a keyboard shortcut for entering the pipe: `shift` + `ctrl/cmd` + `m`. Try adding one after `nlsy` below, and then keep typing to add some code. Might save you a split second!
 
 ```{r}
 nlsy
