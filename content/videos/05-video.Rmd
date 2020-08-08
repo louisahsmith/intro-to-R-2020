@@ -24,7 +24,7 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "Inside a function", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1",
+  "Inside a function", "1", TRUE, "https://www.youtube.com/embed/G9HvP7FuXeU?enablejsapi=1&modestbranding=1&rel=0&start=1",
   "Functions with variables", "28", FALSE, "https://www.youtube.com/embed/G9HvP7FuXeU?enablejsapi=1&modestbranding=1&rel=0&start=1390",
   "For loops", "39", FALSE, "https://www.youtube.com/embed/G9HvP7FuXeU?enablejsapi=1&modestbranding=1&rel=0&start=2025",
   "Extras", "51", FALSE, "https://www.youtube.com/embed/G9HvP7FuXeU?enablejsapi=1&modestbranding=1&rel=0&start=3035"
