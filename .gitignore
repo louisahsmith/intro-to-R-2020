@@ -7,8 +7,8 @@ public/*
 private/*
 resources/_gen/*
 temp_figs/*
-**/0[5-6]-*/**
-**/0[5-6]-*
+**/06-*/**
+**/06-*
 nlsy_cc.csv
 nlsy.rds
 content/labs/nlsy_cc.csv

@@ -23,6 +23,15 @@
   color: #c88d90!important;
 }
 
+.docs-toc-item.active {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.docs-toc-item.active:not(:first-child) {
+margin-top: 0;
+}
+
 .embed-responsive{
   display: inline-block;
   width: 50%;

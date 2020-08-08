@@ -1,12 +1,10 @@
 ---
-title: "Exercises"
-linktitle: "5. Functions"
+title: "Week 5 Exercises"
 date: "2020-08-10"
-menu:
-  exercise:
-type: docs
 output:
-  blogdown::html_page:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: vignette
     toc: true
     toc_depth: 2
     number_sections: true
@@ -18,13 +16,11 @@ knitr::opts_chunk$set(
   collapse = FALSE,
   comment = "#> ",
   class.output = "output",
-  class.message = "message",
-  class.error = "message"
+  class.message = "message"
 )
 ```
 # Functions
 
-Download the materials for this week's exercises [here](/exercise-handouts/05-week.zip).
 
 ## Write a function to calculate exponents
 

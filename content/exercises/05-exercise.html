@@ -1,0 +1,167 @@
+---
+title: "Exercises"
+linktitle: "5. Functions"
+date: "2020-08-10"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=4"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#functions"><span class="toc-section-number">5</span> Functions</a><ul>
+<li><a href="#write-a-function-to-calculate-exponents"><span class="toc-section-number">5.1</span> Write a function to calculate exponents</a></li>
+<li><a href="#change-the-grouping-variable-when-summarizing"><span class="toc-section-number">5.2</span> Change the grouping variable when summarizing</a></li>
+<li><a href="#for-loops"><span class="toc-section-number">5.3</span> For loops</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="functions" class="section level1">
+<h1><span class="header-section-number">5</span> Functions</h1>
+<p>Download the materials for this week’s exercises <a href="/exercise-handouts/05-week.zip">here</a>.</p>
+<div id="write-a-function-to-calculate-exponents" class="section level2">
+<h2><span class="header-section-number">5.1</span> Write a function to calculate exponents</h2>
+<div id="square-a-number" class="section level3 unnumbered">
+<h3>Square a number</h3>
+<p>You’re tired of writing <code>x^2</code> when you want to square <code>x</code>, so you want a function to square a number. You can call it <code>square()</code>. I showed this in the slides, now try on your own!</p>
+<pre class="r"><code># start out with a number to test
+x &lt;- 3
+# you&#39;ll want your function to return this number
+x^2
+square &lt;- function() {
+  
+}
+# test it out
+square(x)
+square(53)
+53^2 # does this match?</code></pre>
+</div>
+<div id="raise-to-any-power" class="section level3 unnumbered">
+<h3>Raise to any power</h3>
+<p>You don’t just want to square numbers, you want to raise them to higher powers too. Make a function that uses two arguments, <code>x</code> for a number, and <code>power</code> for the power. Call it <code>raise()</code>.</p>
+<pre class="r"><code>raise &lt;- function() {
+  
+}
+
+# test with
+raise(x = 2, power = 4)
+# should give you
+2^4</code></pre>
+</div>
+<div id="default-arguments" class="section level3 unnumbered">
+<h3>Default arguments</h3>
+<p>Change your <code>raise()</code> function to default to squaring <code>x</code> when the user doesn’t enter a value for <code>power</code>.</p>
+<pre class="r"><code># test
+raise(x = 5)
+# should give you
+5^2</code></pre>
+</div>
+</div>
+<div id="change-the-grouping-variable-when-summarizing" class="section level2">
+<h2><span class="header-section-number">5.2</span> Change the grouping variable when summarizing</h2>
+<p>Notice that we didn’t need any packages or data to write the functions above. Now we’ll need our usuals, though:</p>
+<pre class="r"><code>library(tidyverse)
+nlsy &lt;- read_csv(&quot;nlsy_cc.csv&quot;)</code></pre>
+<div id="grouping-argument" class="section level3 unnumbered">
+<h3>Grouping argument</h3>
+<p>We want to run code like this for multiple variables:</p>
+<pre class="r"><code>nlsy %&gt;% group_by(sex) %&gt;% 
+  summarize(mean_inc = mean(income), .groups = &quot;drop&quot;)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 2
+#&gt;      sex mean_inc
+#&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;  1     1   16690.
+#&gt;  2     2   14292.</code></pre>
+<pre class="r"><code>nlsy %&gt;% group_by(glasses) %&gt;% 
+  summarize(mean_inc = mean(income), .groups = &quot;drop&quot;)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 2 x 2
+#&gt;    glasses mean_inc
+#&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;  1       0   13853.
+#&gt;  2       1   16626.</code></pre>
+<p>Write a function to calculate the stratified mean income for grouping variable <code>var</code>. In other words, write a function such that <code>mean_group_inc(var = "sex")</code> and <code>mean_group_inc(var = "glasses")</code> produce the results above.</p>
+<p>Look at the function from the slides for help:</p>
+<pre class="r"><code>var_q &lt;- function(q, var) {
+  quant &lt;- nlsy %&gt;%
+    rename(new_var = var) %&gt;% #&lt;&lt;
+    summarize(q_var = quantile(new_var, probs = q))
+  return(quant)
+}
+var_q(q = 0.5, var = &quot;income&quot;)</code></pre>
+<pre class="message"><code>#&gt;  Note: Using an external vector in selections is ambiguous.
+#&gt;  ℹ Use `all_of(var)` instead of `var` to silence this message.
+#&gt;  ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+#&gt;  This message is displayed once per session.</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 1 x 1
+#&gt;    q_var
+#&gt;    &lt;dbl&gt;
+#&gt;  1 11155</code></pre>
+<p>Write your function here:</p>
+<pre class="r"><code>mean_group_inc &lt;- function(var) {
+  
+}
+
+# test with
+mean_group_inc(var = &quot;glasses&quot;)</code></pre>
+<pre class="output"><code>#&gt;  NULL</code></pre>
+<pre class="r"><code>mean_group_inc(var = &quot;sex&quot;)</code></pre>
+<pre class="output"><code>#&gt;  NULL</code></pre>
+</div>
+<div id="grouping-and-summarizing-arguments" class="section level3 unnumbered">
+<h3>Grouping and summarizing arguments</h3>
+<p>Rewrite your function to accept two arguments: <code>group_var</code> to determine what the grouping variable is, and <code>mean_var</code> to determine what variable you want to take the mean of (e.g., <code>mean_group(group_var = "sex", mean_var = "income")</code> should give you the same results as above).</p>
+<pre class="r"><code>mean_group &lt;- function(group_var, mean_var) {
+  
+}
+
+# test with
+mean_group(group_var = &quot;sex&quot;, mean_var = &quot;income&quot;)</code></pre>
+<pre class="output"><code>#&gt;  NULL</code></pre>
+</div>
+</div>
+<div id="for-loops" class="section level2">
+<h2><span class="header-section-number">5.3</span> For loops</h2>
+<div id="write-a-for-loop" class="section level3 unnumbered">
+<h3>Write a for loop</h3>
+<p>We used this function:</p>
+<pre class="r"><code>var_q_new &lt;- function(q, var) {
+  quant &lt;- nlsy %&gt;%
+    rename(new_var = var) %&gt;%
+    summarize(q_var = quantile(new_var, probs = q)) %&gt;%
+    pull(q_var)
+  return(quant)
+}
+var_q_new(q = 0.5, var = &quot;income&quot;)</code></pre>
+<pre class="output"><code>#&gt;    50% 
+#&gt;  11155</code></pre>
+<p>inside of a for loop in order to calculate each decile of income:</p>
+<pre class="r"><code>qs &lt;- seq(0.1, 0.9, by = 0.1)
+deciles &lt;- rep(NA, length(qs))
+for (i in seq_along(qs)) {
+  deciles[[i]] &lt;- var_q_new(q = qs[[i]], 
+                        var = &quot;income&quot;)
+}
+deciles</code></pre>
+<pre class="output"><code>#&gt;  [1]  3177.2  5025.6  6907.2  9000.0 11155.0 14000.0 18053.6 23800.0 33024.0</code></pre>
+<p>Try changing <code>seq_along(qs)</code> to <code>1:5</code> and run the whole chunk again. What does <code>deciles</code> print now?</p>
+<p>Change the for loop above to loop over different variables instead of different quantiles. That is, calculate the 0.25 quantile for each of <code>c("income", "age_bir", "nsibs")</code> in a for loop.</p>
+<pre class="r"><code>vars &lt;- c(&quot;income&quot;, &quot;age_bir&quot;, &quot;nsibs&quot;)
+q_25s &lt;- ...</code></pre>
+</div>
+<div id="nested-loops" class="section level3 unnumbered">
+<h3>Nested loops</h3>
+<p>You can nest for loops inside each other, as long as you use different iteration variables. Write a nested for loop to iterate over variables (with <code>i</code>) and quantiles (with <code>j</code>). You’ll need to start with an empty matrix instead of a vector, with rows indexed by <code>i</code> and columns by <code>j</code>. Calculate each of the deciles for each of the above variables.</p>
+<pre class="r"><code>vars &lt;- ...
+qs &lt;- ...
+results_mat &lt;- matrix(NA, ncol = ..., nrow = ...)</code></pre>
+</div>
+</div>
+</div>

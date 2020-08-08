@@ -31,8 +31,8 @@ lessons:
   - title: 'Functions'
     session: 5
     date: "August 10 - August 14"
-    # video: "05-video"
-    # exercise: "05-exercise"
+    video: "05-video"
+    exercise: "05-exercise"
     # lab: "05-lab"
     
   - title: 'Analyze your data'
