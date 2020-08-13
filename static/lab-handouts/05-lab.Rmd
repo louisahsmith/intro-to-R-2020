@@ -1,0 +1,247 @@
+---
+title: "Week 5 Lab"
+output:
+  # html_document:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: vignette
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=4"]
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = FALSE,
+  eval = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message"
+)
+```
+
+```{r, eval = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
+nlsy <- read_csv("nlsy_cc.csv")
+```
+
+## Functions in RStudio
+
+As with everything else, there are some tricks to make your life easier when using functions in RStudio.
+
+Let's say you have been writing some code, and you realize you want to make it into a function:
+```{r, eval = FALSE}
+y <- x * 2
+z <- exp(y)
+mean(c(x, y, z))
+```
+If you highlight the code and press `ctrl` + `alt` + `x` on Windows or `cmd` + `option` + `x` on a Mac, you can automatically convert it into a function:
+```{r, eval = FALSE}
+weird_func <- function(x) {
+  y <- x * 2
+  z <- exp(y)
+  mean(c(x, y, z))
+}
+```
+This can be helpful for a couple of reasons: if you don't remember the syntax for a function, if you don't want to deal with indenting, etc. and especially if you aren't sure what you need as arguments to your function. Careful, though: it's not great at distinguishing between objects and variable names, so it might try to add arguments that you don't actually need:
+```{r, eval = FALSE}
+nlsy %>%
+  mutate(only = case_when(
+                nsibs == 0 ~ "yes",
+                TRUE ~ "no"
+                )
+         ) %>%
+  select(id, contains("sleep"), only) %>%
+  filter(only == "yes")
+```
+Another trick is `F2`: use it to go directly to the source code of a function. If it's in your R script, it will go there, or else it will open up another tab where you can view it.
+```{r, eval = FALSE}
+weird_func
+read_csv
+```
+It can be really helpful to see how other people write functions as you're learning to write your own!
+
+## Writing functions
+
+### Raise to any power {-}
+
+Make a function that uses two arguments, `x` for a number, and `power` for the power. Call it `raise()`.
+
+```{r, eval = FALSE}
+raise <- function() {
+  
+}
+
+# test with
+raise(x = 2, power = 4)
+# should give you
+2^4
+```
+
+### Default arguments {-}
+
+Change your `raise()` function to default to squaring `x` when the user doesn't enter a value for `power`.
+
+```{r, eval = FALSE}
+
+# test
+raise(x = 5)
+# should give you
+5^2
+```
+
+### Functions for data {-}
+
+Write a function to calculate the stratified mean income for grouping variable `var`. In other words, write a function such that `mean_group_inc(var = "sex")` and `mean_group_inc(var = "glasses")` produce the results above.
+
+Look at the function from the slides for help:
+```{r, eval = FALSE}
+var_q <- function(q, var) {
+  quant <- nlsy %>%
+    rename(new_var = var) %>% #<<
+    summarize(q_var = quantile(new_var, probs = q))
+  return(quant)
+}
+var_q(q = 0.5, var = "income")
+```
+
+Write your function here:
+```{r, eval = FALSE}
+mean_group_inc <- function(var) {
+  
+}
+
+# test with
+mean_group_inc(var = "glasses")
+mean_group_inc(var = "sex")
+```
+
+Rewrite your function to accept two arguments: `group_var` to determine what the grouping variable is, and `mean_var` to determine what variable you want to take the mean of (e.g., `mean_group(group_var = "sex", mean_var = "income")` should give you the same results as above).
+
+```{r, eval = FALSE}
+mean_group <- function(group_var, mean_var) {
+  
+}
+
+# test with
+mean_group(group_var = "sex", mean_var = "income")
+```
+
+## For loops
+
+### Write a for loop {-}
+
+We used this function:
+```{r}
+var_q_new <- function(q, var) {
+  quant <- nlsy %>%
+    rename(new_var = var) %>%
+    summarize(q_var = quantile(new_var, probs = q)) %>%
+    pull(q_var)
+  return(quant)
+}
+var_q_new(q = 0.5, var = "income")
+```
+inside of a for loop in order to calculate each decile of income:
+```{r}
+qs <- seq(0.1, 0.9, by = 0.1)
+deciles <- rep(NA, length(qs))
+for (i in seq_along(qs)) {
+  deciles[[i]] <- var_q_new(q = qs[[i]], 
+                        var = "income")
+}
+deciles
+```
+
+Change the for loop above to loop over different variables instead of different quantiles. That is, calculate the 0.25 quantile for each of `c("income", "age_bir", "nsibs")` in a for loop.
+
+```{r, eval = FALSE}
+vars <- c("income", "age_bir", "nsibs")
+q_25s <- ...
+
+
+```
+
+
+### Nested loops {-}
+
+You can nest for loops inside each other, as long as you use different iteration variables. Write a nested for loop to iterate over variables (with `i`) and quantiles (with `j`). You'll need to start with an empty matrix instead of a vector, with rows indexed by `i` and columns by `j`. Calculate each of the deciles for each of the above variables.
+
+```{r, eval = FALSE}
+vars <- c("income", "age_bir", "nsibs")
+qs <- qs <- seq(0.1, 0.9, by = 0.1)
+results_mat <- matrix(NA, ncol = length(qs), nrow = length(vars))
+
+# helpful to print to see what's going on
+for (i in vars) {
+  for (j in qs) {
+    print(c(i, j))
+  }
+}
+
+for (i in seq_along(vars)) {
+  for (j in seq_along(qs)) {
+    print(var_q_new(q = qs[[j]], var = vars[[i]]))
+  }
+}
+
+for (i in seq_along(vars)) {
+  for (j in seq_along(qs)) {
+    results_mat[i, j] <- var_q_new(q = qs[[j]], var = vars[[i]])
+  }
+}
+
+results_mat
+
+rownames(results_mat) <- vars
+colnames(results_mat) <- qs
+
+results_mat
+```
+
+## Group work
+
+Related to "for loops" are "while loops". The latter don't iterate a set number of times, but rather only as long as a condition is true. This is helpful when you don't know how many times you'll need to do something. For example, if I want to do something as long as `x` divided by 2 is less than 5, I could write:
+```{r}
+x <- 0
+while ((x / 2) < 5) {
+  x <- x + 1
+  print(x)
+}
+```
+Be careful you don't get stuck in an infinite loop! For example, if I had said `while ((x / 2) >= 0)`, and started at 0, adding 1 each time, it would never *not* be true, and R would crash if I didn't stop it!
+
+As a harder example, imagine I wanted to find the [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) through 2-digit numbers:
+
+```{r}
+x <- c(0, 1)
+i <- 2
+while (x[i] < 100) {
+  x <- c(x, x[i - 1] + x[i])
+  i <- i + 1
+}
+x
+```
+
+While loops are a bit confusing, but we'll make them fun by playing with the penguins again!
+
+`r knitr::include_graphics("https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png")`
+
+(See [last week's lab](labs/04-lab) for more info on the [`palmerpenguins`](https://allisonhorst.github.io/palmerpenguins/) dataset and the artwork by [Allison Horst](https://twitter.com/allison_horst/status/1270046399418138625).)!
+
+It's available in the `palmerpenguins` package, or we can download it directly here:
+```{r}
+penguins <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins.csv')
+```
+
+**Challenge**: You want to take some penguins home from Antarctica with you. Your plane can only hold 10,000 g of cargo. What is the greatest number of penguins from this dataset that you can take with you? Write a loop with `while()` to figure it out.
+
+(Hint: You might want to sort the penguins by size first. There are a couple of ways to do this, one of which is with the `arrange()` function.)
+
+```{r}
+
+```
