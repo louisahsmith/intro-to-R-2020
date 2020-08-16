@@ -38,7 +38,7 @@ Try to knit this document by pressing the "Knit" button or `ctrl`/`cmd` + `shift
 
 You'll find that it doesn't work because the file paths don't point to the files. Use the `here` package to revise the code so that the code runs and the document knits.
 
-```{r}
+```{r, eval = FALSE}
 library(tidyverse)
 library(knitr)
 nlsy <- read_csv("nlsy.csv")
