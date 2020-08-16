@@ -1,0 +1,127 @@
+---
+title: "Exercises"
+linktitle: "6. Analyze your data"
+date: "2020-08-17"
+publishdate: "2020-08-17"
+menu:
+  exercise:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=5"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#analyze-your-data"><span class="toc-section-number">6</span> Analyze your data</a><ul>
+<li><a href="#file-paths"><span class="toc-section-number">6.1</span> File paths</a></li>
+<li><a href="#missing-data"><span class="toc-section-number">6.2</span> Missing data</a></li>
+<li><a href="#challenge"><span class="toc-section-number">6.3</span> Challenge</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="analyze-your-data" class="section level1">
+<h1><span class="header-section-number">6</span> Analyze your data</h1>
+<p>Congratulations! You’ve made it to the end of the course. I hope this is just the beginning of your journey with R!</p>
+<p>Download the materials for this last set of exercises <a href="/exercise-handouts/06-week.zip">here</a>.</p>
+<div id="file-paths" class="section level2">
+<h2><span class="header-section-number">6.1</span> File paths</h2>
+<p>Try to knit this document by pressing the “Knit” button or <code>ctrl</code>/<code>cmd</code> + <code>shift</code> + <code>k</code>.</p>
+<p>You’ll find that it doesn’t work because the file paths don’t point to the files. Use the <code>here</code> package to revise the code so that the code runs and the document knits.</p>
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+nlsy &lt;- read_csv(&quot;nlsy.csv&quot;)</code></pre>
+<pre class="message"><code>#&gt;  Error: &#39;nlsy.csv&#39; does not exist in current working directory (&#39;/Users/louisahsmith/Google Drive/Teaching/R course site/content/exercises&#39;).</code></pre>
+<pre class="r"><code># this function adds a static image
+include_graphics(&quot;figure1.jpg&quot;)</code></pre>
+<pre class="r"><code>read_rds(&quot;table1.rds&quot;) %&gt;%
+  kable() # this function prints nicer tables in R Markdown</code></pre>
+</div>
+<div id="missing-data" class="section level2">
+<h2><span class="header-section-number">6.2</span> Missing data</h2>
+<p>The <code>nlsy.csv</code> file includes all 12,687 participants of the NLSY-79. Read in the data once without specifying the values that indicate missingness. Explore the data and find them all. Then read in the data again, using the <code>na =</code> argument in <code>read_csv()</code> to read them in as NA’s.</p>
+<pre class="r"><code># skip = 1 means to skip the first row, which were the original col names
+nlsy &lt;- read_csv(&quot;nlsy.csv&quot;, skip = 1, col_names = c(
+  &quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+  &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;,
+  &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;
+))</code></pre>
+<p>Now imagine you’re interested in how the number of siblings relates to one’s age when they have their first child. Create a dataset to study this question:</p>
+<ul>
+<li>Assume that if the number of siblings is missing, they have 0</li>
+<li>Create a variable that is 1 if someone has kids, and 0 otherwise</li>
+<li>Create a dataset containing id, the sibling/child variables of interest, and income.</li>
+<li>Subset the data to exclude people who are missing income.</li>
+</ul>
+</div>
+<div id="challenge" class="section level2">
+<h2><span class="header-section-number">6.3</span> Challenge</h2>
+<p>I’ve given instructions for a project using the NLSY data. You can use the full dataset from the exercises this week (we were using a complete-case dataset earlier in the course) OR if you want, you can also use the <a href="https://www.nlsinfo.org/investigator/pages/login">NLS Investigator</a> to download other variables that align with your interests!</p>
+<p>If you have data that you’re working with and you’d like to practice with that data instead, go for it! Instead of the variables mentioned below, use whatever variables from your dataset you want. For example, change categorical variables that are currently numeric to factors as needed in your data. Then restrict your sample based on whatever conditions make sense to you for a project you’re working on (or want to work on), and run a regression with whichever variables interest you!</p>
+<div id="prepare-your-project" class="section level3 unnumbered">
+<h3>Prepare your project</h3>
+<ul>
+<li>File -&gt; New Project -&gt; New Directory -&gt; New Project
+<ul>
+<li>Watch <a href="https://www.youtube.com/watch?v=wqOme7xsZvs">this video</a> on R Projects if you’re having trouble or want to know more!</li>
+</ul></li>
+<li>Name it something like “NLSY” and put it in an appropriate folder on your computer</li>
+<li>Within that folder, make new folders as follows:</li>
+</ul>
+<pre><code>NLSY/
+ ├─ NLSY.Rproj
+ ├─ data/
+ │   ├── raw/
+ │   └── processed/
+ ├─ code/
+ └── results/
+     ├── tables/
+     └── figures/</code></pre>
+</div>
+<div id="prepare-the-data" class="section level3 unnumbered">
+<h3>Prepare the data</h3>
+<ul>
+<li>Copy and paste <code>nlsy.csv</code> into <code>data/raw</code>.</li>
+<li>Create a new file and save it as <code>clean_data.R</code>. (If you’d prefer to work with R Markdown files, and write text in between your code chunks as you’ve seen me do with the labs and exercises, go for it! I’ve added some helpful R Markdown links to the <a href="/resources">resources</a> page.)</li>
+<li>In that file, read in the NLSY data and load any packages you need. Make sure you replace any missing values with <code>NA</code>. Hint: there are extra missing values in the <code>age_bir</code> variable. Also, the variable names might be useful:</li>
+</ul>
+<pre class="r"><code>colnames_nlsy &lt;- c(
+  &quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+  &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;,
+  &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;
+)</code></pre>
+<ul>
+<li>Add factor labels to <code>eyesight</code>, <code>sex</code>, <code>race_eth</code>, <code>region</code>, as in earlier slides. Select those variables plus <code>income</code>, <code>id</code>, <code>nsibs</code>, <code>age_bir</code>, and the sleep variables. Then restrict to complete cases and people with incomes &lt; $30,000. Make a variable for the log of income (replace with <code>NA</code> if income &lt;= 0).</li>
+<li>Also in that file, save your new dataset as a <code>.rds</code> file to the <code>data/processed</code> folder.</li>
+</ul>
+</div>
+<div id="do-some-exploratory-analysis" class="section level3 unnumbered">
+<h3>Do some exploratory analysis</h3>
+<ul>
+<li>Create a file called <code>create_figure.R</code>. In this file, read in the cleaned dataset. Load any packages you need. Then make a <code>ggplot</code> figure of your choosing to show something about the distribution of the data. Save it to the <code>results/figures</code> folder as a <code>.png</code> file using the <code>ggsave()</code> function.</li>
+<li>Create a file called <code>table_1.R</code>. In this file, read in the cleaned dataset and use the <code>tableone</code> package to create a table 1 with the variables of your choosing. Modify the following code to save it as a <code>.csv</code> file. Open it in Excel/Numbers/Google Sheets/etc. to make sure it worked.</li>
+</ul>
+<pre class="r"><code>tab1 &lt;- CreateTableOne(...) %&gt;% print() %&gt;% as_tibble(rownames = &quot;id&quot;)
+write_csv(tab1, ...)</code></pre>
+</div>
+<div id="do-some-regression-analysis" class="section level3 unnumbered">
+<h3>Do some regression analysis</h3>
+<ul>
+<li>In another file called <code>lin_reg.R</code>, read in the data and run the following linear regression: <code>lm(log_inc ~ age_bir + sex + race_eth + nsibs, data = nlsy)</code>. Modify the CI function to produce a table of results for a <em>linear</em> regression. Add an argument <code>digits =</code>, with a default of 2, to allow you to choose the number of digits you’d like. Save it in a separate file called <code>functions.R</code>. Use <code>source()</code> to read in the function at the beginning of your script.</li>
+<li>Save a table of your results as a <code>.csv</code> file. Make the names of the coefficients nice!</li>
+<li>Using the results, use <code>ggplot</code> to make a figure. Use <code>geom_point()</code> for the point estimates and <code>geom_errorbar()</code> for the confidence intervals. It will look something like this:</li>
+</ul>
+<pre class="r"><code>ggplot(data) + 
+  geom_point(aes(x = , y = )) + 
+  geom_errorbar(aes(x = , ymin = , ymax = ))</code></pre>
+<ul>
+<li>Save that figure as a <code>.pdf</code> using <code>ggsave()</code>. You may want to play around with the <code>height =</code> and <code>width =</code> arguments to make it look like you want.</li>
+</ul>
+</div>
+</div>
+</div>

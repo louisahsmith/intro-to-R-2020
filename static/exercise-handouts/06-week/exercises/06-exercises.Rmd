@@ -1,13 +1,8 @@
 ---
-title: "Exercises"
-linktitle: "6. Analyze your data"
+title: "Week 6 Exercises"
 date: "2020-08-17"
-publishdate: "2020-08-17"
-menu:
-  exercise:
-type: docs
 output:
-  blogdown::html_page:
+  html_document:
     toc: true
     toc_depth: 2
     number_sections: true
@@ -15,22 +10,16 @@ output:
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  error = TRUE,
+  error = FALSE,
   collapse = TRUE,
-  message = FALSE,
-  warning = FALSE,
   comment = "#> ",
   class.output = "output",
-  class.message = "message",
-  class.error = "message"
+  class.message = "message"
 )
 ```
 # Analyze your data
 
 Congratulations! You've made it to the end of the course. I hope this is just the beginning of your journey with R!
-
-Download the materials for this last set of exercises [here](/exercise-handouts/06-week.zip).
-
 
 ## File paths
 
@@ -38,18 +27,20 @@ Try to knit this document by pressing the "Knit" button or `ctrl`/`cmd` + `shift
 
 You'll find that it doesn't work because the file paths don't point to the files. Use the `here` package to revise the code so that the code runs and the document knits.
 
+- Hint: if you're having trouble knitting an R Markdown document, now or in the future, change `knitr::opts_chunk$set()` in the setup chunk to read `error = TRUE`. This will allow the document to knit even if there's an error.
+
 ```{r}
 library(tidyverse)
 library(knitr)
 nlsy <- read_csv("nlsy.csv")
 ```
 
-```{r, fig.align="center", eval = FALSE}
+```{r, fig.align="center"}
 # this function adds a static image
 include_graphics("figure1.jpg")
 ```
 
-```{r, eval = FALSE}
+```{r}
 read_rds("table1.rds") %>%
   kable() # this function prints nicer tables in R Markdown
 ```
@@ -59,7 +50,7 @@ read_rds("table1.rds") %>%
 
 The `nlsy.csv` file includes all 12,687 participants of the  NLSY-79. Read in the data once without specifying the values that indicate missingness. Explore the data and find them all. Then read in the data again, using the `na = ` argument in `read_csv()` to read them in as NA's. 
 
-```{r, eval = FALSE}
+```{r}
 # skip = 1 means to skip the first row, which were the original col names
 nlsy <- read_csv("nlsy.csv", skip = 1, col_names = c(
   "glasses", "eyesight", "sleep_wkdy", "sleep_wknd",

@@ -24,12 +24,10 @@ source(here::here("R", "slide_tabs.R"))
 
 sections <- tibble::tribble(
   ~name, ~slide, ~active, ~youtube,
-  "Organization", "1", TRUE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=3",
-  "Missing data", "21", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=1183",
-  "Sharing results", "28", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435",
-  "Final challenge", "42", FALSE, "https://www.youtube.com/embed/bc4NVJpz7Rk?enablejsapi=1&modestbranding=1&rel=0&start=2435"
+  "Organization", "1", TRUE, "https://www.youtube.com/embed/zQVK-R7f3-w?enablejsapi=1&modestbranding=1&rel=0&start=3",
+  "Missing data", "21", FALSE, "https://www.youtube.com/embed/zQVK-R7f3-w?enablejsapi=1&modestbranding=1&rel=0&start=954",
+  "Sharing results", "28", FALSE, "https://www.youtube.com/embed/zQVK-R7f3-w?enablejsapi=1&modestbranding=1&rel=0&start=1507"
 ) 
-
 
 slide_tabs(sections, "/slides/06-slides.html")
 ```

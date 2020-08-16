@@ -38,6 +38,6 @@ lessons:
   - title: 'Analyze your data'
     session: 6
     date: "August 17 - August 21"
-    # video: "06-video"
-    # exercise: "06-exercise"
+    video: "06-video"
+    exercise: "06-exercise"
     # lab: "06-lab"

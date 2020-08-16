@@ -29,10 +29,10 @@ main:
     identifier: video5
     parent: video-top
     url: /videos/05-video/
-  # - name: Week 6
-  #   identifier: video6
-  #   parent: video-top
-  #   url: /videos/06-video/
+  - name: Week 6
+    identifier: video6
+    parent: video-top
+    url: /videos/06-video/
   - name: Exercises
     identifier: exercise-top
     url: /exercises/
@@ -57,10 +57,10 @@ main:
     identifier: exercise5
     parent: exercise-top
     url: /exercises/05-exercise/
-  # - name: Week 6
-  #   identifier: exercise6
-  #   parent: exercise-top
-  #   url: /exercises/06-exercise/
+  - name: Week 6
+    identifier: exercise6
+    parent: exercise-top
+    url: /exercises/06-exercise/
   - name: Labs
     identifier: lab-top
     url: /labs/

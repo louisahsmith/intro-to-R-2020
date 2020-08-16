@@ -8,6 +8,17 @@ weight: -1
 
 Here's where I'll put links to helpful resources or things I mention in lab or in the videos.
 
+### R Markdown
+
+- [Chapter 1 Installation | R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/installation.html) (read the whole book for **tons** of R Markdown information!)
+- [LaTeX installation instructions](https://bookdown.org/yihui/rmarkdown-cookbook/install-latex.html) (for generating pdfs)
+    - [More about TinyTeX](https://yihui.org/tinytex/)
+	    
+### Programming exercises
+- [Advent of Code](https://adventofcode.com/2019/day/1) is an annual series of programming challenges. There are some solutions in R on [this blog](https://colinfay.me/search/) (search "Advent")
+- [Project Euler](https://projecteuler.net/archives) is a longstanding and large set of programming challenges. You can check your work with the [`euler` package](https://github.com/nathaneastwood/euler).
+- [exercism.io](https://exercism.io/my/tracks) has free programming challenges in a number of languages.
+
 ### On `<-` vs. `=` for assignment:
 
 - Blog post: https://colinfay.me/r-assignment/
