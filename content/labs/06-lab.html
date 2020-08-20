@@ -1,0 +1,194 @@
+---
+title: "Lab"
+linktitle: "6. Analyze your data"
+date: "2020-08-20"
+publishdate: "2020-08-20"
+menu:
+  lab:
+type: docs
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=5"]
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#functions"><span class="toc-section-number">6</span> Functions</a><ul>
+<li><a href="#file-paths"><span class="toc-section-number">6.1</span> File paths</a></li>
+<li><a href="#missing-data"><span class="toc-section-number">6.2</span> Missing data</a></li>
+<li><a href="#questions"><span class="toc-section-number">6.3</span> Questions?!?!</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="functions" class="section level1">
+<h1><span class="header-section-number">6</span> Functions</h1>
+<p>You can either download the lab as an RMarkdown file <a href="../../lab-handouts/06-lab.Rmd" download="06-lab.Rmd">here</a>, or copy and paste the code as we go into a <code>.R</code> script. Either way, save it into the <code>06-week</code> folder where you completed the exercises! Since we worked on file structure this week, put it in a new <code>labs</code> folder nested within that folder.</p>
+<div id="file-paths" class="section level2">
+<h2><span class="header-section-number">6.1</span> File paths</h2>
+<p>We talked this week about making file paths work in R. This is especially important if you’re sharing your code with everyone. If you set your working directory via <code>setwd()</code> or hard-code another path into your code, it’s definitely not going to work on my computer.</p>
+<p>A famous blog post about this (well, as famous as blog posts about R can be) can be read <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">here</a>.</p>
+<p>How did you make these file paths work?</p>
+<pre class="r"><code>library(tidyverse)
+library(knitr)
+nlsy &lt;- read_csv(&quot;nlsy.csv&quot;)</code></pre>
+<pre class="r"><code># this function adds a static image
+include_graphics(&quot;figure1.jpg&quot;)</code></pre>
+<pre class="r"><code>read_rds(&quot;table1.rds&quot;) %&gt;%
+  kable() # this function prints nicer tables in R Markdown</code></pre>
+<p>By the way, you can change the directory in which an R Markdown document is knitted using the arrow by the Knit button. You can also use the settings to change the default. But if you use the <code>here</code> package it won’t matter what you do!</p>
+<p>One thing that is helpful to know when you’re working interactively, is how to navigate around file paths. If you need to go <em>up</em> a level, you use two dots to do so. So in the code below, we go <em>down</em> two levels from the top-level directory, then have to go <em>up</em> two levels and <em>down</em> two different levels to access the data. See why project directories and the <code>here</code> package make everything easier?!</p>
+<pre class="r"><code>proj_wd &lt;- getwd()
+setwd(&quot;figures/super important&quot;)
+nlsy &lt;- read_csv(&quot;../../data/raw/nlsy.csv&quot;)
+# ahhh take us back to where we started from!
+setwd(proj_wd)</code></pre>
+</div>
+<div id="missing-data" class="section level2">
+<h2><span class="header-section-number">6.2</span> Missing data</h2>
+<p>The <code>nlsy.csv</code> file includes all 12,687 participants of the NLSY-79. Read in the data once without specifying the values that indicate missingness. Explore the data and find them all. Then read in the data again, using the <code>na =</code> argument in <code>read_csv()</code> to read them in as NA’s.</p>
+<pre class="r"><code># skip = 1 means to skip the first row, which were the original col names
+nlsy &lt;- read_csv(here::here(&quot;data&quot;, &quot;raw&quot;, &quot;nlsy.csv&quot;), skip = 1, col_names = c(
+  &quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+  &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;,
+  &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;
+))</code></pre>
+<p>How can we explore the data to get an idea of what values mean that variable is missing?</p>
+<pre class="r"><code>summary(nlsy)</code></pre>
+<pre class="output"><code>#&gt;      glasses          eyesight          sleep_wkdy       sleep_wknd    
+#&gt;   Min.   :-4.000   Min.   :-4.00000   Min.   :-4.000   Min.   :-4.000  
+#&gt;   1st Qu.:-4.000   1st Qu.:-4.00000   1st Qu.:-4.000   1st Qu.:-4.000  
+#&gt;   Median : 0.000   Median : 1.00000   Median : 6.000   Median : 6.000  
+#&gt;   Mean   :-1.026   Mean   : 0.04004   Mean   : 2.523   Mean   : 2.886  
+#&gt;   3rd Qu.: 1.000   3rd Qu.: 2.00000   3rd Qu.: 7.000   3rd Qu.: 8.000  
+#&gt;   Max.   : 1.000   Max.   : 5.00000   Max.   :19.000   Max.   :24.000  
+#&gt;         id            nsibs             samp           race_eth    
+#&gt;   Min.   :    1   Min.   :-3.000   Min.   : 1.000   Min.   :1.000  
+#&gt;   1st Qu.: 3172   1st Qu.: 2.000   1st Qu.: 5.000   1st Qu.:2.000  
+#&gt;   Median : 6344   Median : 3.000   Median : 9.000   Median :3.000  
+#&gt;   Mean   : 6344   Mean   : 3.844   Mean   : 8.174   Mean   :2.434  
+#&gt;   3rd Qu.: 9515   3rd Qu.: 5.000   3rd Qu.:12.000   3rd Qu.:3.000  
+#&gt;   Max.   :12686   Max.   :29.000   Max.   :20.000   Max.   :3.000  
+#&gt;        sex            region           income         res_1980      
+#&gt;   Min.   :1.000   Min.   :-4.000   Min.   :   -3   Min.   :-5.0000  
+#&gt;   1st Qu.:1.000   1st Qu.: 2.000   1st Qu.: 2853   1st Qu.:-4.0000  
+#&gt;   Median :1.000   Median : 3.000   Median : 7955   Median :-4.0000  
+#&gt;   Mean   :1.495   Mean   : 2.424   Mean   :11819   Mean   : 0.5317  
+#&gt;   3rd Qu.:2.000   3rd Qu.: 3.000   3rd Qu.:18000   3rd Qu.:11.0000  
+#&gt;   Max.   :2.000   Max.   : 4.000   Max.   :75001   Max.   :16.0000  
+#&gt;      res_2002         age_bir       
+#&gt;   Min.   :-5.000   Min.   :-998.00  
+#&gt;   1st Qu.:-5.000   1st Qu.:  -5.00  
+#&gt;   Median :11.000   Median :  -5.00  
+#&gt;   Mean   : 4.914   Mean   : -96.36  
+#&gt;   3rd Qu.:11.000   3rd Qu.:  23.00  
+#&gt;   Max.   :19.000   Max.   :  52.00</code></pre>
+<pre class="r"><code>ggplot(nlsy) +
+  geom_histogram(aes(age_bir))</code></pre>
+<p><img src="/labs/06-lab_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>count(nlsy, nsibs)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 25 x 2
+#&gt;     nsibs     n
+#&gt;     &lt;dbl&gt; &lt;int&gt;
+#&gt;   1    -3    14
+#&gt;   2    -2     3
+#&gt;   3    -1     1
+#&gt;   4     0   362
+#&gt;   5     1  1611
+#&gt;   6     2  2530
+#&gt;   7     3  2412
+#&gt;   8     4  1783
+#&gt;   9     5  1198
+#&gt;  10     6   933
+#&gt;  # … with 15 more rows</code></pre>
+<p>Reread the data with the missing values specified:</p>
+<pre class="r"><code>nlsy &lt;- read_csv(here::here(&quot;data&quot;, &quot;raw&quot;, &quot;nlsy.csv&quot;), skip = 1, 
+                 na = c(&quot;-998&quot;, &quot;-5&quot;, &quot;-4&quot;, &quot;-3&quot;, &quot;-2&quot;, &quot;-1&quot;),
+                 col_names = c(
+  &quot;glasses&quot;, &quot;eyesight&quot;, &quot;sleep_wkdy&quot;, &quot;sleep_wknd&quot;,
+  &quot;id&quot;, &quot;nsibs&quot;, &quot;samp&quot;, &quot;race_eth&quot;, &quot;sex&quot;, &quot;region&quot;,
+  &quot;income&quot;, &quot;res_1980&quot;, &quot;res_2002&quot;, &quot;age_bir&quot;
+))</code></pre>
+<p>Check again to see if anything’s off:</p>
+<pre class="r"><code>summary(nlsy)</code></pre>
+<pre class="output"><code>#&gt;      glasses         eyesight       sleep_wkdy       sleep_wknd    
+#&gt;   Min.   :0.000   Min.   :1.000   Min.   : 0.000   Min.   : 0.000  
+#&gt;   1st Qu.:0.000   1st Qu.:1.000   1st Qu.: 6.000   1st Qu.: 6.000  
+#&gt;   Median :0.000   Median :2.000   Median : 7.000   Median : 7.000  
+#&gt;   Mean   :0.461   Mean   :2.064   Mean   : 6.567   Mean   : 7.163  
+#&gt;   3rd Qu.:1.000   3rd Qu.:3.000   3rd Qu.: 8.000   3rd Qu.: 8.000  
+#&gt;   Max.   :1.000   Max.   :5.000   Max.   :19.000   Max.   :24.000  
+#&gt;   NA&#39;s   :4236    NA&#39;s   :4242    NA&#39;s   :4860     NA&#39;s   :4867    
+#&gt;         id            nsibs             samp           race_eth    
+#&gt;   Min.   :    1   Min.   : 0.000   Min.   : 1.000   Min.   :1.000  
+#&gt;   1st Qu.: 3172   1st Qu.: 2.000   1st Qu.: 5.000   1st Qu.:2.000  
+#&gt;   Median : 6344   Median : 3.000   Median : 9.000   Median :3.000  
+#&gt;   Mean   : 6344   Mean   : 3.854   Mean   : 8.174   Mean   :2.434  
+#&gt;   3rd Qu.: 9515   3rd Qu.: 5.000   3rd Qu.:12.000   3rd Qu.:3.000  
+#&gt;   Max.   :12686   Max.   :29.000   Max.   :20.000   Max.   :3.000  
+#&gt;                   NA&#39;s   :18                                       
+#&gt;        sex            region          income         res_1980     
+#&gt;   Min.   :1.000   Min.   :1.000   Min.   :    0   Min.   : 1.000  
+#&gt;   1st Qu.:1.000   1st Qu.:2.000   1st Qu.: 5900   1st Qu.: 6.000  
+#&gt;   Median :1.000   Median :3.000   Median :10700   Median :11.000  
+#&gt;   Mean   :1.495   Mean   :2.547   Mean   :14707   Mean   : 8.896  
+#&gt;   3rd Qu.:2.000   3rd Qu.:3.000   3rd Qu.:20000   3rd Qu.:11.000  
+#&gt;   Max.   :2.000   Max.   :4.000   Max.   :75001   Max.   :16.000  
+#&gt;                   NA&#39;s   :239     NA&#39;s   :2491    NA&#39;s   :8186    
+#&gt;      res_2002        age_bir     
+#&gt;   Min.   : 1.00   Min.   :10.00  
+#&gt;   1st Qu.:11.00   1st Qu.:20.00  
+#&gt;   Median :11.00   Median :23.00  
+#&gt;   Mean   :11.28   Mean   :24.38  
+#&gt;   3rd Qu.:11.00   3rd Qu.:28.00  
+#&gt;   Max.   :19.00   Max.   :52.00  
+#&gt;   NA&#39;s   :4962    NA&#39;s   :6743</code></pre>
+<pre class="r"><code>ggplot(nlsy) +
+  geom_histogram(aes(age_bir))</code></pre>
+<p><img src="/labs/06-lab_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>count(nlsy, nsibs)</code></pre>
+<pre class="output"><code>#&gt;  # A tibble: 23 x 2
+#&gt;     nsibs     n
+#&gt;     &lt;dbl&gt; &lt;int&gt;
+#&gt;   1     0   362
+#&gt;   2     1  1611
+#&gt;   3     2  2530
+#&gt;   4     3  2412
+#&gt;   5     4  1783
+#&gt;   6     5  1198
+#&gt;   7     6   933
+#&gt;   8     7   634
+#&gt;   9     8   421
+#&gt;  10     9   289
+#&gt;  # … with 13 more rows</code></pre>
+<p>There are certainly some outliers we might want to investigate, but nothing else coded as missing.</p>
+<p>(Obviously, these missing values are noted in the data dictionary. You shouldn’t have to guess what the missing values are when you’re working with real data – ask someone who knows, instead!)</p>
+<p>Now imagine you’re interested in how the number of siblings relates to one’s age when they have their first child. Create a dataset to study this question:</p>
+<ul>
+<li>Assume that if the number of siblings is missing, they have 0</li>
+<li>Create a variable that is 1 if someone has kids, and 0 otherwise</li>
+<li>Create a dataset containing id, the sibling/child variables of interest, and income.</li>
+<li>Subset the data to exclude people who are missing income.</li>
+</ul>
+<pre class="r"><code>for_analysis &lt;- nlsy %&gt;%
+  mutate(
+    nsibs = case_when( # or ifelse(is.na(nsibs), 0, nsibs)
+      is.na(nsibs) ~ 0,
+      TRUE ~ nsibs
+    ),
+    has_kids = case_when( # or ifelse(!is.na(age_bir), 1, 0)
+      !is.na(age_bir) ~ 1,
+      TRUE ~ 0
+    )
+  ) %&gt;%
+  select(id, nsibs, has_kids, age_bir, income) %&gt;%
+  filter(!is.na(income))</code></pre>
+</div>
+<div id="questions" class="section level2">
+<h2><span class="header-section-number">6.3</span> Questions?!?!</h2>
+</div>
+</div>

@@ -85,10 +85,10 @@ main:
     identifier: lab5
     parent: lab-top
     url: /labs/05-lab/
-  # - name: Week 6
-  #   identifier: lab6
-  #   parent: lab-top
-  #   url: /labs/06-lab/
+  - name: Week 6
+    identifier: lab6
+    parent: lab-top
+    url: /labs/06-lab/
   - name: Resources
     url: /resources/
     weight: 6

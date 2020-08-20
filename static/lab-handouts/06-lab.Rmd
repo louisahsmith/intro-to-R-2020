@@ -1,0 +1,129 @@
+---
+title: "Week 6 Lab"
+output:
+  html_document:
+  # prettydoc::html_pretty:
+  #   theme: architect
+  #   highlight: vignette
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    pandoc_args: ["--number-offset=5"]
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  error = TRUE,
+  collapse = FALSE,
+  eval = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#> ",
+  class.output = "output",
+  class.message = "message"
+)
+```
+
+## File paths
+
+We talked this week about making file paths work in R. This is especially important if you're sharing your code with everyone. If you set your working directory via `setwd()` or hard-code another path into your code, it's definitely not going to work on my computer.
+
+A famous blog post about this (well, as famous as blog posts about R can be) can be read [here](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/).
+
+How did you make these file paths work?
+
+```{r, eval = FALSE}
+library(tidyverse)
+library(knitr)
+nlsy <- read_csv("nlsy.csv")
+```
+
+```{r, fig.align="center", eval = FALSE}
+# this function adds a static image
+include_graphics("figure1.jpg")
+```
+
+```{r, eval = FALSE}
+read_rds("table1.rds") %>%
+  kable() # this function prints nicer tables in R Markdown
+```
+
+By the way, you can change the directory in which an R Markdown document is knitted using the arrow by the Knit button. You can also use the settings to change the default. But if you use the `here` package it won't matter what you do!
+
+One thing that is helpful to know when you're working interactively, is how to navigate around file paths. If you need to go *up* a level, you use two dots to do so. So in the code below, we go *down* two levels from the top-level directory, then have to go *up* two levels and *down* two different levels to access the data. See why project directories and the `here` package make everything easier?!
+```{r, eval = FALSE}
+proj_wd <- getwd()
+setwd("figures/super important")
+nlsy <- read_csv("../../data/raw/nlsy.csv")
+# ahhh take us back to where we started from!
+setwd(proj_wd)
+```
+
+## Missing data
+
+The `nlsy.csv` file includes all 12,687 participants of the  NLSY-79. Read in the data once without specifying the values that indicate missingness. Explore the data and find them all. Then read in the data again, using the `na = ` argument in `read_csv()` to read them in as NA's. 
+
+```{r}
+# skip = 1 means to skip the first row, which were the original col names
+nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"), skip = 1, col_names = c(
+  "glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
+  "id", "nsibs", "samp", "race_eth", "sex", "region",
+  "income", "res_1980", "res_2002", "age_bir"
+))
+```
+
+How can we explore the data to get an idea of what values mean that variable is missing?
+
+```{r}
+summary(nlsy)
+ggplot(nlsy) +
+  geom_histogram(aes(age_bir))
+count(nlsy, nsibs)
+```
+
+Reread the data with the missing values specified:
+```{r}
+nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"), skip = 1, 
+                 na = c("-998", "-5", "-4", "-3", "-2", "-1"),
+                 col_names = c(
+  "glasses", "eyesight", "sleep_wkdy", "sleep_wknd",
+  "id", "nsibs", "samp", "race_eth", "sex", "region",
+  "income", "res_1980", "res_2002", "age_bir"
+))
+```
+
+Check again to see if anything's off:
+```{r}
+summary(nlsy)
+ggplot(nlsy) +
+  geom_histogram(aes(age_bir))
+count(nlsy, nsibs)
+```
+There are certainly some outliers we might want to investigate, but nothing else coded as missing.
+
+(Obviously, these missing values are noted in the data dictionary. You shouldn't have to guess what the missing values are when you're working with real data -- ask someone who knows, instead!)
+
+Now imagine you're interested in how the number of siblings relates to one's age when they have their first child. Create a dataset to study this question:
+
+- Assume that if the number of siblings is missing, they have 0
+- Create a variable that is 1 if someone has kids, and 0 otherwise
+- Create a dataset containing id, the sibling/child variables of interest, and income. 
+- Subset the data to exclude people who are missing income.
+
+```{r}
+for_analysis <- nlsy %>%
+  mutate(
+    nsibs = case_when( # or ifelse(is.na(nsibs), 0, nsibs)
+      is.na(nsibs) ~ 0,
+      TRUE ~ nsibs
+    ),
+    has_kids = case_when( # or ifelse(!is.na(age_bir), 1, 0)
+      !is.na(age_bir) ~ 1,
+      TRUE ~ 0
+    )
+  ) %>%
+  select(id, nsibs, has_kids, age_bir, income) %>%
+  filter(!is.na(income))
+```
+
+## Questions?!?!
