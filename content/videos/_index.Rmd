@@ -7,6 +7,9 @@ type: docs
 weight: 1
 shiny: true
 ---
+
+**NOTE (SPRING 2023): Videos are currently unavailable because they have been pulled from YouTube due to account deactivation. So far I have been unsuccessful at getting them back. I hope to film new videos and update this course, and I will link any new videos here if I do.**
+
 Choose a weekly lesson from the sidebar to watch the videos and view the slides. New videos will show up around Monday, give or take a bit. You should watch them and complete all the exercises before lab on Thursday.
 
 The slides are made as  HTML files. You can flip through the slides here, open them all in a new window/tab, or download them as a PDF if you want to save them for later. To navigate through the HTML slides, use the left and right arrow keys. You can also type `?` while viewing the slides to see a list of other commands you can use.

@@ -102,7 +102,7 @@ Then we replaced `geom_point()` with `geom_jitter()`. What did this do? Why migh
 
 ```
 
-We used the `shape = ` argument to map the sex variable to different shapes. We wanted to change the shapes to squares and diamonds. Let's explore
+We used the `shape = ` argument to map the sex variable to different shapes. We wanted to change the shapes to squares and diamonds. Let's explore how we might go about this. Here are three things we might try. See if you can spot why error messages appear for the first two.
 
 ```{r}
 ggplot(data = nlsy) +
